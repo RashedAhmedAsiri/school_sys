@@ -23,7 +23,7 @@ export function Logo({ p, size }: { p: Pick<Profile, "logo" | "color">; size?: n
   const s = size ? { width: size, height: size } : undefined;
   if (p.logo.startsWith("data:"))
     return <div className="logo" style={s}><img src={p.logo} alt="" /></div>;
-  const shape = p.logo.startsWith("shape:") ? p.logo.slice(6) : "circle";
+  const shape = p.logo.startsWith("shape:") ? p.logo.slice(6) : "square";
   return (
     <div className="logo" style={{ ...s, background: p.color }}>
       <Shape shape={shape} size={Math.round((size ?? 40) * 0.5)} />

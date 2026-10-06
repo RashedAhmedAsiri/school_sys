@@ -10,7 +10,7 @@ export default async function Layout({ children, params }: { children: React.Rea
   if (!t) redirect("/");
   const profiles = sortProfiles(await ensureProfiles(t.id)).map((p) => ({ classId: p.classId, name: p.name, logo: p.logo, color: p.color }));
   return (
-    <Shell cls={cls} profiles={profiles} teacher={{ name: t.name, voice: t.voice }}>
+    <Shell cls={cls} profiles={profiles} teacher={{ name: t.name, voice: t.voice, wallpaper: t.wallpaper }}>
       {children}
     </Shell>
   );

@@ -5,7 +5,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Ctx, Logo, type Profile } from "./ClassContext";
 import ClassSwitcher from "./ClassSwitcher";
 import Icon from "./Icon";
+import WallpaperPicker from "./WallpaperPicker";
 import { api } from "@/lib/client";
+import { wallpaperStyle } from "@/lib/wallpapers";
 
 export const SECTIONS = [
   { href: "plan", label: "الخطة", ic: "plan" },
@@ -17,12 +19,14 @@ export const SECTIONS = [
 
 export default function Shell({
   cls, profiles: initial, teacher, children,
-}: { cls: string; profiles: Profile[]; teacher: { name: string; voice: string }; children: React.ReactNode }) {
+}: { cls: string; profiles: Profile[]; teacher: { name: string; voice: string; wallpaper: string }; children: React.ReactNode }) {
   const path = usePathname();
   const router = useRouter();
   const [profiles, setProfiles] = useState(initial);
   const [switcher, setSwitcher] = useState(false);
   const [palette, setPalette] = useState(false);
+  const [wallpaper, setWallpaper] = useState(teacher.wallpaper);
+  const [wallPicker, setWallPicker] = useState(false);
   const [msg, setMsg] = useState("");
   const profile = profiles.find((p) => p.classId === cls)!;
   const section = path.split("/")[3] || "";
@@ -35,7 +39,7 @@ export default function Shell({
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); setPalette((v) => !v); }
-      if (e.key === "Escape") { setPalette(false); setSwitcher(false); }
+      if (e.key === "Escape") { setPalette(false); setSwitcher(false); setWallPicker(false); }
     };
     window.addEventListener("keydown", k);
     return () => window.removeEventListener("keydown", k);
@@ -54,7 +58,7 @@ export default function Shell({
   return (
     <Ctx.Provider value={ctx}>
       <div className="shell">
-        <main className="main">{children}</main>
+        <main className="main" style={wallpaperStyle(wallpaper)}>{children}</main>
         <aside className="side">
           <div className="side-top">
             <Link href={`/c/${cls}`} className="brand">
@@ -63,6 +67,7 @@ export default function Shell({
             </Link>
             <div className="m-actions">
               <Link href={`/c/${cls}/classroom`} className="btn sm primary"><Icon name="board" size={16} />وضع الحصة</Link>
+              <button className="btn icon-only ghost" title="خلفية الموقع" onClick={() => setWallPicker(true)}><Icon name="image" size={18} /></button>
               <button className="btn icon-only ghost" title="تسجيل الخروج" onClick={logout}><Icon name="logout" size={18} /></button>
             </div>
           </div>
@@ -88,7 +93,10 @@ export default function Shell({
           </nav>
           <div className="side-foot">
             <Link href={`/c/${cls}/classroom`} className="btn primary"><Icon name="board" size={17} />وضع الحصة</Link>
-            <button className="btn sm ghost" onClick={() => setPalette(true)}>بحث سريع <span className="kbd">Ctrl K</span></button>
+            <div className="row" style={{ gap: 6 }}>
+              <button className="btn sm ghost grow" onClick={() => setWallPicker(true)}><Icon name="image" size={16} />الخلفية</button>
+              <button className="btn sm ghost grow" onClick={() => setPalette(true)}>بحث <span className="kbd">Ctrl K</span></button>
+            </div>
             <div className="me">
               <div className="avatar">{teacher.name.trim()[0]}</div>
               <div className="grow" style={{ fontSize: 13, fontWeight: 600 }}>أ. {teacher.name}</div>
@@ -106,6 +114,7 @@ export default function Shell({
           onSaved={(p) => setProfiles((all) => all.map((x) => (x.classId === p.classId ? p : x)))}
         />
       )}
+      {wallPicker && <WallpaperPicker value={wallpaper} onChange={setWallpaper} onClose={() => setWallPicker(false)} />}
       {palette && <Palette cls={cls} profiles={profiles} section={section} onClose={() => setPalette(false)} />}
       {msg && <div className="toast">{msg}</div>}
     </Ctx.Provider>

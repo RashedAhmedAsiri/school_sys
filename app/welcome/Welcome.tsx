@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Uploader from "@/components/Uploader";
 import { api } from "@/lib/client";
+import { DEFAULT_WALLPAPER, wallpaperStyle } from "@/lib/wallpapers";
 
 export default function Welcome({ name }: { name: string }) {
   const [uploaded, setUploaded] = useState(false);
@@ -12,7 +13,7 @@ export default function Welcome({ name }: { name: string }) {
     location.href = "/c/1-1";
   }
   return (
-    <main className="intro">
+    <main className="intro" style={wallpaperStyle(DEFAULT_WALLPAPER)}>
       <div className="panel rise" style={{ width: "min(620px, 94vw)", padding: 32 }}>
         <div className="label mono">الخطوة 2 من 2</div>
         <h1 style={{ fontSize: 26, margin: "8px 0 6px", lineHeight: 1.6 }}>أهلاً أ. {name}</h1>

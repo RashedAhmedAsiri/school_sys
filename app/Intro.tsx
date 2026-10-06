@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Hello from "@/components/Hello";
 import { SchoolArt } from "@/components/Art";
 import { api } from "@/lib/client";
+import { DEFAULT_WALLPAPER, wallpaperStyle } from "@/lib/wallpapers";
 
 export default function Intro() {
   const [stage, setStage] = useState<"hello" | "out" | "auth">("hello");
@@ -40,7 +41,7 @@ export default function Intro() {
 
   if (stage !== "auth")
     return (
-      <main className="intro" onClick={() => setStage("auth")}>
+      <main className="intro" style={wallpaperStyle(DEFAULT_WALLPAPER)} onClick={() => setStage("auth")}>
         <div className={stage === "out" ? "intro-out" : ""}>
           <Hello />
         </div>
@@ -48,7 +49,7 @@ export default function Intro() {
     );
 
   return (
-    <main className="intro">
+    <main className="intro" style={wallpaperStyle(DEFAULT_WALLPAPER)}>
       <div className="auth rise">
         <aside className="auth-side">
           <div className="mark">م</div>

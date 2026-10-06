@@ -4,7 +4,7 @@ import { Logo, type Profile } from "./ClassContext";
 import Icon, { Shape, SHAPES } from "./Icon";
 import { api } from "@/lib/client";
 
-const COLORS = ["#16a34a", "#22b45a", "#0f6b34", "#13803f", "#5b3fe0", "#7a5cf0", "#8a6df5", "#4329b8", "#0d5c2e", "#17153a"];
+const COLORS = ["#15803d", "#16a34a", "#22c55e", "#0f5f2e", "#166534", "#4d7c0f", "#65a30d", "#33473b", "#1f3a2a", "#0c1f15"];
 
 /** The nine classes as a 3x3 matrix (rows = grade, columns = section), plus per-teacher name, mark and colour. */
 export default function ClassSwitcher({
