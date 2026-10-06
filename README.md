@@ -33,16 +33,18 @@ npm run dev                 # http://localhost:3000
 أو بخادم واحد عبر Docker (يشمل قاعدة البيانات):
 
 ```bash
-ANTHROPIC_API_KEY=sk-ant-... SESSION_SECRET=$(openssl rand -hex 32) docker compose up -d
+ANTHROPIC_API_KEY=sk-ant-... docker compose up -d
 ```
 
 ## الاستضافة
 
 **الخيار المقترح: Vercel + Neon (مجاني للبداية)**
 
-1. في [vercel.com/new](https://vercel.com/new) استورد مستودع GitHub هذا، وأضف متغيرات البيئة `SESSION_SECRET` و`SITE_PASSWORD` و`ANTHROPIC_API_KEY`، ثم اضغط Deploy.
-2. من تبويب Storage في المشروع أضف قاعدة Neon Postgres واربطها بالمشروع، فيُضاف `DATABASE_URL` تلقائياً.
-3. من تبويب Deployments اضغط Redeploy. سكربت `vercel-build` ينشئ الجداول تلقائياً عند كل نشر فيه `DATABASE_URL`.
+1. افتح [رابط الاستيراد](https://vercel.com/new/import?s=https%3A%2F%2Fgithub.com%2FRashedAhmedAsiri%2Fschool_sys) وسجّل الدخول بحساب GitHub، وأضف متغير البيئة `ANTHROPIC_API_KEY` ثم اضغط Deploy.
+2. من تبويب Storage في المشروع أنشئ قاعدة Neon Postgres واربطها بالمشروع، فيُضاف `DATABASE_URL` تلقائياً.
+3. من تبويب Deployments اضغط Redeploy، فتُنشأ الجداول تلقائياً.
+
+كلمة مرور الموقع 123323 افتراضياً (غيّرها بالمتغير `SITE_PASSWORD`)، ومفتاح توقيع الدخول يُنشأ تلقائياً ويُحفظ في قاعدة البيانات إن لم تضع `SESSION_SECRET`.
 
 **بدائل:** `render.yaml` لـ Render (خادم + قاعدة بيانات بضغطة واحدة)، أو `docker-compose.yml` لأي خادم VPS.
 

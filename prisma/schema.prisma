@@ -37,6 +37,12 @@ model WallpaperImage {
   teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }
 
+// Site-wide values the app makes for itself, such as the cookie signing key when SESSION_SECRET is not set.
+model Setting {
+  key   String @id
+  value String
+}
+
 // The nine classes (1/1 ... 3/3) are shared by the whole school.
 model Class {
   id       String         @id // e.g. "1-1"

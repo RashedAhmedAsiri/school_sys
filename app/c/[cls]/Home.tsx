@@ -81,6 +81,7 @@ export default function Home({
         variant="home"
         onChanged={() => router.refresh()}
         suggestions={[
+          "ايش درس اليوم؟",
           lesson ? `اشرح لي باختصار درس "${lesson.title}" وأفكار لتقديمه` : "ما الدرس المناسب لهذا الأسبوع؟",
           "أضف عمود المشاركة من 20",
           "من أكثر الطلاب غياباً؟",

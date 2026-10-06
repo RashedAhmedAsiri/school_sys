@@ -1,16 +1,29 @@
+import { randomBytes } from "crypto";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { db } from "./db";
 
 const COOKIE = "mawhoob_session";
-const secret = () => new TextEncoder().encode(process.env.SESSION_SECRET || "dev-secret-change-me-please-32chars-min");
+
+let key: Uint8Array | null = null;
+/** The cookie signing key: SESSION_SECRET if set, otherwise a random one made once and kept in the database. */
+async function secret() {
+  if (key) return key;
+  let s = process.env.SESSION_SECRET;
+  if (!s) {
+    await db.setting.createMany({ data: [{ key: "session_secret", value: randomBytes(32).toString("hex") }], skipDuplicates: true });
+    s = (await db.setting.findUniqueOrThrow({ where: { key: "session_secret" } })).value;
+  }
+  key = new TextEncoder().encode(s);
+  return key;
+}
 
 export async function createSession(teacherId: string) {
   const token = await new SignJWT({ sub: teacherId })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("30d")
-    .sign(secret());
+    .sign(await secret());
   const jar = await cookies();
   jar.set(COOKIE, token, {
     httpOnly: true,
@@ -29,7 +42,7 @@ export async function getTeacherId(): Promise<string | null> {
   const token = (await cookies()).get(COOKIE)?.value;
   if (!token) return null;
   try {
-    const { payload } = await jwtVerify(token, secret());
+    const { payload } = await jwtVerify(token, await secret());
     return typeof payload.sub === "string" ? payload.sub : null;
   } catch {
     return null;

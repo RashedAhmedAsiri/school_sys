@@ -17,6 +17,7 @@ export default function Assistant() {
         variant="full"
         onChanged={() => router.refresh()}
         suggestions={[
+          "ايش درس اليوم؟",
           "لخّص لي الدرس القادم في 5 نقاط",
           "اكتب 5 أسئلة تفكير ناقد عن درس اليوم",
           "سجّل الجميع حاضرين اليوم",
