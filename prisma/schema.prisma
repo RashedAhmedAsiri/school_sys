@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// A teacher account. Each teacher has a private "system" over the nine shared classes.
+model Teacher {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  onboarded    Boolean  @default(false)
+  voice        String   @default("ar-SA-HamedNeural")
+  aiNotes      String   @default("")
+
+  profiles     ClassProfile[]
+  columns      GradeColumn[]
+  attendance   Attendance[]
+  sources      Source[]
+  plans        PlanEntry[]
+  tests        Test[]
+  messages     ChatMessage[]
+}
+
+// The nine classes (1/1 ... 3/3) are shared by the whole school.
+model Class {
+  id        String   @id // e.g. "1-1"
+  label     String   // e.g. "1/1"
+  grade     Int
+  section   Int
+  students  Student[]
+  profiles  ClassProfile[]
+}
+
+// Per-teacher name + logo for a class.
+model ClassProfile {
+  id        String  @id @default(cuid())
+  teacherId String
+  classId   String
+  name      String
+  logo      String  // an emoji or a data: URL image
+  color     String  @default("#7c5cff")
+  teacher   Teacher @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  class     Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
+  @@unique([teacherId, classId])
+}
+
+// Students are shared: adding or deleting one applies for every teacher.
+model Student {
+  id        String   @id @default(cuid())
+  classId   String
+  name      String
+  createdAt DateTime @default(now())
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  grades    Grade[]
+  attendance Attendance[]
+  @@index([classId])
+}
+
+// Grade columns are private to a teacher, per class.
+model GradeColumn {
+  id        String   @id @default(cuid())
+  teacherId String
+  classId   String
+  name      String
+  maxScore  Float
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+  teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  grades    Grade[]
+  @@index([teacherId, classId])
+}
+
+model Grade {
+  id        String      @id @default(cuid())
+  columnId  String
+  studentId String
+  score     Float?
+  column    GradeColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  student   Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  @@unique([columnId, studentId])
+}
+
+// Attendance per teacher period, per student, per day (YYYY-MM-DD).
+model Attendance {
+  id        String   @id @default(cuid())
+  teacherId String
+  studentId String
+  classId   String
+  date      String
+  status    String   // present | absent | late | excused
+  teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  @@unique([teacherId, studentId, date])
+  @@index([teacherId, classId, date])
+}
+
+// An uploaded book or other source, split into chunks for retrieval (chunk RAG).
+model Source {
+  id         String   @id @default(cuid())
+  teacherId  String
+  classId    String?  // null = all of this teacher's classes
+  title      String
+  kind       String
+  charCount  Int
+  createdAt  DateTime @default(now())
+  teacher    Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  chunks     Chunk[]
+}
+
+model Chunk {
+  id        String  @id @default(cuid())
+  sourceId  String
+  idx       Int
+  heading   String  @default("")
+  text      String
+  terms     String  // normalised, space-separated tokens for keyword scoring
+  length    Int
+  source    Source  @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  @@index([sourceId])
+}
+
+// الخطة: what lesson is taught on which date, per class.
+model PlanEntry {
+  id        String   @id @default(cuid())
+  teacherId String
+  classId   String
+  date      String
+  title     String
+  notes     String   @default("")
+  done      Boolean  @default(false)
+  teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  @@unique([teacherId, classId, date])
+}
+
+model Test {
+  id        String   @id @default(cuid())
+  teacherId String
+  classId   String
+  title     String
+  data      Json
+  createdAt DateTime @default(now())
+  teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  teacherId String
+  classId   String
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+  teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  @@index([teacherId, classId, createdAt])
+}

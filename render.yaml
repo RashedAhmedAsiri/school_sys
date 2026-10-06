@@ -1,0 +1,18 @@
+# Render.com blueprint: a web service + a managed PostgreSQL database
+services:
+  - type: web
+    name: mawhoob-ai
+    runtime: docker
+    plan: starter
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase: { name: mawhoob-db, property: connectionString }
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: SITE_PASSWORD
+        value: "123323"
+      - key: ANTHROPIC_API_KEY
+        sync: false
+databases:
+  - name: mawhoob-db
+    plan: basic-256mb
