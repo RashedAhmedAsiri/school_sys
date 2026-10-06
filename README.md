@@ -40,10 +40,9 @@ ANTHROPIC_API_KEY=sk-ant-... SESSION_SECRET=$(openssl rand -hex 32) docker compo
 
 **الخيار المقترح: Vercel + Neon (مجاني للبداية)**
 
-1. في [vercel.com/new](https://vercel.com/new) استورد مستودع GitHub هذا.
-2. من تبويب Storage في المشروع أضف قاعدة Neon Postgres، فيُضاف `DATABASE_URL` تلقائياً (أو أنشئها في [neon.tech](https://neon.tech) وانسخ الرابط).
-3. أضف متغيرات البيئة: `SESSION_SECRET`، `SITE_PASSWORD`، `ANTHROPIC_API_KEY`.
-4. سكربت `vercel-build` ينشئ الجداول تلقائياً عند كل نشر.
+1. في [vercel.com/new](https://vercel.com/new) استورد مستودع GitHub هذا، وأضف متغيرات البيئة `SESSION_SECRET` و`SITE_PASSWORD` و`ANTHROPIC_API_KEY`، ثم اضغط Deploy.
+2. من تبويب Storage في المشروع أضف قاعدة Neon Postgres واربطها بالمشروع، فيُضاف `DATABASE_URL` تلقائياً.
+3. من تبويب Deployments اضغط Redeploy. سكربت `vercel-build` ينشئ الجداول تلقائياً عند كل نشر فيه `DATABASE_URL`.
 
 **بدائل:** `render.yaml` لـ Render (خادم + قاعدة بيانات بضغطة واحدة)، أو `docker-compose.yml` لأي خادم VPS.
 
