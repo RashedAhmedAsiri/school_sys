@@ -2,6 +2,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useShell } from "@/components/ClassContext";
 import { api, streamChat } from "@/lib/client";
+import Icon from "@/components/Icon";
+import PageHead from "@/components/PageHead";
+import { StudentsArt } from "@/components/Art";
 
 type Col = { id: string; name: string; maxScore: number; grades: Record<string, number | null> };
 type Data = { students: { id: string; name: string }[]; columns: Col[] };
@@ -116,29 +119,26 @@ export default function Students() {
 
   return (
     <>
-      <div className="page-head">
-        <div>
-          <h1>الطلاب <span className="grad-text">{label}</span></h1>
-          <p>قائمة الطلاب مشتركة مع كل معلمي الفصل · أعمدة الدرجات خاصة بك</p>
+      <PageHead idx="04" title="الطلاب" sub="قائمة الطلاب مشتركة مع كل معلمي الفصل · أعمدة الدرجات خاصة بك">
+        <div className="ai-bar" style={{ padding: "0 10px", width: 190 }}>
+          <Icon name="search" size={16} />
+          <input placeholder="بحث عن طالب" value={q} onChange={(e) => setQ(e.target.value)} />
         </div>
-        <div className="row wrap no-print">
-          <input className="input" style={{ width: 180 }} placeholder="🔍 بحث" value={q} onChange={(e) => setQ(e.target.value)} />
-          <button className="btn" onClick={exportCSV}>⬇ تصدير Excel</button>
-          <button className="btn" onClick={() => print()}>🖨️ طباعة</button>
-          <button className="btn primary" onClick={() => setColOpen(true)}>＋ عمود درجات</button>
-        </div>
-      </div>
+        <button className="btn" onClick={exportCSV}><Icon name="download" size={16} />تصدير Excel</button>
+        <button className="btn" onClick={() => print()}><Icon name="print" size={16} />طباعة</button>
+        <button className="btn primary" onClick={() => setColOpen(true)}><Icon name="plus" size={16} />عمود درجات</button>
+      </PageHead>
 
       <form className="ai-bar no-print" onSubmit={runAI}>
-        <span style={{ fontSize: 20 }}>✨</span>
+        <span className="lead">أمر ذكي</span>
         <input value={cmd} onChange={(e) => setCmd(e.target.value)} placeholder='اطلب من الذكاء الاصطناعي: "أعط الجميع 18 في المشاركة" أو "أضف عمود واجبات من 10"' />
         <button className="btn primary sm" disabled={aiBusy}>{aiBusy ? <span className="spinner" /> : "نفّذ"}</button>
       </form>
-      {aiReply && <div className="glass card" style={{ padding: 14, whiteSpace: "pre-wrap", lineHeight: 1.8 }}>{aiReply}</div>}
+      {aiReply && <div className="ai-reply">{aiReply}</div>}
 
       {colOpen && (
         <div className="overlay" onClick={() => setColOpen(false)}>
-          <form className="glass modal" style={{ width: 420 }} onClick={(e) => e.stopPropagation()} onSubmit={addColumn}>
+          <form className="modal" style={{ width: 420 }} onClick={(e) => e.stopPropagation()} onSubmit={addColumn}>
             <h2 style={{ marginBottom: 16 }}>عمود درجات جديد</h2>
             <div className="stack">
               <label className="field">اسم العمود<input className="input" autoFocus required value={colName} onChange={(e) => setColName(e.target.value)} placeholder="مثال: المشاركة" /></label>
@@ -198,17 +198,16 @@ export default function Students() {
                       {totalMax > 0 && <span className="pct">{Math.round((sum / totalMax) * 100)}%</span>}
                     </td>
                     <td className="no-print">
-                      <button className="btn sm ghost danger" onClick={() => delStudent(s.id, s.name)} title="حذف">✕</button>
+                      <button className="btn sm ghost danger" onClick={() => delStudent(s.id, s.name)} title="حذف"><Icon name="trash" size={15} /></button>
                     </td>
                   </tr>
                 );
               })}
               <tr className="no-print">
-                <td className="num">＋</td>
+                <td className="num"><Icon name="plus" size={14} className="muted" /></td>
                 <td className="name" colSpan={1}>
                   <input
-                    className="cell"
-                    style={{ textAlign: "right" }}
+                    className="cell name-in"
                     placeholder="اكتب اسم طالب واضغط Enter (أو الصق قائمة)"
                     value={newNames}
                     onChange={(e) => setNewNames(e.target.value)}
@@ -227,7 +226,7 @@ export default function Students() {
           </table>
         )}
       </div>
-      {data && data.students.length === 0 && <div className="empty"><div className="big">👩‍🎓</div>لا يوجد طلاب بعد. اكتب الأسماء في السطر الأخير، أو الصق قائمة كاملة.</div>}
+      {data && data.students.length === 0 && <div className="empty"><StudentsArt />لا يوجد طلاب بعد. اكتب الأسماء في السطر الأخير من الجدول، أو الصق قائمة كاملة.</div>}
     </>
   );
 }

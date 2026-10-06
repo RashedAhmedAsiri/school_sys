@@ -4,15 +4,15 @@ import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Ctx, Logo, type Profile } from "./ClassContext";
 import ClassSwitcher from "./ClassSwitcher";
-import Spotlight from "./Spotlight";
+import Icon from "./Icon";
 import { api } from "@/lib/client";
 
-const SECTIONS = [
-  { href: "plan", label: "الخطة", ic: "🗓️" },
-  { href: "attendance", label: "التحضير", ic: "✅" },
-  { href: "curriculum", label: "المنهج", ic: "📚" },
-  { href: "students", label: "الطلاب", ic: "📊" },
-  { href: "assistant", label: "المساعد الذكي", ic: "✨" },
+export const SECTIONS = [
+  { href: "plan", label: "الخطة", ic: "plan" },
+  { href: "attendance", label: "التحضير", ic: "attendance" },
+  { href: "curriculum", label: "المنهج", ic: "book" },
+  { href: "students", label: "الطلاب", ic: "table" },
+  { href: "assistant", label: "المساعد الذكي", short: "المساعد", ic: "assistant" },
 ];
 
 export default function Shell({
@@ -53,36 +53,46 @@ export default function Shell({
 
   return (
     <Ctx.Provider value={ctx}>
-      <Spotlight />
       <div className="shell">
         <main className="main">{children}</main>
-        <aside className="side glass">
+        <aside className="side">
+          <div className="side-top">
+            <Link href={`/c/${cls}`} className="brand">
+              <div className="mark">م</div>
+              <div><b>ثانوية الموهوبين التقنية</b><small>المنصة الذكية</small></div>
+            </Link>
+            <div className="m-actions">
+              <Link href={`/c/${cls}/classroom`} className="btn sm primary"><Icon name="board" size={16} />وضع الحصة</Link>
+              <button className="btn icon-only ghost" title="تسجيل الخروج" onClick={logout}><Icon name="logout" size={18} /></button>
+            </div>
+          </div>
           <button className="class-btn" onClick={() => setSwitcher(true)} title="تغيير الفصل">
             <Logo p={profile} />
             <div className="grow">
-              <div className="lbl">الفصل {ctx.label} · تغيير الفصل</div>
+              <div className="lbl">الفصل <span className="mono">{ctx.label}</span></div>
               <div className="nm">{profile.name}</div>
             </div>
-            <span style={{ fontSize: 18, opacity: 0.6 }}>⇅</span>
+            <span className="sw"><Icon name="swap" size={18} /></span>
           </button>
           <nav className="nav">
             <Link href={`/c/${cls}`} className={section === "" ? "on" : ""}>
-              <span className="ic">🏠</span>الرئيسية
+              <span className="num">00</span><Icon name="home" size={18} />الرئيسية
             </Link>
-            {SECTIONS.map((s) => (
+            {SECTIONS.map((s, i) => (
               <Link key={s.href} href={`/c/${cls}/${s.href}`} className={section === s.href ? "on" : ""}>
-                <span className="ic">{s.ic}</span>
-                {s.label}
+                <span className="num">0{i + 1}</span>
+                <Icon name={s.ic} size={18} />
+                {"short" in s ? <><span className="lbl-full">{s.label}</span><span className="lbl-short">{s.short}</span></> : s.label}
               </Link>
             ))}
           </nav>
           <div className="side-foot">
-            <Link href={`/c/${cls}/classroom`} className="btn primary">🎙️ وضع الحصة</Link>
+            <Link href={`/c/${cls}/classroom`} className="btn primary"><Icon name="board" size={17} />وضع الحصة</Link>
             <button className="btn sm ghost" onClick={() => setPalette(true)}>بحث سريع <span className="kbd">Ctrl K</span></button>
             <div className="me">
               <div className="avatar">{teacher.name.trim()[0]}</div>
-              <div className="grow" style={{ fontSize: 14, fontWeight: 600 }}>أ. {teacher.name}</div>
-              <button className="btn icon ghost" title="تسجيل الخروج" onClick={logout}>⎋</button>
+              <div className="grow" style={{ fontSize: 13, fontWeight: 600 }}>أ. {teacher.name}</div>
+              <button className="btn icon-only ghost" title="تسجيل الخروج" onClick={logout}><Icon name="logout" size={18} /></button>
             </div>
           </div>
         </aside>
@@ -106,18 +116,18 @@ function Palette({ cls, profiles, section, onClose }: { cls: string; profiles: P
   const router = useRouter();
   const [q, setQ] = useState("");
   const [i, setI] = useState(0);
-  const opts = [
-    { label: "الرئيسية", ic: "🏠", go: `/c/${cls}` },
-    ...SECTIONS.map((s) => ({ label: s.label, ic: s.ic, go: `/c/${cls}/${s.href}` })),
-    { label: "وضع الحصة", ic: "🎙️", go: `/c/${cls}/classroom` },
-    ...profiles.map((p) => ({ label: `الفصل ${p.classId.replace("-", "/")} — ${p.name}`, ic: p.logo.startsWith("data:") ? "🏫" : p.logo, go: `/c/${p.classId}${section ? "/" + section : ""}` })),
+  const opts: { label: string; go: string; icon?: string; p?: Profile }[] = [
+    { label: "الرئيسية", icon: "home", go: `/c/${cls}` },
+    ...SECTIONS.map((s) => ({ label: s.label, icon: s.ic, go: `/c/${cls}/${s.href}` })),
+    { label: "وضع الحصة", icon: "board", go: `/c/${cls}/classroom` },
+    ...profiles.map((p) => ({ label: `الفصل ${p.classId.replace("-", "/")} — ${p.name}`, p, go: `/c/${p.classId}${section ? "/" + section : ""}` })),
   ].filter((o) => o.label.includes(q.trim()));
   const go = (o?: { go: string }) => { if (o) { router.push(o.go); onClose(); } };
   return (
     <div className="overlay" onClick={onClose}>
-      <div className="glass palette" onClick={(e) => e.stopPropagation()}>
+      <div className="palette" onClick={(e) => e.stopPropagation()}>
         <input
-          autoFocus value={q} placeholder="اذهب إلى قسم أو فصل…"
+          autoFocus value={q} placeholder="اذهب إلى قسم أو فصل"
           onChange={(e) => { setQ(e.target.value); setI(0); }}
           onKeyDown={(e) => {
             if (e.key === "ArrowDown") setI((v) => Math.min(v + 1, opts.length - 1));
@@ -125,11 +135,14 @@ function Palette({ cls, profiles, section, onClose }: { cls: string; profiles: P
             if (e.key === "Enter") go(opts[i]);
           }}
         />
-        {opts.map((o, k) => (
-          <div key={o.go + o.label} className={"opt" + (k === i ? " on" : "")} onMouseEnter={() => setI(k)} onClick={() => go(o)}>
-            <span>{o.ic}</span>{o.label}
-          </div>
-        ))}
+        <div className="opts">
+          {opts.map((o, k) => (
+            <div key={o.go + o.label} className={"opt" + (k === i ? " on" : "")} onMouseEnter={() => setI(k)} onClick={() => go(o)}>
+              {o.p ? <Logo p={o.p} size={24} /> : <Icon name={o.icon!} size={18} />}
+              {o.label}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -1,20 +1,21 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useShell } from "./ClassContext";
+import Icon from "./Icon";
 import { api, makeRecognizer, md, speak, stopSpeaking, streamChat } from "@/lib/client";
 
 type Msg = { role: "user" | "assistant"; content: string; tools?: string[] };
 
 const TOOL_LABEL: Record<string, string> = {
-  search_book: "📖 بحث في الكتاب",
-  list_students: "📋 قراءة جدول الطلاب",
-  add_students: "➕ إضافة طلاب",
-  delete_student: "🗑️ حذف طالب",
-  add_grade_column: "📊 إضافة عمود",
-  set_grades: "✏️ رصد درجات",
-  mark_attendance: "✅ تسجيل الحضور",
-  set_plan: "🗓️ تعديل الخطة",
-  save_note: "📝 حفظ ملاحظة",
+  search_book: "بحث في الكتاب",
+  list_students: "قراءة جدول الطلاب",
+  add_students: "إضافة طلاب",
+  delete_student: "حذف طالب",
+  add_grade_column: "إضافة عمود",
+  set_grades: "رصد درجات",
+  mark_attendance: "تسجيل الحضور",
+  set_plan: "تعديل الخطة",
+  save_note: "حفظ ملاحظة",
 };
 
 export default function Chat({
@@ -26,12 +27,20 @@ export default function Chat({
   const [busy, setBusy] = useState(false);
   const [listening, setListening] = useState(false);
   const [speaking, setSpeaking] = useState<number | null>(null);
+  const [narrow, setNarrow] = useState(false);
   const end = useRef<HTMLDivElement>(null);
   const ta = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (variant === "full") api<Msg[]>(`/api/ai/chat?cls=${cls}`).then(setMsgs).catch(() => {});
   }, [cls, variant]);
+  useEffect(() => {
+    const m = window.matchMedia("(max-width: 600px)");
+    const on = () => setNarrow(m.matches);
+    on();
+    m.addEventListener("change", on);
+    return () => m.removeEventListener("change", on);
+  }, []);
   useEffect(() => { end.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [msgs]);
 
   async function send(t = text) {
@@ -45,7 +54,7 @@ export default function Chat({
       if (e.t === "text") patchLast((m) => ({ ...m, content: m.content + e.d }));
       if (e.t === "tool") patchLast((m) => ({ ...m, tools: [...(m.tools || []), e.name!] }));
       if (e.t === "changed") onChanged?.();
-      if (e.t === "error") patchLast((m) => ({ ...m, content: m.content + "\n⚠️ " + e.d }));
+      if (e.t === "error") patchLast((m) => ({ ...m, content: m.content + "\n" + e.d }));
     });
     setBusy(false);
   }
@@ -82,12 +91,12 @@ export default function Chat({
   return (
     <div className="chat-wrap">
       {msgs.length > 0 && (
-        <div className={variant === "home" ? "glass card" : ""} style={variant === "home" ? { maxHeight: "52vh", overflow: "auto" } : undefined}>
+        <div className={variant === "home" ? "chat-log" : ""}>
           <div className="msgs">
             {msgs.map((m, i) => (
               <div key={i} className={"msg " + m.role}>
                 {m.tools && m.tools.length > 0 && (
-                  <div className="tools">{m.tools.map((t, k) => <span key={k} className="chip cyan">{TOOL_LABEL[t] || t}</span>)}</div>
+                  <div className="tools">{m.tools.map((t, k) => <span key={k} className="tag green"><Icon name="check" size={13} />{TOOL_LABEL[t] || t}</span>)}</div>
                 )}
                 {m.role === "assistant" ? (
                   m.content ? <div className="md" dangerouslySetInnerHTML={{ __html: md(m.content) }} /> : <div className="typing"><span /><span /><span /></div>
@@ -96,8 +105,8 @@ export default function Chat({
                 )}
                 {m.role === "assistant" && m.content && !(busy && i === msgs.length - 1) && (
                   <div className="msg-actions">
-                    <button className="btn sm ghost" onClick={() => talk(i, m.content)}>{speaking === i ? "⏹ إيقاف" : "🔊 استمع"}</button>
-                    <button className="btn sm ghost" onClick={() => navigator.clipboard.writeText(m.content)}>⧉ نسخ</button>
+                    <button className="btn sm ghost" onClick={() => talk(i, m.content)}><Icon name={speaking === i ? "stop" : "speaker"} size={15} />{speaking === i ? "إيقاف" : "استمع"}</button>
+                    <button className="btn sm ghost" onClick={() => navigator.clipboard.writeText(m.content)}><Icon name="copy" size={15} />نسخ</button>
                   </div>
                 )}
               </div>
@@ -111,14 +120,13 @@ export default function Chat({
           {suggestions.map((s) => <button key={s} onClick={() => send(s)}>{s}</button>)}
         </div>
       )}
-      <div className={variant === "home" ? "home-chat" : ""} style={variant === "full" ? { position: "sticky", bottom: 12 } : undefined}>
+      <div className={variant === "home" ? "home-chat" : ""} style={variant === "full" ? { position: "sticky", bottom: 12, background: "var(--white)" } : undefined}>
         <div className="composer">
-          <div className="composer-in">
             <textarea
               ref={ta}
               rows={1}
               value={text}
-              placeholder="اسأل المساعد الذكي… أو اطلب: أضف عمود المشاركة من 20"
+              placeholder={narrow ? "اسأل المساعد الذكي…" : "اسأل المساعد الذكي… أو اطلب: أضف عمود المشاركة من 20"}
               onChange={(e) => {
                 setText(e.target.value);
                 e.target.style.height = "auto";
@@ -126,10 +134,9 @@ export default function Chat({
               }}
               onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
             />
-            {variant === "full" && msgs.length > 0 && <button className="mic" title="مسح المحادثة" onClick={clear}>🧹</button>}
-            <button className={"mic" + (listening ? " live" : "")} onClick={mic} title="تحدث">🎙️</button>
-            <button className="send" disabled={busy || !text.trim()} onClick={() => send()} title="إرسال">{busy ? <span className="spinner" /> : "↑"}</button>
-          </div>
+            {variant === "full" && msgs.length > 0 && <button className="tool-btn" title="مسح المحادثة" onClick={clear}><Icon name="clear" size={19} /></button>}
+            <button className={"tool-btn" + (listening ? " live" : "")} onClick={mic} title="تحدث"><Icon name="mic" size={19} /></button>
+            <button className="send" disabled={busy || !text.trim()} onClick={() => send()} title="إرسال">{busy ? <span className="spinner" /> : <Icon name="send" size={19} />}</button>
         </div>
       </div>
     </div>

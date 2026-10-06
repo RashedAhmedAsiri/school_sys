@@ -1,50 +1,49 @@
 "use client";
 import { useState } from "react";
 import { Logo, type Profile } from "./ClassContext";
+import Icon, { Shape, SHAPES } from "./Icon";
 import { api } from "@/lib/client";
 
-const EMOJIS = ["🚀", "💡", "🦅", "🧠", "🔭", "⚡", "👑", "💎", "🎨", "🧪", "🛰️", "🤖", "🌟", "🔥", "🌊", "🦁", "🐺", "🦉", "🏆", "🎯", "🧬", "📐", "💻", "🌙"];
+const COLORS = ["#16a34a", "#22b45a", "#0f6b34", "#13803f", "#5b3fe0", "#7a5cf0", "#8a6df5", "#4329b8", "#0d5c2e", "#17153a"];
 
-/** The nine classes as planets on three orbits (one orbit per grade), plus per-teacher name/logo editing. */
+/** The nine classes as a 3x3 matrix (rows = grade, columns = section), plus per-teacher name, mark and colour. */
 export default function ClassSwitcher({
   current, profiles, onPick, onClose, onSaved,
 }: { current: string; profiles: Profile[]; onPick: (id: string) => void; onClose: () => void; onSaved: (p: Profile) => void }) {
   const [tab, setTab] = useState<"pick" | "edit">("pick");
-  const radius: Record<string, number> = { "1": 22, "2": 34, "3": 46 };
-  const offset: Record<string, number> = { "1": -90, "2": -30, "3": 30 };
+  const byId = new Map(profiles.map((p) => [p.classId, p]));
 
   return (
     <div className="overlay" onClick={onClose}>
-      <div className="glass modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="row" style={{ justifyContent: "space-between" }}>
           <h2>الفصول</h2>
-          <div className="tabs" style={{ margin: 0, width: 260 }}>
-            <button className={tab === "pick" ? "on" : ""} onClick={() => setTab("pick")}>اختيار</button>
-            <button className={tab === "edit" ? "on" : ""} onClick={() => setTab("edit")}>تخصيص الاسم والشعار</button>
+          <div className="row" style={{ gap: 8 }}>
+            <div className="seg-tabs">
+              <button className={tab === "pick" ? "on" : ""} onClick={() => setTab("pick")}>اختيار</button>
+              <button className={tab === "edit" ? "on" : ""} onClick={() => setTab("edit")}>تخصيص</button>
+            </div>
+            <button className="btn icon-only ghost" onClick={onClose} title="إغلاق"><Icon name="close" size={18} /></button>
           </div>
         </div>
         {tab === "pick" ? (
-          <div className="orbit">
-            {["1", "2", "3"].map((g) => (
-              <div key={g} className="ring" style={{ ["--inset" as string]: `${50 - radius[g]}%`, ["--dur" as string]: `${40 + Number(g) * 20}s` }} />
+          <div className="matrix">
+            <div className="hd" />
+            {[1, 2, 3].map((s) => <div key={s} className="hd">الشعبة {s}</div>)}
+            {[1, 2, 3].map((g) => (
+              <Row key={g} g={g}>
+                {[1, 2, 3].map((s) => {
+                  const p = byId.get(`${g}-${s}`)!;
+                  return (
+                    <button key={s} className={"cell-c" + (p.classId === current ? " on" : "")} onClick={() => onPick(p.classId)}>
+                      <Logo p={p} size={48} />
+                      <b>{p.name}</b>
+                      <small>{g}/{s}</small>
+                    </button>
+                  );
+                })}
+              </Row>
             ))}
-            <div className="core">ثانوية<br />الموهوبين</div>
-            {profiles.map((p) => {
-              const [g, s] = p.classId.split("-");
-              const ang = ((offset[g] + (Number(s) - 1) * 120) * Math.PI) / 180;
-              const r = radius[g];
-              return (
-                <button
-                  key={p.classId}
-                  className={"planet" + (p.classId === current ? " on" : "")}
-                  style={{ left: `${50 + r * Math.cos(ang)}%`, top: `${50 + r * Math.sin(ang)}%` }}
-                  onClick={() => onPick(p.classId)}
-                >
-                  <Logo p={p} />
-                  <small>{p.classId.replace("-", "/")} · {p.name}</small>
-                </button>
-              );
-            })}
           </div>
         ) : (
           <div className="class-edit">
@@ -56,9 +55,17 @@ export default function ClassSwitcher({
   );
 }
 
+function Row({ g, children }: { g: number; children: React.ReactNode }) {
+  return (
+    <>
+      <div className="rh"><span>الصف</span><b>{g}</b></div>
+      {children}
+    </>
+  );
+}
+
 function EditItem({ p, onSaved }: { p: Profile; onSaved: (p: Profile) => void }) {
   const [name, setName] = useState(p.name);
-  const [open, setOpen] = useState(false);
   async function save(patch: Partial<Profile>) {
     const r = await api<Profile>("/api/classes", { method: "PATCH", json: { classId: p.classId, ...patch } });
     onSaved({ classId: r.classId, name: r.name, logo: r.logo, color: r.color });
@@ -76,27 +83,28 @@ function EditItem({ p, onSaved }: { p: Profile; onSaved: (p: Profile) => void })
     save({ logo: c.toDataURL("image/webp", 0.85) });
   }
   return (
-    <div className="item" style={{ flexDirection: "column", alignItems: "stretch" }}>
+    <div className="item">
       <div className="row">
-        <button className="btn ghost" style={{ padding: 0 }} onClick={() => setOpen((v) => !v)} title="تغيير الشعار">
-          <Logo p={p} />
-        </button>
+        <Logo p={p} />
         <div className="grow">
-          <div className="muted" style={{ fontSize: 12, fontWeight: 700 }}>{p.classId.replace("-", "/")}</div>
-          <input className="input" style={{ padding: "6px 10px" }} value={name} onChange={(e) => setName(e.target.value)} onBlur={() => name.trim() && name !== p.name && save({ name })} />
+          <div className="label mono">{p.classId.replace("-", "/")}</div>
+          <input className="input" style={{ padding: "5px 9px" }} value={name} onChange={(e) => setName(e.target.value)} onBlur={() => name.trim() && name !== p.name && save({ name })} />
         </div>
-        <input type="color" value={p.color} onChange={(e) => save({ color: e.target.value })} style={{ width: 30, height: 30, border: 0, background: "none" }} title="لون الفصل" />
       </div>
-      {open && (
-        <div className="stack" style={{ marginTop: 8, gap: 8 }}>
-          <div className="emoji-pick">
-            {EMOJIS.map((e) => <button key={e} onClick={() => save({ logo: e })}>{e}</button>)}
-          </div>
-          <label className="btn sm">🖼️ رفع صورة شعار
-            <input type="file" accept="image/*" hidden onChange={(e) => upload(e.target.files?.[0])} />
-          </label>
-        </div>
-      )}
+      <div className="picker">
+        {SHAPES.map((s) => (
+          <button key={s} className={p.logo === `shape:${s}` ? "on" : ""} onClick={() => save({ logo: `shape:${s}` })} title={s}><Shape shape={s} size={16} /></button>
+        ))}
+        <label className="btn sm" style={{ padding: "5px 8px" }} title="رفع صورة شعار">
+          <Icon name="image" size={16} />
+          <input type="file" accept="image/*" hidden onChange={(e) => upload(e.target.files?.[0])} />
+        </label>
+      </div>
+      <div className="picker">
+        {COLORS.map((c) => (
+          <button key={c} className={"swatch" + (p.color === c ? " on" : "")} style={{ background: c }} onClick={() => save({ color: c })} title={c} />
+        ))}
+      </div>
     </div>
   );
 }

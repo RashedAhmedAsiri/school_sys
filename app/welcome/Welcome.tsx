@@ -13,22 +13,20 @@ export default function Welcome({ name }: { name: string }) {
   }
   return (
     <main className="intro">
-      <div className="glass card rise spot" style={{ width: "min(640px, 94vw)", padding: 32 }}>
-        <span className="chip cyan">الخطوة 2 من 2</span>
-        <h1 style={{ fontSize: 30, marginTop: 14 }}>
-          أهلاً أ. {name} <span className="grad-text">👋</span>
-        </h1>
-        <p className="muted" style={{ lineHeight: 1.8 }}>
-          ارفع ملف الكتاب الذي تدرّسه ليقرأه المساعد الذكي. يُقسَّم الكتاب إلى مقاطع صغيرة، فيرسل المساعد مع كل سؤال المقاطع المتعلقة به فقط.
+      <div className="panel rise" style={{ width: "min(620px, 94vw)", padding: 32 }}>
+        <div className="label mono">الخطوة 2 من 2</div>
+        <h1 style={{ fontSize: 26, margin: "8px 0 6px", lineHeight: 1.6 }}>أهلاً أ. {name}</h1>
+        <p className="muted" style={{ lineHeight: 1.9, margin: 0 }}>
+          ارفع ملف الكتاب الذي تدرّسه ليعتمد عليه المساعد الذكي. يُقسَّم الكتاب إلى مقاطع صغيرة، ومع كل سؤال تُرسل المقاطع المتعلقة به فقط.
           يمكنك إضافة مصادر أخرى لاحقاً من قسم المنهج.
         </p>
-        <div style={{ margin: "20px 0" }}>
+        <div style={{ margin: "22px 0" }}>
           <Uploader cls={null} onDone={() => setUploaded(true)} />
         </div>
         <div className="row" style={{ justifyContent: "space-between" }}>
           <button className="btn ghost" onClick={go} disabled={busy}>تخطي الآن</button>
           <button className="btn primary" onClick={go} disabled={busy || !uploaded}>
-            {busy ? <span className="spinner" /> : "متابعة إلى المنصة ←"}
+            {busy ? <span className="spinner" /> : "متابعة إلى المنصة"}
           </button>
         </div>
       </div>

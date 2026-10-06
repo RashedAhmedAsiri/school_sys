@@ -2,6 +2,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useShell } from "@/components/ClassContext";
 import { api, fmtDate, streamChat } from "@/lib/client";
+import Icon from "@/components/Icon";
+import PageHead from "@/components/PageHead";
 
 type Entry = { date: string; title: string; notes: string; done: boolean };
 const DOW = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
@@ -61,20 +63,16 @@ export default function Plan() {
 
   return (
     <>
-      <div className="page-head">
-        <div>
-          <h1>الخطة <span className="grad-text">{label}</span></h1>
-          <p>ملاحظاتك للمساعد الذكي، وتوزيع الدروس على الأيام</p>
-        </div>
-        <button className="btn primary" onClick={() => setAiOpen(true)}>✨ خطط لي بالذكاء الاصطناعي</button>
-      </div>
+      <PageHead idx="01" title="الخطة" sub="ملاحظاتك للمساعد الذكي، وتوزيع الدروس على الأيام">
+        <button className="btn primary" onClick={() => setAiOpen(true)}><Icon name="plan" size={16} />خطط لي بالذكاء الاصطناعي</button>
+      </PageHead>
 
       <div className="grid" style={{ gridTemplateColumns: "minmax(0,2.2fr) minmax(260px,1fr)", alignItems: "start" }}>
-        <div className="glass card">
+        <div className="panel card">
           <div className="row" style={{ justifyContent: "space-between", marginBottom: 14 }}>
-            <button className="btn sm" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))}>→ السابق</button>
+            <button className="btn sm" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))}><Icon name="chevronR" size={15} />السابق</button>
             <h3>{month.toLocaleDateString("ar-SA-u-ca-gregory", { month: "long", year: "numeric" })}</h3>
-            <button className="btn sm" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))}>التالي ←</button>
+            <button className="btn sm" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))}>التالي<Icon name="chevronL" size={15} /></button>
           </div>
           <div className="cal">
             {DOW.map((d) => <div key={d} className="dow">{d}</div>)}
@@ -92,10 +90,10 @@ export default function Plan() {
           </div>
         </div>
 
-        <div className="glass card stack spot">
+        <div className="panel card stack">
           <div className="row" style={{ justifyContent: "space-between" }}>
-            <h3>📝 ملاحظات للمساعد</h3>
-            <span className="muted" style={{ fontSize: 12 }}>{saved ? "محفوظ ✓" : "جاري الحفظ…"}</span>
+            <h3>ملاحظات للمساعد</h3>
+            <span className="muted" style={{ fontSize: 12 }}>{saved ? "محفوظ" : "جاري الحفظ"}</span>
           </div>
           <p className="muted" style={{ margin: 0, fontSize: 13, lineHeight: 1.7 }}>
             كل ما تكتبه هنا يقرأه المساعد الذكي مع كل طلب: أسلوبك في الشرح، مستوى طلابك، ما تريد التركيز عليه.
@@ -112,7 +110,7 @@ export default function Plan() {
 
       {edit && (
         <div className="overlay" onClick={() => setEdit(null)}>
-          <form className="glass modal" style={{ width: 460 }} onClick={(e) => e.stopPropagation()} onSubmit={saveEntry}>
+          <form className="modal" style={{ width: 460 }} onClick={(e) => e.stopPropagation()} onSubmit={saveEntry}>
             <h2>{fmtDate(edit.date)}</h2>
             <p className="muted">الفصل {label}</p>
             <div className="stack">
@@ -130,11 +128,11 @@ export default function Plan() {
 
       {aiOpen && (
         <div className="overlay" onClick={() => !aiBusy && setAiOpen(false)}>
-          <form className="glass modal" style={{ width: 560 }} onClick={(e) => e.stopPropagation()} onSubmit={runAI}>
-            <h2>✨ تخطيط ذكي</h2>
+          <form className="modal" style={{ width: 560 }} onClick={(e) => e.stopPropagation()} onSubmit={runAI}>
+            <h2>تخطيط ذكي</h2>
             <p className="muted">اكتب ما تريد، وسيضع المساعد الدروس على التقويم مباشرة.</p>
             <textarea className="textarea" value={aiText} onChange={(e) => setAiText(e.target.value)} placeholder="مثال: وزّع دروس الوحدة الأولى من الكتاب على أيام الدراسة في الأسبوعين القادمين، درس واحد في اليوم" />
-            {aiOut && <div className="glass card" style={{ marginTop: 12, padding: 12, whiteSpace: "pre-wrap", maxHeight: 220, overflow: "auto", fontSize: 14 }}>{aiOut}</div>}
+            {aiOut && <div className="ai-reply" style={{ marginTop: 12, maxHeight: 220, overflow: "auto" }}>{aiOut}</div>}
             <div className="row" style={{ marginTop: 12 }}>
               <button className="btn primary grow" disabled={aiBusy || !aiText.trim()}>{aiBusy ? <span className="spinner" /> : "خطط"}</button>
               <button type="button" className="btn" onClick={() => setAiOpen(false)} disabled={aiBusy}>إغلاق</button>

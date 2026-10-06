@@ -43,7 +43,7 @@ model ClassProfile {
   classId   String
   name      String
   logo      String  // an emoji or a data: URL image
-  color     String  @default("#7c5cff")
+  color     String  @default("#5b3fe0")
   teacher   Teacher @relation(fields: [teacherId], references: [id], onDelete: Cascade)
   class     Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
   @@unique([teacherId, classId])

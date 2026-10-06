@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { Logo, useShell } from "@/components/ClassContext";
 import { api, makeRecognizer, md, speak, stopSpeaking, streamChat } from "@/lib/client";
 import { VOICES } from "@/lib/voices";
+import Icon from "@/components/Icon";
+import { BoardArt } from "@/components/Art";
 
 type Turn = { role: "user" | "assistant"; content: string };
 
@@ -58,51 +60,54 @@ export default function Classroom() {
   const topic = lesson || "درس اليوم";
   const [typed, setTyped] = useState("");
 
+  const btnLabel = state === "listening" ? "أستمع" : state === "speaking" ? "إيقاف" : state === "thinking" ? "يفكر" : "اسأل بصوتك";
+
   return (
     <div className="classroom">
-      <div className="row wrap">
-        <Logo p={profile} size={52} />
+      <div className="classroom-top">
+        <Logo p={profile} size={44} />
         <div className="grow">
-          <div className="muted" style={{ fontWeight: 700 }}>وضع الحصة · الفصل {label} {profile.name}</div>
-          <h1 style={{ fontSize: 30 }}>{lesson || "لم يُحدد درس اليوم في الخطة"}</h1>
+          <div className="label">وضع الحصة · الفصل <span className="mono">{label}</span> {profile.name}</div>
+          <h1 className="cr-title">{lesson || "لم يُحدد درس اليوم في الخطة"}</h1>
         </div>
-        <select className="select" style={{ width: 190 }} value={voice} onChange={(e) => { setVoice(e.target.value); api("/api/me", { method: "PATCH", json: { voice: e.target.value } }); }}>
-          {VOICES.map((v) => <option key={v.id} value={v.id}>🔊 {v.label}</option>)}
-        </select>
-        <label className="row" style={{ gap: 6, fontSize: 14 }}><input type="checkbox" checked={autoSpeak} onChange={(e) => setAutoSpeak(e.target.checked)} /> نطق تلقائي</label>
-        <Link href={`/c/${cls}`} className="btn">خروج ✕</Link>
+        <div className="row" style={{ gap: 6 }}>
+          <Icon name="speaker" size={18} className="muted" />
+          <select className="select" style={{ width: 170, padding: "7px 10px" }} value={voice} onChange={(e) => { setVoice(e.target.value); api("/api/me", { method: "PATCH", json: { voice: e.target.value } }); }}>
+            {VOICES.map((v) => <option key={v.id} value={v.id}>{v.label}</option>)}
+          </select>
+        </div>
+        <label className="row" style={{ gap: 6, fontSize: 13 }}><input type="checkbox" checked={autoSpeak} onChange={(e) => setAutoSpeak(e.target.checked)} /> نطق تلقائي</label>
+        <Link href={`/c/${cls}`} className="btn"><Icon name="close" size={16} />خروج</Link>
       </div>
 
-      <div className="glass board">
-        {question && <div className="chip cyan" style={{ fontSize: 18, padding: "8px 16px", marginBottom: 16 }}>🙋 {question}</div>}
+      <div className="board">
+        {question && <div className="q-now">سؤال: {question}</div>}
         {board ? <div className="md" dangerouslySetInnerHTML={{ __html: md(board) }} /> : (
-          <div className="empty" style={{ fontSize: 22 }}>
-            <div className="big">🎓</div>
-            اضغط «اشرح الدرس» ليبدأ المساعد، أو اضغط على الميكروفون ليسأل الطالب بصوته.
+          <div className="empty" style={{ fontSize: 20 }}>
+            <BoardArt size={190} />
+            اضغط «اشرح الدرس» ليبدأ المساعد، أو اضغط زر الصوت ليسأل الطالب بصوته.
           </div>
         )}
       </div>
 
-      <div className="row wrap" style={{ justifyContent: "center", gap: 16 }}>
-        <button className="btn" onClick={() => ask(`اشرح للطلاب درس "${topic}" خطوة بخطوة كأنك المعلم في الفصل، وابدأ بسؤال يشد انتباههم.`)}>📖 اشرح الدرس</button>
-        <button className="btn" onClick={() => ask(`أعطِ مثالاً واقعياً جديداً يوضح "${topic}".`)}>💡 مثال</button>
-        <button className="btn" onClick={() => ask(`اطرح على الطلاب سؤالاً واحداً للتحقق من فهمهم لـ "${topic}"، ولا تذكر الإجابة.`)}>❓ اسأل الطلاب</button>
-        <button className="btn" onClick={() => ask(`لخّص "${topic}" في ثلاث نقاط سهلة الحفظ.`)}>📌 لخّص</button>
+      <div className="classroom-bar">
+        <button className="btn" onClick={() => ask(`اشرح للطلاب درس "${topic}" خطوة بخطوة كأنك المعلم في الفصل، وابدأ بسؤال يشد انتباههم.`)}><Icon name="book" size={16} />اشرح الدرس</button>
+        <button className="btn" onClick={() => ask(`أعطِ مثالاً واقعياً جديداً يوضح "${topic}".`)}><Icon name="bulb" size={16} />مثال</button>
+        <button className="btn" onClick={() => ask(`اطرح على الطلاب سؤالاً واحداً للتحقق من فهمهم لـ "${topic}"، ولا تذكر الإجابة.`)}><Icon name="question" size={16} />اسأل الطلاب</button>
+        <button className="btn" onClick={() => ask(`لخّص "${topic}" في ثلاث نقاط سهلة الحفظ.`)}><Icon name="list" size={16} />لخّص</button>
         <button
-          className={"orb " + (state === "speaking" ? "speaking" : state === "thinking" ? "thinking" : "")}
-          style={{ border: 0, cursor: "pointer", color: "white", fontSize: 34 }}
+          className={"voice-btn " + state}
           onClick={() => (state === "speaking" ? (stopSpeaking(), setState("idle")) : listen())}
-          title={state === "speaking" ? "إيقاف الصوت" : "اسأل بصوتك"}
+          title={btnLabel}
+          aria-label={btnLabel}
         >
-          {state === "listening" ? "👂" : state === "speaking" ? "⏹" : state === "thinking" ? "…" : "🎙️"}
+          {state === "thinking" ? <span className="spinner" style={{ borderColor: "rgba(255,255,255,.35)", borderTopColor: "#fff" }} /> : <Icon name={state === "speaking" ? "stop" : "mic"} size={28} />}
         </button>
-        <form className="composer" style={{ minWidth: "min(420px, 90vw)" }} onSubmit={(e) => { e.preventDefault(); if (typed.trim()) { ask(`سؤال من طالب: ${typed}`, typed); setTyped(""); } }}>
-          <div className="composer-in">
-            <textarea rows={1} value={typed} onChange={(e) => setTyped(e.target.value)} placeholder="اكتب سؤال الطالب…" onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); (e.currentTarget.form as HTMLFormElement).requestSubmit(); } }} />
-            <button className="send">↑</button>
-          </div>
+        <form className="composer" style={{ minWidth: "min(380px, 100%)", flex: "0 1 420px" }} onSubmit={(e) => { e.preventDefault(); if (typed.trim()) { ask(`سؤال من طالب: ${typed}`, typed); setTyped(""); } }}>
+          <textarea rows={1} value={typed} onChange={(e) => setTyped(e.target.value)} placeholder="اكتب سؤال الطالب" onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); (e.currentTarget.form as HTMLFormElement).requestSubmit(); } }} />
+          <button className="send" aria-label="إرسال"><Icon name="send" size={19} /></button>
         </form>
-        {board && <button className="btn ghost" onClick={() => { setState("speaking"); speak(board, { voice, onEnd: () => setState("idle") }); }}>🔁 أعد النطق</button>}
+        {board && <button className="btn ghost" onClick={() => { setState("speaking"); speak(board, { voice, onEnd: () => setState("idle") }); }}><Icon name="repeat" size={16} />أعد النطق</button>}
       </div>
     </div>
   );

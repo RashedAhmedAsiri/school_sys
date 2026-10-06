@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       const send = (o: object) => controller.enqueue(enc.encode(JSON.stringify(o) + "\n"));
       try {
         if (!aiConfigured()) {
-          send({ t: "text", d: "⚠️ لم يتم إعداد مفتاح Claude API بعد. أضف ANTHROPIC_API_KEY في إعدادات الخادم ثم أعد المحاولة." });
+          send({ t: "text", d: "لم يتم إعداد مفتاح Claude API بعد. أضف ANTHROPIC_API_KEY في إعدادات الخادم ثم أعد المحاولة." });
           send({ t: "done" });
           controller.close();
           return;

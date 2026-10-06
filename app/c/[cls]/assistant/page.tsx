@@ -1,19 +1,18 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Chat from "@/components/Chat";
+import PageHead from "@/components/PageHead";
+import { ChatArt } from "@/components/Art";
 import { useShell } from "@/components/ClassContext";
 
 export default function Assistant() {
-  const { label, profile } = useShell();
+  const { profile } = useShell();
   const router = useRouter();
   return (
     <>
-      <div className="page-head">
-        <div>
-          <h1>المساعد الذكي <span className="grad-text">✦</span></h1>
-          <p>يعرف كتابك وطلاب {label} {profile.name} وخطتك وملاحظاتك. يمكنه أيضاً تعديل الجدول والغياب والخطة.</p>
-        </div>
-      </div>
+      <PageHead idx="05" title="المساعد الذكي" sub={`يعرف كتابك وطلاب ${profile.name} وخطتك وملاحظاتك، ويستطيع تعديل الجدول والغياب والخطة.`}>
+        <ChatArt size={84} />
+      </PageHead>
       <Chat
         variant="full"
         onChanged={() => router.refresh()}

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Hello from "@/components/Hello";
+import { SchoolArt } from "@/components/Art";
 import { api } from "@/lib/client";
 
 export default function Intro() {
@@ -14,9 +15,9 @@ export default function Intro() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    // hello is drawn for 2 seconds, then the sign-in card rises in
+    // hello is drawn for 2 seconds, then the sign-in card appears
     const a = setTimeout(() => setStage("out"), 2000);
-    const b = setTimeout(() => setStage("auth"), 2550);
+    const b = setTimeout(() => setStage("auth"), 2500);
     return () => { clearTimeout(a); clearTimeout(b); };
   }, []);
 
@@ -48,41 +49,44 @@ export default function Intro() {
 
   return (
     <main className="intro">
-      <form className="glass auth-card rise spot" onSubmit={submit}>
-        <div className="auth-logo">
+      <div className="auth rise">
+        <aside className="auth-side">
           <div className="mark">م</div>
           <div>
-            <h2 style={{ fontSize: 20 }}>ثانوية الموهوبين التقنية</h2>
-            <div className="muted" style={{ fontSize: 13 }}>المنصة الذكية للمعلم</div>
+            <h1>ثانوية الموهوبين التقنية</h1>
+            <p>منصة المعلم: الخطة، التحضير، المنهج، الطلاب، ومساعد ذكي يعرف كتابك وفصولك التسعة.</p>
           </div>
-        </div>
-        <div className="tabs">
-          <button type="button" className={mode === "signup" ? "on" : ""} onClick={() => { setMode("signup"); setErr(""); }}>حساب جديد</button>
-          <button type="button" className={mode === "login" ? "on" : ""} onClick={() => { setMode("login"); setErr(""); }}>تسجيل الدخول</button>
-        </div>
-        <div className="stack">
-          <label className="field">الاسم
-            <input className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="مثال: أحمد العسيري" autoFocus required />
-          </label>
-          {mode === "signup" && (
-            <label className="field">كلمة مرور الموقع
-              <input className="input" value={site} onChange={(e) => setSite(e.target.value)} type="password" inputMode="numeric" placeholder="تحصل عليها من إدارة المدرسة" required />
+          <SchoolArt />
+        </aside>
+        <form className="auth-form" onSubmit={submit}>
+          <div className="tabs">
+            <button type="button" className={mode === "signup" ? "on" : ""} onClick={() => { setMode("signup"); setErr(""); }}>حساب جديد</button>
+            <button type="button" className={mode === "login" ? "on" : ""} onClick={() => { setMode("login"); setErr(""); }}>تسجيل الدخول</button>
+          </div>
+          <div className="stack">
+            <label className="field">الاسم
+              <input className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="مثال: أحمد العسيري" autoFocus required />
             </label>
-          )}
-          <label className="field">{mode === "signup" ? "اختر كلمة مرورك الشخصية" : "كلمة المرور"}
-            <input className="input" value={pw} onChange={(e) => setPw(e.target.value)} type="password" required minLength={4} />
-          </label>
-          {mode === "signup" && (
-            <label className="field">تأكيد كلمة المرور
-              <input className="input" value={pw2} onChange={(e) => setPw2(e.target.value)} type="password" required />
+            {mode === "signup" && (
+              <label className="field">كلمة مرور الموقع
+                <input className="input" value={site} onChange={(e) => setSite(e.target.value)} type="password" inputMode="numeric" placeholder="تحصل عليها من إدارة المدرسة" required />
+              </label>
+            )}
+            <label className="field">{mode === "signup" ? "كلمة مرورك الشخصية" : "كلمة المرور"}
+              <input className="input" value={pw} onChange={(e) => setPw(e.target.value)} type="password" required minLength={4} />
             </label>
-          )}
-          <div className="err">{err}</div>
-          <button className="btn primary" disabled={busy} style={{ padding: 14 }}>
-            {busy ? <span className="spinner" /> : mode === "signup" ? "إنشاء الحساب" : "دخول"}
-          </button>
-        </div>
-      </form>
+            {mode === "signup" && (
+              <label className="field">تأكيد كلمة المرور
+                <input className="input" value={pw2} onChange={(e) => setPw2(e.target.value)} type="password" required />
+              </label>
+            )}
+            <div className="err">{err}</div>
+            <button className="btn primary" disabled={busy} style={{ padding: 12 }}>
+              {busy ? <span className="spinner" /> : mode === "signup" ? "إنشاء الحساب" : "دخول"}
+            </button>
+          </div>
+        </form>
+      </div>
     </main>
   );
 }

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Hello from "@/components/Hello";
 import Chat from "@/components/Chat";
+import Icon from "@/components/Icon";
 import { Logo, useShell } from "@/components/ClassContext";
 import { fmtDate } from "@/lib/client";
 
@@ -25,55 +26,53 @@ export default function Home({
 
   return (
     <>
-      <section className="glass hero spot rise">
-        <div>
-          <div style={{ marginInlineStart: -10, marginBottom: -10, maxWidth: 360 }}><Hello small /></div>
-          <h1>
-            {greeting()}، أ. {teacher.name}
-          </h1>
-          <p className="muted" style={{ margin: "8px 0 0", fontSize: 16 }}>
-            {fmtDate(today)} · الفصل {label} <span className="grad-text" style={{ fontWeight: 700 }}>{profile.name}</span>
+      <section className="hero rise">
+        <div className="hero-main">
+          <Hello />
+          <h1>{greeting()}، أ. {teacher.name}</h1>
+          <p className="muted" style={{ margin: "4px 0 0" }}>
+            {fmtDate(today)} · الفصل <span className="mono">{label}</span> <b className="accent">{profile.name}</b>
           </p>
         </div>
-        <div className="stack">
-          <div className="lesson-today">
-            <Logo p={profile} size={56} />
-            <div className="grow">
-              <div className="muted" style={{ fontSize: 13, fontWeight: 700 }}>درس اليوم</div>
-              <div style={{ fontSize: 20, fontWeight: 700, fontFamily: "var(--font-display)" }}>{lesson?.title || "لم يُحدد بعد"}</div>
+        <div className="hero-side">
+          <div className="row">
+            <Logo p={profile} size={44} />
+            <div className="today-lesson grow">
+              <div className="label">درس اليوم</div>
+              <b>{lesson?.title || "لم يُحدد بعد"}</b>
             </div>
             <Link className="btn sm" href={`/c/${cls}/plan`}>{lesson ? "الخطة" : "حدده"}</Link>
           </div>
-          <div className="row wrap">
-            <Link className="btn primary sm" href={`/c/${cls}/curriculum?make=pptx`}>🎞️ عرض درس اليوم</Link>
-            <Link className="btn sm" href={`/c/${cls}/curriculum?make=test`}>📝 اختبار سريع</Link>
-            <Link className="btn sm" href={`/c/${cls}/classroom`}>🎙️ وضع الحصة</Link>
+          <div className="row wrap" style={{ gap: 8 }}>
+            <Link className="btn primary sm" href={`/c/${cls}/curriculum?make=pptx`}><Icon name="slides" size={16} />عرض درس اليوم</Link>
+            <Link className="btn sm" href={`/c/${cls}/curriculum?make=test`}><Icon name="test" size={16} />اختبار سريع</Link>
+            <Link className="btn sm green" href={`/c/${cls}/classroom`}><Icon name="board" size={16} />وضع الحصة</Link>
           </div>
         </div>
       </section>
 
       <section className="stats">
-        <Link href={`/c/${cls}/students`} className="glass stat spot">
-          <div className="k">الطلاب</div>
-          <div className="v">{stats.students}</div>
-          <div className="muted" style={{ fontSize: 12 }}>{stats.columns} عمود درجات</div>
+        <Link href={`/c/${cls}/students`} className="stat">
+          <span className="label">الطلاب</span>
+          <span className="v">{stats.students}</span>
+          <span className="muted" style={{ fontSize: 12 }}>{stats.columns} عمود درجات</span>
         </Link>
-        <Link href={`/c/${cls}/attendance`} className="glass stat spot">
-          <div className="k">حضور اليوم</div>
-          <div className="v">{stats.attToday ? `${presentPct}%` : "—"}</div>
+        <Link href={`/c/${cls}/attendance`} className="stat">
+          <span className="label">حضور اليوم</span>
+          <span className="v">{stats.attToday ? `${presentPct}%` : "—"}</span>
           <div className="bar"><i style={{ width: `${presentPct}%` }} /></div>
-          <div className="muted" style={{ fontSize: 12, marginTop: 6 }}>{stats.attToday ? `${stats.absentToday} غائب` : "لم يُسجل بعد"}</div>
+          <span className="muted" style={{ fontSize: 12 }}>{stats.attToday ? `${stats.absentToday} غائب` : "لم يُسجل بعد"}</span>
         </Link>
-        <Link href={`/c/${cls}/curriculum`} className="glass stat spot">
-          <div className="k">مصادر المنهج</div>
-          <div className="v">{stats.sources}</div>
-          <div className="muted" style={{ fontSize: 12 }}>{stats.sources ? "مقسمة بـ Chunk RAG" : "ارفع الكتاب"}</div>
+        <Link href={`/c/${cls}/curriculum`} className="stat">
+          <span className="label">مصادر المنهج</span>
+          <span className="v">{stats.sources}</span>
+          <span className="muted" style={{ fontSize: 12 }}>{stats.sources ? "مقسمة إلى مقاطع" : "ارفع الكتاب"}</span>
         </Link>
-        <Link href={`/c/${cls}/plan`} className="glass stat spot">
-          <div className="k">القادم في الخطة</div>
+        <Link href={`/c/${cls}/plan`} className="stat">
+          <span className="label">القادم في الخطة</span>
           {upcoming.length ? upcoming.map((u) => (
-            <div key={u.date} style={{ fontSize: 13, marginTop: 6 }}><b>{u.title}</b> <span className="muted">· {fmtDate(u.date)}</span></div>
-          )) : <div className="muted" style={{ fontSize: 13, marginTop: 8 }}>لا دروس قادمة</div>}
+            <span key={u.date} style={{ fontSize: 13 }}><b>{u.title}</b> <span className="muted">· {fmtDate(u.date)}</span></span>
+          )) : <span className="muted" style={{ fontSize: 13, marginTop: 6 }}>لا دروس قادمة</span>}
         </Link>
       </section>
 

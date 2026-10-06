@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
+import Icon from "./Icon";
 import { api, extractFileText } from "@/lib/client";
 
 type Item = { name: string; state: "reading" | "chunking" | "done" | "error"; info?: string };
@@ -41,26 +42,30 @@ export default function Uploader({ cls, onDone, compact = false }: { cls: string
         onDragLeave={() => setOver(false)}
         onDrop={(e) => { e.preventDefault(); setOver(false); handle(e.dataTransfer.files); }}
       >
-        <div style={{ fontSize: compact ? 28 : 44 }}>📚</div>
-        <div style={{ fontWeight: 700, marginTop: 6 }}>اسحب ملف الكتاب هنا أو اضغط للاختيار</div>
-        <div className="muted" style={{ fontSize: 13, marginTop: 4 }}>PDF · Word · PowerPoint · TXT — يمكنك رفع أكثر من مصدر</div>
+        <Icon name="upload" size={compact ? 24 : 30} />
+        <div style={{ fontWeight: 700 }}>اسحب ملف الكتاب هنا أو اضغط للاختيار</div>
+        <div className="muted" style={{ fontSize: 13 }}>PDF · Word · PowerPoint · TXT — يمكنك رفع أكثر من مصدر</div>
         <input ref={input} type="file" multiple hidden accept=".pdf,.docx,.pptx,.txt,.md" onChange={(e) => handle(e.target.files)} />
       </div>
-      {items.map((it) => (
-        <div key={it.name} className="src">
-          <div className="ficon">{it.name.split(".").pop()?.toUpperCase().slice(0, 4)}</div>
-          <div className="grow">
-            <div style={{ fontWeight: 600 }}>{it.name}</div>
-            <div className="muted" style={{ fontSize: 13 }}>
-              {it.state === "reading" && "جاري قراءة الملف…"}
-              {it.state === "chunking" && "جاري تقسيم الكتاب إلى مقاطع (Chunk RAG)…"}
-              {it.state === "done" && `جاهز · ${it.info}`}
-              {it.state === "error" && <span style={{ color: "var(--bad)" }}>{it.info}</span>}
+      {items.length > 0 && (
+        <div>
+          {items.map((it) => (
+            <div key={it.name} className="src">
+              <div className="ficon">{it.name.split(".").pop()?.toUpperCase().slice(0, 4)}</div>
+              <div className="grow">
+                <div style={{ fontWeight: 600 }}>{it.name}</div>
+                <div className="muted" style={{ fontSize: 13 }}>
+                  {it.state === "reading" && "جاري قراءة الملف"}
+                  {it.state === "chunking" && "جاري تقسيم الكتاب إلى مقاطع"}
+                  {it.state === "done" && `جاهز · ${it.info}`}
+                  {it.state === "error" && <span style={{ color: "var(--bad)" }}>{it.info}</span>}
+                </div>
+              </div>
+              {it.state === "done" ? <span className="tag ok"><Icon name="check" size={14} />جاهز</span> : it.state === "error" ? <span className="tag bad">خطأ</span> : <span className="spinner" />}
             </div>
-          </div>
-          {it.state === "done" ? <span className="chip ok">✓</span> : it.state === "error" ? <span className="chip bad">!</span> : <span className="spinner" />}
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 }

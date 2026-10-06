@@ -5,6 +5,9 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import { useShell } from "@/components/ClassContext";
 import Uploader from "@/components/Uploader";
 import { api } from "@/lib/client";
+import Icon from "@/components/Icon";
+import PageHead from "@/components/PageHead";
+import { BooksArt, TestArt } from "@/components/Art";
 
 type Source = { id: string; title: string; kind: string; classId: string | null; charCount: number; chunks: number; createdAt: string };
 type Q = { type: "mcq" | "tf" | "short" | "essay"; question: string; options: string[]; answer: string; points: number };
@@ -41,19 +44,15 @@ function Curriculum() {
 
   return (
     <>
-      <div className="page-head">
-        <div>
-          <h1>المنهج <span className="grad-text">{label}</span></h1>
-          <p>الكتب والمصادر مقسمة إلى مقاطع صغيرة، فيقرأ المساعد ما يخص السؤال فقط ويوفر التوكنز</p>
-        </div>
-        <button className="btn primary" onClick={() => setUpload((v) => !v)}>＋ إضافة مصدر</button>
-      </div>
+      <PageHead idx="03" title="المنهج" sub="الكتب مقسمة إلى مقاطع صغيرة، فيقرأ المساعد ما يخص السؤال فقط">
+        <button className="btn primary" onClick={() => setUpload((v) => !v)}><Icon name="plus" size={16} />إضافة مصدر</button>
+      </PageHead>
 
       {upload && (
-        <div className="glass card stack rise">
-          <div className="row">
+        <div className="panel card stack rise">
+          <div className="row wrap">
             <span className="muted">المصدر لـ:</span>
-            <div className="tabs" style={{ margin: 0, width: 300 }}>
+            <div className="seg-tabs">
               <button className={scope === "class" ? "on" : ""} onClick={() => setScope("class")}>الفصل {label} فقط</button>
               <button className={scope === "all" ? "on" : ""} onClick={() => setScope("all")}>كل فصولي</button>
             </div>
@@ -63,33 +62,33 @@ function Curriculum() {
       )}
 
       <div className="tools-grid">
-        <div className="glass tool spot" onClick={() => setDialog("pptx")}>
-          <div className="ti">🎞️</div>
+        <button className="tool" onClick={() => setDialog("pptx")}>
+          <div className="ti"><Icon name="slides" size={21} /></div>
           <h3>عرض درس اليوم</h3>
-          <p className="muted" style={{ margin: "6px 0 0", fontSize: 14 }}>ملف PowerPoint عربي بألوان المدرسة مع ملاحظات المعلم</p>
-        </div>
-        <div className="glass tool spot" onClick={() => setDialog("test")}>
-          <div className="ti">📝</div>
+          <p>ملف PowerPoint عربي بألوان المدرسة مع ملاحظات المعلم</p>
+        </button>
+        <button className="tool" onClick={() => setDialog("test")}>
+          <div className="ti"><Icon name="test" size={21} /></div>
           <h3>إنشاء اختبار</h3>
-          <p className="muted" style={{ margin: "6px 0 0", fontSize: 14 }}>أسئلة متنوعة من الكتاب مع نموذج الإجابة والدرجات</p>
-        </div>
-        <Link href={`/c/${cls}/classroom`} className="glass tool spot">
-          <div className="ti">🎙️</div>
+          <p>أسئلة متنوعة من الكتاب مع نموذج الإجابة والدرجات</p>
+        </button>
+        <Link href={`/c/${cls}/classroom`} className="tool">
+          <div className="ti"><Icon name="board" size={21} /></div>
           <h3>وضع الحصة</h3>
-          <p className="muted" style={{ margin: "6px 0 0", fontSize: 14 }}>المساعد يشرح بالصوت ويجيب أسئلة الطلاب على السبورة</p>
+          <p>المساعد يشرح بالصوت ويجيب أسئلة الطلاب على السبورة</p>
         </Link>
-        <Link href={`/c/${cls}/assistant`} className="glass tool spot">
-          <div className="ti">✨</div>
+        <Link href={`/c/${cls}/assistant`} className="tool">
+          <div className="ti"><Icon name="assistant" size={21} /></div>
           <h3>اسأل الكتاب</h3>
-          <p className="muted" style={{ margin: "6px 0 0", fontSize: 14 }}>محادثة مع المساعد مبنية على مصادرك</p>
+          <p>محادثة مع المساعد مبنية على مصادرك</p>
         </Link>
       </div>
 
       <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", alignItems: "start" }}>
-        <div className="glass card stack">
-          <h3>📚 المصادر</h3>
+        <div className="panel card">
+          <div className="panel-head"><h3>المصادر</h3><span className="tag plain mono">{sources?.length ?? 0}</span></div>
           {!sources ? <span className="spinner" /> : sources.length === 0 ? (
-            <div className="empty"><div className="big">📖</div>لا توجد مصادر بعد. ارفع كتابك ليبدأ المساعد بالاعتماد عليه.</div>
+            <div className="empty"><BooksArt />لا توجد مصادر بعد. ارفع كتابك ليبدأ المساعد بالاعتماد عليه.</div>
           ) : sources.map((s) => (
             <div key={s.id} className="src">
               <div className="ficon">{s.kind.toUpperCase().slice(0, 4)}</div>
@@ -99,20 +98,20 @@ function Curriculum() {
                   {s.chunks} مقطع · {(s.charCount / 1000).toFixed(0)} ألف حرف · {s.classId ? `الفصل ${s.classId.replace("-", "/")}` : "كل الفصول"}
                 </div>
               </div>
-              <button className="btn sm ghost danger" onClick={() => del(s)}>✕</button>
+              <button className="btn sm ghost danger" onClick={() => del(s)} title="حذف"><Icon name="trash" size={15} /></button>
             </div>
           ))}
         </div>
-        <div className="glass card stack">
-          <h3>📝 الاختبارات</h3>
-          {tests.length === 0 ? <div className="empty">لم تنشئ اختبارات لهذا الفصل بعد.</div> : tests.map((t) => (
+        <div className="panel card">
+          <div className="panel-head"><h3>الاختبارات</h3><span className="tag plain mono">{tests.length}</span></div>
+          {tests.length === 0 ? <div className="empty"><TestArt />لم تنشئ اختبارات لهذا الفصل بعد.</div> : tests.map((t) => (
             <div key={t.id} className="src" style={{ cursor: "pointer" }} onClick={() => openTest(t.id)}>
-              <div className="ficon">📝</div>
+              <div className="ficon">TEST</div>
               <div className="grow">
                 <div style={{ fontWeight: 700 }}>{t.title}</div>
                 <div className="muted" style={{ fontSize: 13 }}>{t.count} سؤال · {new Date(t.createdAt).toLocaleDateString("ar-SA-u-ca-gregory")}</div>
               </div>
-              <span className="chip">فتح</span>
+              <span className="tag plain">فتح</span>
             </div>
           ))}
         </div>
@@ -145,7 +144,7 @@ function PptxDialog({ onClose }: { onClose: () => void }) {
       a.href = URL.createObjectURL(blob);
       a.download = name;
       a.click();
-      toast("تم تنزيل العرض 🎉");
+      toast("تم تنزيل العرض");
       onClose();
     } catch (e) {
       setErr((e as Error).message);
@@ -154,15 +153,15 @@ function PptxDialog({ onClose }: { onClose: () => void }) {
   }
   return (
     <div className="overlay" onClick={() => !busy && onClose()}>
-      <form className="glass modal" style={{ width: 500 }} onClick={(e) => e.stopPropagation()} onSubmit={make}>
-        <h2>🎞️ عرض درس اليوم</h2>
+      <form className="modal" style={{ width: 500 }} onClick={(e) => e.stopPropagation()} onSubmit={make}>
+        <h2>عرض درس اليوم</h2>
         <p className="muted">اتركه فارغاً لاستخدام درس اليوم من الخطة.</p>
         <div className="stack">
           <label className="field">عنوان الدرس<input className="input" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="من الخطة تلقائياً" /></label>
           <label className="field">عدد الشرائح: {slides}<input type="range" min={4} max={16} value={slides} onChange={(e) => setSlides(Number(e.target.value))} /></label>
           <label className="field">طلبات إضافية<input className="input" value={extra} onChange={(e) => setExtra(e.target.value)} placeholder="مثال: أضف تجربة عملية بسيطة" /></label>
           <div className="err">{err}</div>
-          <button className="btn primary" disabled={busy}>{busy ? <><span className="spinner" /> يصمم المساعد العرض…</> : "إنشاء وتنزيل"}</button>
+          <button className="btn primary" disabled={busy}>{busy ? <><span className="spinner" /> يصمم المساعد العرض</> : "إنشاء وتنزيل"}</button>
         </div>
       </form>
     </div>
@@ -191,11 +190,11 @@ function TestDialog({ onClose, onMade }: { onClose: () => void; onMade: (t: Test
   );
   return (
     <div className="overlay" onClick={() => !busy && onClose()}>
-      <form className="glass modal" style={{ width: 540 }} onClick={(e) => e.stopPropagation()} onSubmit={make}>
-        <h2>📝 اختبار جديد</h2>
+      <form className="modal" style={{ width: 540 }} onClick={(e) => e.stopPropagation()} onSubmit={make}>
+        <h2>اختبار جديد</h2>
         <div className="stack" style={{ marginTop: 12 }}>
           <label className="field">الموضوع<input className="input" value={f.topic} onChange={(e) => setF({ ...f, topic: e.target.value })} placeholder="من درس اليوم تلقائياً" /></label>
-          <div className="grid" style={{ gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+          <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: 10 }}>
             {num("mcq", "اختيار متعدد")}{num("tf", "صح وخطأ")}{num("short", "قصيرة")}{num("essay", "مقالي")}
           </div>
           <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", gap: 10 }}>
@@ -207,7 +206,7 @@ function TestDialog({ onClose, onMade }: { onClose: () => void; onMade: (t: Test
             </label>
           </div>
           <div className="err">{err}</div>
-          <button className="btn primary" disabled={busy}>{busy ? <><span className="spinner" /> يكتب المساعد الأسئلة…</> : "إنشاء الاختبار"}</button>
+          <button className="btn primary" disabled={busy}>{busy ? <><span className="spinner" /> يكتب المساعد الأسئلة</> : "إنشاء الاختبار"}</button>
         </div>
       </form>
     </div>
@@ -230,11 +229,11 @@ function TestView({ test, onClose, onDeleted }: { test: Test; onClose: () => voi
 
   return (
     <div className="overlay" onClick={onClose}>
-      <div className="glass modal" style={{ width: 860 }} onClick={(e) => e.stopPropagation()}>
+      <div className="modal" style={{ width: 860 }} onClick={(e) => e.stopPropagation()}>
         <div className="row wrap no-print" style={{ marginBottom: 14 }}>
           <button className="btn sm" onClick={() => setShowAns((v) => !v)}>{showAns ? "إخفاء الإجابات" : "إظهار نموذج الإجابة"}</button>
-          <button className="btn sm" onClick={() => print()}>🖨️ طباعة</button>
-          <button className="btn sm primary" onClick={() => setGrading((v) => !v)}>✨ تصحيح بالذكاء الاصطناعي</button>
+          <button className="btn sm" onClick={() => print()}><Icon name="print" size={15} />طباعة</button>
+          <button className="btn sm primary" onClick={() => setGrading((v) => !v)}><Icon name="check" size={15} />تصحيح بالذكاء الاصطناعي</button>
           <div className="grow" />
           <button className="btn sm danger" onClick={del}>حذف</button>
           <button className="btn sm" onClick={onClose}>إغلاق</button>
@@ -251,11 +250,11 @@ function TestView({ test, onClose, onDeleted }: { test: Test; onClose: () => voi
               <div key={i} className="q">
                 <div className="row" style={{ justifyContent: "space-between" }}>
                   <b>س{i + 1}. {q.question}</b>
-                  <span className="chip">{q.points} درجة · {typeLabel[q.type]}</span>
+                  <span className="tag plain">{q.points} درجة · {typeLabel[q.type]}</span>
                 </div>
                 {q.options.length > 0 && <ol type="a">{q.options.map((o, k) => <li key={k}>{o}</li>)}</ol>}
                 {(q.type === "short" || q.type === "essay") && !showAns && <div style={{ borderBottom: "1px dashed var(--line)", height: q.type === "essay" ? 90 : 36 }} />}
-                {showAns && <div className="ans">✓ {q.answer}</div>}
+                {showAns && <div className="ans">الإجابة: {q.answer}</div>}
               </div>
             ))}
           </div>
@@ -284,7 +283,7 @@ function Grader({ testId, cls, onDone }: { testId: string; cls: string; onDone: 
       });
       setResults(r.results);
       setMax(r.maxScore);
-      toast("تم رصد الدرجات في الجدول ✓");
+      toast("تم رصد الدرجات في الجدول");
     } catch (e) {
       toast((e as Error).message);
     }
@@ -299,7 +298,7 @@ function Grader({ testId, cls, onDone }: { testId: string; cls: string; onDone: 
         <h3>نتائج التصحيح</h3>
         {results.map((r) => (
           <div key={r.name} className="q">
-            <div className="row" style={{ justifyContent: "space-between" }}><b>{r.name}</b><span className="chip cyan">{r.score} / {max}</span></div>
+            <div className="row" style={{ justifyContent: "space-between" }}><b>{r.name}</b><span className="tag green mono">{r.score} / {max}</span></div>
             <div className="muted" style={{ marginTop: 6, fontSize: 14 }}>{r.feedback}</div>
           </div>
         ))}
@@ -308,7 +307,7 @@ function Grader({ testId, cls, onDone }: { testId: string; cls: string; onDone: 
     );
   return (
     <div className="stack">
-      <h3>✨ تصحيح ورصد الدرجات</h3>
+      <h3>تصحيح ورصد الدرجات</h3>
       <p className="muted" style={{ margin: 0 }}>الصق إجابة كل طالب (أو اكتبها). يصحح المساعد بناءً على نموذج الإجابة ويضع الدرجة في العمود الذي تختاره.</p>
       <label className="field">عمود الدرجات
         <select className="select" value={col} onChange={(e) => setCol(e.target.value)}>
@@ -323,7 +322,7 @@ function Grader({ testId, cls, onDone }: { testId: string; cls: string; onDone: 
         ))}
       </div>
       <button className="btn primary" disabled={busy || !Object.values(answers).some((a) => a.trim())} onClick={grade}>
-        {busy ? <><span className="spinner" /> يصحح…</> : "صحّح وارصد الدرجات"}
+        {busy ? <><span className="spinner" /> يصحح</> : "صحّح وارصد الدرجات"}
       </button>
     </div>
   );
