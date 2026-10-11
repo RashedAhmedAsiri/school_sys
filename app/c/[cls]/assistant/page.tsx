@@ -10,7 +10,7 @@ export default function Assistant() {
   const router = useRouter();
   return (
     <>
-      <PageHead idx="05" title="المساعد الذكي" sub={`يعرف كتابك وطلاب ${profile.name} وخطتك وملاحظاتك، ويستطيع تعديل الجدول والغياب والخطة.`}>
+      <PageHead title="المساعد الذكي" sub={`يعرف كتابك وطلاب ${profile.name} وخطتك وملاحظاتك، ويستطيع تعديل الجدول والغياب والخطة.`}>
         <ChatArt size={84} />
       </PageHead>
       <Chat

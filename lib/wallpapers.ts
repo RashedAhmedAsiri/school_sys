@@ -6,18 +6,18 @@ import type { CSSProperties } from "react";
 const G = "#15803d";
 
 const circuit = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
-<g fill="none" stroke="${G}" stroke-opacity=".17" stroke-width="1.5">
+<g fill="none" stroke="${G}" stroke-opacity=".1" stroke-width="1.5">
 <path d="M0 30H50V70H97M160 30H125V0M125 160V130H83V113M0 120H30V147H57M160 120H140V95H123M70 0V20H110V42M70 160V135H40V103"/>
 <path d="M16 76h8v8h-8zM131 56h8v8h-8z"/>
 </g>
-<g fill="${G}" fill-opacity=".22">
+<g fill="${G}" fill-opacity=".13">
 <path d="M97 67h6v6h-6zM80 107h6v6h-6zM57 144h6v6h-6zM117 92h6v6h-6zM107 42h6v6h-6zM37 97h6v6h-6z"/>
 </g>
 </svg>`;
 
 const spiral = `<path d="M6 6H58V58H6V18H46V46H18V30H34"/>`;
 const kufi = `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-<g fill="none" stroke="${G}" stroke-opacity=".14" stroke-width="2">
+<g fill="none" stroke="${G}" stroke-opacity=".08" stroke-width="2">
 <g>${spiral}</g>
 <g transform="translate(64 0) rotate(90 32 32)">${spiral}</g>
 <g transform="translate(64 64) rotate(180 32 32)">${spiral}</g>
@@ -26,12 +26,12 @@ const kufi = `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" v
 </svg>`;
 
 const graph = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
-<path d="M16 0V80M32 0V80M48 0V80M64 0V80M0 16H80M0 32H80M0 48H80M0 64H80" stroke="${G}" stroke-opacity=".07" stroke-width="1"/>
-<path d="M0 .5H80M.5 0V80" stroke="${G}" stroke-opacity=".17" stroke-width="1"/>
+<path d="M16 0V80M32 0V80M48 0V80M64 0V80M0 16H80M0 32H80M0 48H80M0 64H80" stroke="${G}" stroke-opacity=".045" stroke-width="1"/>
+<path d="M0 .5H80M.5 0V80" stroke="${G}" stroke-opacity=".1" stroke-width="1"/>
 </svg>`;
 
 const lab = `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 220 220">
-<g fill="none" stroke="${G}" stroke-opacity=".16" stroke-width="1.6" stroke-linejoin="miter">
+<g fill="none" stroke="${G}" stroke-opacity=".09" stroke-width="1.6" stroke-linejoin="miter">
 <path d="M15 75H75L15 15ZM27 63H51L27 39Z"/>
 <path d="M92 22h14M99 15v14"/>
 <path d="M138 18V58L122 88H188L172 58V18M132 18H178M127 78H183"/>
@@ -40,7 +40,7 @@ const lab = `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" vi
 <path d="M150 182H194M160 182V208M184 182V204l5 4"/>
 <path d="M78 196l6 8 9-22h22"/>
 </g>
-<g fill="${G}" fill-opacity=".2"><path d="M95 95h6v6h-6zM198 40h6v6h-6zM20 196h6v6h-6z"/></g>
+<g fill="${G}" fill-opacity=".12"><path d="M95 95h6v6h-6zM198 40h6v6h-6zM20 196h6v6h-6z"/></g>
 </svg>`;
 
 export const WALLPAPERS = [

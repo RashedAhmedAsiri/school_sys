@@ -44,7 +44,7 @@ function Curriculum() {
 
   return (
     <>
-      <PageHead idx="03" title="المنهج" sub="الكتب مقسمة إلى مقاطع صغيرة، فيقرأ المساعد ما يخص السؤال فقط">
+      <PageHead title="المنهج" sub="الكتب مقسمة إلى مقاطع صغيرة، فيقرأ المساعد ما يخص السؤال فقط">
         <button className="btn primary" onClick={() => setUpload((v) => !v)}><Icon name="plus" size={16} />إضافة مصدر</button>
       </PageHead>
 
@@ -61,37 +61,21 @@ function Curriculum() {
         </div>
       )}
 
-      <div className="tools-grid">
-        <button className="tool" onClick={() => setDialog("pptx")}>
-          <div className="ti"><Icon name="slides" size={21} /></div>
-          <h3>عرض درس اليوم</h3>
-          <p>ملف PowerPoint عربي بألوان المدرسة مع ملاحظات المعلم</p>
-        </button>
-        <button className="tool" onClick={() => setDialog("test")}>
-          <div className="ti"><Icon name="test" size={21} /></div>
-          <h3>إنشاء اختبار</h3>
-          <p>أسئلة متنوعة من الكتاب مع نموذج الإجابة والدرجات</p>
-        </button>
-        <Link href={`/c/${cls}/classroom`} className="tool">
-          <div className="ti"><Icon name="board" size={21} /></div>
-          <h3>وضع الحصة</h3>
-          <p>المساعد يشرح بالصوت ويجيب أسئلة الطلاب على السبورة</p>
-        </Link>
-        <Link href={`/c/${cls}/assistant`} className="tool">
-          <div className="ti"><Icon name="assistant" size={21} /></div>
-          <h3>اسأل الكتاب</h3>
-          <p>محادثة مع المساعد مبنية على مصادرك</p>
-        </Link>
+      <div className="actions-bar no-print">
+        <button className="btn primary" onClick={() => setDialog("pptx")}><Icon name="slides" size={17} />عرض PowerPoint لدرس اليوم</button>
+        <button className="btn" onClick={() => setDialog("test")}><Icon name="test" size={17} />اختبار بنموذج إجابة</button>
+        <Link href={`/c/${cls}/classroom`} className="btn"><Icon name="board" size={17} />وضع الحصة</Link>
+        <Link href={`/c/${cls}/assistant`} className="btn ghost"><Icon name="assistant" size={17} />اسأل الكتاب</Link>
       </div>
 
       <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", alignItems: "start" }}>
         <div className="panel card">
-          <div className="panel-head"><h3>المصادر</h3><span className="tag plain mono">{sources?.length ?? 0}</span></div>
+          <div className="panel-head"><h3>المصادر {sources && sources.length > 0 && <span className="muted mono">({sources.length})</span>}</h3></div>
           {!sources ? <span className="spinner" /> : sources.length === 0 ? (
             <div className="empty"><BooksArt />لا توجد مصادر بعد. ارفع كتابك ليبدأ المساعد بالاعتماد عليه.</div>
           ) : sources.map((s) => (
             <div key={s.id} className="src">
-              <div className="ficon">{s.kind.toUpperCase().slice(0, 4)}</div>
+              <div className="ficon"><Icon name="book" size={18} /></div>
               <div className="grow">
                 <div style={{ fontWeight: 700 }}>{s.title}</div>
                 <div className="muted" style={{ fontSize: 13 }}>
@@ -103,13 +87,13 @@ function Curriculum() {
           ))}
         </div>
         <div className="panel card">
-          <div className="panel-head"><h3>الاختبارات</h3><span className="tag plain mono">{tests.length}</span></div>
+          <div className="panel-head"><h3>الاختبارات {tests.length > 0 && <span className="muted mono">({tests.length})</span>}</h3></div>
           {tests.length === 0 ? <div className="empty"><TestArt />لم تنشئ اختبارات لهذا الفصل بعد.</div> : tests.map((t) => (
             <div key={t.id} className="src" style={{ cursor: "pointer" }} onClick={() => openTest(t.id)}>
-              <div className="ficon">TEST</div>
+              <div className="ficon"><Icon name="test" size={18} /></div>
               <div className="grow">
                 <div style={{ fontWeight: 700 }}>{t.title}</div>
-                <div className="muted" style={{ fontSize: 13 }}>{t.count} سؤال · {new Date(t.createdAt).toLocaleDateString("ar-SA-u-ca-gregory")}</div>
+                <div className="muted" style={{ fontSize: 13 }}>{t.count} سؤال · {new Date(t.createdAt).toLocaleDateString("ar-SA-u-ca-gregory-nu-latn")}</div>
               </div>
               <span className="tag plain">فتح</span>
             </div>

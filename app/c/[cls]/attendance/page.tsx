@@ -41,7 +41,7 @@ export default function Attendance() {
 
   return (
     <>
-      <PageHead idx="02" title="التحضير" sub={<>{date && fmtDate(date)} {day && date === day.today && <span className="tag green">اليوم</span>}</>}>
+      <PageHead title="التحضير" sub={<>{date && fmtDate(date)} {day && date === day.today && <span className="tag green">اليوم</span>}</>}>
         <div className="seg-tabs">
           <button className={tab === "today" ? "on" : ""} onClick={() => setTab("today")}>تحضير اليوم</button>
           <button className={tab === "history" ? "on" : ""} onClick={() => setTab("history")}>سجل الغياب</button>
@@ -68,7 +68,7 @@ export default function Attendance() {
             <div className="att-list">
               {day.students.map((s, i) => (
                 <div key={s.id} className={"att-item " + (s.status || "")}>
-                  <div className="row" style={{ gap: 8 }}><span className="muted mono" style={{ fontSize: 12 }}>{String(i + 1).padStart(2, "0")}</span><b>{s.name}</b></div>
+                  <div className="row" style={{ gap: 8 }}><span className="muted mono" style={{ fontSize: 12, minWidth: 16 }}>{i + 1}</span><b>{s.name}</b></div>
                   <div className="seg">
                     {(["present", "absent", "late", "excused"] as Status[]).map((st) => (
                       <button key={st} className={(s.status === st ? "on " : "") + st} onClick={() => mark(s.id, st)}>{LABEL[st]}</button>

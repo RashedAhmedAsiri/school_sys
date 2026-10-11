@@ -117,7 +117,7 @@ export async function extractFileText(file: File): Promise<{ text: string; kind:
 
 export function fmtDate(iso: string) {
   const d = new Date(iso + "T12:00:00");
-  return d.toLocaleDateString("ar-SA-u-ca-gregory", { weekday: "long", day: "numeric", month: "long" });
+  return d.toLocaleDateString("ar-SA-u-ca-gregory-nu-latn", { weekday: "long", day: "numeric", month: "long" });
 }
 
 export function addDays(iso: string, n: number) {

@@ -63,7 +63,7 @@ export default function Plan() {
 
   return (
     <>
-      <PageHead idx="01" title="الخطة" sub="ملاحظاتك للمساعد الذكي، وتوزيع الدروس على الأيام">
+      <PageHead title="الخطة" sub="ملاحظاتك للمساعد الذكي، وتوزيع الدروس على الأيام">
         <button className="btn primary" onClick={() => setAiOpen(true)}><Icon name="plan" size={16} />خطط لي بالذكاء الاصطناعي</button>
       </PageHead>
 
@@ -71,7 +71,7 @@ export default function Plan() {
         <div className="panel card">
           <div className="row" style={{ justifyContent: "space-between", marginBottom: 14 }}>
             <button className="btn sm" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))}><Icon name="chevronR" size={15} />السابق</button>
-            <h3>{month.toLocaleDateString("ar-SA-u-ca-gregory", { month: "long", year: "numeric" })}</h3>
+            <h3>{month.toLocaleDateString("ar-SA-u-ca-gregory-nu-latn", { month: "long", year: "numeric" })}</h3>
             <button className="btn sm" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))}>التالي<Icon name="chevronL" size={15} /></button>
           </div>
           <div className="cal">

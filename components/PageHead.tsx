@@ -1,13 +1,12 @@
 "use client";
 import { useShell } from "./ClassContext";
 
-/** Numbered, ruled section header: "02 — التحضير 1/1". */
-export default function PageHead({ idx, title, sub, children }: { idx: string; title: string; sub?: React.ReactNode; children?: React.ReactNode }) {
+/** Ruled section header: "التحضير 1/1" with the page's actions beside it. */
+export default function PageHead({ title, sub, children }: { title: string; sub?: React.ReactNode; children?: React.ReactNode }) {
   const { label } = useShell();
   return (
     <div className="page-head">
       <div>
-        <div className="idx">{idx}</div>
         <h1>{title} <span className="cls mono">{label}</span></h1>
         {sub && <p>{sub}</p>}
       </div>

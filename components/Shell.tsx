@@ -81,11 +81,10 @@ export default function Shell({
           </button>
           <nav className="nav">
             <Link href={`/c/${cls}`} className={section === "" ? "on" : ""}>
-              <span className="num">00</span><Icon name="home" size={18} />الرئيسية
+              <Icon name="home" size={18} />الرئيسية
             </Link>
-            {SECTIONS.map((s, i) => (
+            {SECTIONS.map((s) => (
               <Link key={s.href} href={`/c/${cls}/${s.href}`} className={section === s.href ? "on" : ""}>
-                <span className="num">0{i + 1}</span>
                 <Icon name={s.ic} size={18} />
                 {"short" in s ? <><span className="lbl-full">{s.label}</span><span className="lbl-short">{s.short}</span></> : s.label}
               </Link>
@@ -95,7 +94,7 @@ export default function Shell({
             <Link href={`/c/${cls}/classroom`} className="btn primary"><Icon name="board" size={17} />وضع الحصة</Link>
             <div className="row" style={{ gap: 6 }}>
               <button className="btn sm ghost grow" onClick={() => setWallPicker(true)}><Icon name="image" size={16} />الخلفية</button>
-              <button className="btn sm ghost grow" onClick={() => setPalette(true)}>بحث <span className="kbd">Ctrl K</span></button>
+              <button className="btn sm ghost grow" onClick={() => setPalette(true)} title="Ctrl K"><Icon name="search" size={16} />بحث</button>
             </div>
             <div className="me">
               <div className="avatar">{teacher.name.trim()[0]}</div>

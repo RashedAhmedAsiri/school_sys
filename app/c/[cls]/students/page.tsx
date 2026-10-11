@@ -119,7 +119,7 @@ export default function Students() {
 
   return (
     <>
-      <PageHead idx="04" title="الطلاب" sub="قائمة الطلاب مشتركة مع كل معلمي الفصل · أعمدة الدرجات خاصة بك">
+      <PageHead title="الطلاب" sub="قائمة الطلاب مشتركة مع كل معلمي الفصل · أعمدة الدرجات خاصة بك">
         <div className="ai-bar" style={{ padding: "0 10px", width: 190 }}>
           <Icon name="search" size={16} />
           <input placeholder="بحث عن طالب" value={q} onChange={(e) => setQ(e.target.value)} />
