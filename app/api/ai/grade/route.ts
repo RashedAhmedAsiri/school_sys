@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { requireTeacher } from "@/lib/auth";
 import { bad } from "@/lib/api";
-import { aiConfigured, generateJSON } from "@/lib/ai";
+import { aiConfigured, generateJSON, NOT_CONFIGURED } from "@/lib/ai";
 
 export const maxDuration = 180;
 
@@ -10,7 +10,7 @@ export const maxDuration = 180;
 export async function POST(req: Request) {
   const { teacher, error } = await requireTeacher();
   if (error) return error;
-  if (!aiConfigured()) return bad("لم يتم إعداد مفتاح Claude API بعد (ANTHROPIC_API_KEY).", 503);
+  if (!aiConfigured()) return bad(NOT_CONFIGURED, 503);
   const b = await req.json().catch(() => ({}));
   const col = await db.gradeColumn.findFirst({ where: { id: String(b.columnId), teacherId: teacher.id } });
   if (!col) return bad("اختر عمود الدرجات");

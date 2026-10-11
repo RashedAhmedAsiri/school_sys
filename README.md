@@ -1,6 +1,6 @@
 # ثانوية الموهوبين التقنية · المنصة الذكية للمعلم
 
-منصة عربية لمعلمي ثانوية الموهوبين التقنية: لكل معلم نظامه الخاص لتسعة فصول، مع مساعد ذكاء اصطناعي (Claude) يعرف كتابه وطلابه وخطته.
+منصة عربية لمعلمي ثانوية الموهوبين التقنية: لكل معلم نظامه الخاص لتسعة فصول، مع مساعد ذكاء اصطناعي (Gemini) يعرف كتابه وطلابه وخطته.
 
 ## الميزات
 
@@ -24,7 +24,7 @@
 ## التشغيل محلياً
 
 ```bash
-cp .env.example .env        # ثم ضع DATABASE_URL و ANTHROPIC_API_KEY
+cp .env.example .env        # ثم ضع DATABASE_URL و GEMINI_API_KEY
 npm install
 npx prisma db push          # ينشئ الجداول
 npm run dev                 # http://localhost:3000
@@ -33,14 +33,14 @@ npm run dev                 # http://localhost:3000
 أو بخادم واحد عبر Docker (يشمل قاعدة البيانات):
 
 ```bash
-ANTHROPIC_API_KEY=sk-ant-... docker compose up -d
+GEMINI_API_KEY=... docker compose up -d
 ```
 
 ## الاستضافة
 
 **الخيار المقترح: Vercel + Neon (مجاني للبداية)**
 
-1. افتح [رابط الاستيراد](https://vercel.com/new/import?s=https%3A%2F%2Fgithub.com%2FRashedAhmedAsiri%2Fschool_sys) وسجّل الدخول بحساب GitHub، وأضف متغير البيئة `ANTHROPIC_API_KEY` ثم اضغط Deploy.
+1. افتح [رابط الاستيراد](https://vercel.com/new/import?s=https%3A%2F%2Fgithub.com%2FRashedAhmedAsiri%2Fschool_sys) وسجّل الدخول بحساب GitHub، وأضف متغير البيئة `GEMINI_API_KEY` (من [Google AI Studio](https://aistudio.google.com/apikey)) ثم اضغط Deploy.
 2. من تبويب Storage في المشروع أنشئ قاعدة Neon Postgres واربطها بالمشروع، فيُضاف `DATABASE_URL` تلقائياً.
 3. من تبويب Deployments اضغط Redeploy، فتُنشأ الجداول تلقائياً.
 
@@ -50,13 +50,13 @@ ANTHROPIC_API_KEY=sk-ant-... docker compose up -d
 
 ## التقنية
 
-Next.js 15 (App Router) · PostgreSQL + Prisma · Claude API (`claude-opus-5-5` مع تفكير تكيفي وأدوات) · pptxgenjs · msedge-tts · unpdf / mammoth لاستخراج النص.
+Next.js 15 (App Router) · PostgreSQL + Prisma · Gemini API (`gemini-3.6-flash` مع أدوات، وينتقل إلى نموذج آخر تلقائياً إذا امتلأ الحد المجاني) · pptxgenjs · msedge-tts · unpdf / mammoth لاستخراج النص.
 
 | المسار | المحتوى |
 | --- | --- |
 | `prisma/schema.prisma` | جداول البيانات |
 | `lib/rag.ts` | تقسيم الكتب والبحث BM25 |
-| `lib/ai.ts` | إعداد Claude، تعليمات النظام، أدوات المساعد |
+| `lib/ai.ts` | إعداد Gemini، تعليمات النظام، أدوات المساعد |
 | `lib/pptx.ts` | تصميم ملف العرض |
 | `app/api/*` | واجهات البيانات والذكاء الاصطناعي |
 | `app/c/[cls]/*` | صفحات الأقسام لكل فصل |

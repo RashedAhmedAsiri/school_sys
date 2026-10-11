@@ -1,35 +1,59 @@
-import Anthropic from "@anthropic-ai/sdk";
-import type {
-  BetaMessageParam,
-  BetaToolUnion,
-  BetaContentBlockParam,
-} from "@anthropic-ai/sdk/resources/beta/messages/messages";
+import { GoogleGenAI, ThinkingLevel, type Content, type FunctionDeclaration, type GenerateContentConfig, type Part } from "@google/genai";
 import { db } from "./db";
 import { classLabel, todayISO } from "./classes";
 import { formatContext, retrieve } from "./rag";
 import { normalizeArabic } from "./rag";
 
-export const MODEL = process.env.AI_MODEL || "claude-opus-5-5";
+// Models tried in order. The free tier allows only a few requests a minute per model,
+// so when one is busy the next one answers. AI_MODEL can set the list (comma separated).
+export const MODELS = (process.env.AI_MODEL || "gemini-3.6-flash,gemini-2.5-flash,gemini-2.5-flash-lite,gemini-3.5-flash-lite")
+  .split(",")
+  .map((m) => m.trim())
+  .filter(Boolean);
+
+const apiKey = () => process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 
 export function aiConfigured() {
-  return Boolean(process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN);
+  return Boolean(apiKey());
 }
 
-let _client: Anthropic | null = null;
-export function client() {
-  if (!_client) _client = new Anthropic();
+export const NOT_CONFIGURED = "لم يتم إعداد مفتاح Gemini API بعد. أضف GEMINI_API_KEY في إعدادات الخادم ثم أعد المحاولة.";
+const BUSY = "وصل Gemini إلى حد الطلبات المجاني لهذه الدقيقة. انتظر دقيقة ثم أعد المحاولة، أو فعّل الفوترة في Google AI Studio لرفع الحد.";
+
+let _client: GoogleGenAI | null = null;
+export function gemini() {
+  // Server errors get one more try; a busy model (429) moves on to the next model instead.
+  if (!_client) _client = new GoogleGenAI({ apiKey: apiKey(), httpOptions: { retryOptions: { attempts: 2, httpStatusCodes: [500, 502, 504] } } });
   return _client;
 }
 
-/** Common request options: adaptive thinking (always on for this model) and server-side refusal fallback. */
-export function baseParams(effort: "low" | "medium" | "high") {
-  return {
-    model: MODEL,
-    output_config: { effort },
-    betas: ["server-side-fallback-2026-07-01"],
-    fallbacks: "default" as const,
-  };
+export type Effort = "low" | "medium" | "high";
+const LEVELS = { low: ThinkingLevel.LOW, medium: ThinkingLevel.MEDIUM, high: ThinkingLevel.HIGH };
+
+/** Shared request config. Gemini 3 models take a thinking level; older models choose their own. */
+export function baseConfig(model: string, effort: Effort): GenerateContentConfig {
+  return /^gemini-3/.test(model) ? { thinkingConfig: { thinkingLevel: LEVELS[effort] } } : {};
 }
+
+/** Runs `call` on the first model that isn't busy, starting with `prefer` when given. */
+export async function onAnyModel<T>(call: (model: string) => Promise<T>, prefer?: string): Promise<{ model: string; value: T }> {
+  const order = prefer ? [prefer, ...MODELS.filter((m) => m !== prefer)] : MODELS;
+  for (const model of order) {
+    try {
+      return { model, value: await call(model) };
+    } catch (e) {
+      const status = (e as { status?: number }).status;
+      if (status !== 429 && status !== 503) throw e;
+      console.warn(`${model} busy (${status}), trying the next model`);
+    }
+  }
+  throw new Error(BUSY);
+}
+
+/** Finish reasons that mean the answer was withheld rather than finished. */
+export const BLOCKED = new Set(["SAFETY", "PROHIBITED_CONTENT", "BLOCKLIST", "SPII", "RECITATION", "IMAGE_SAFETY"]);
+
+export type { Content, Part };
 
 export async function teacherContext(teacherId: string, classId: string) {
   const [teacher, profile, today, studentCount, sources] = await Promise.all([
@@ -71,31 +95,30 @@ export function systemPrompt(ctx: Awaited<ReturnType<typeof teacherContext>>, cl
 
 // ---------- Tools the assistant can use on the teacher's data ----------
 
-export const TEACHER_TOOLS: BetaToolUnion[] = [
+export const TEACHER_TOOLS: FunctionDeclaration[] = [
   {
     name: "search_book",
     description: "ابحث في كتب ومصادر المنهج المرفوعة لهذا الفصل وأعد أفضل المقاطع.",
-    input_schema: { type: "object", properties: { query: { type: "string" } }, required: ["query"] },
+    parametersJsonSchema: { type: "object", properties: { query: { type: "string" } }, required: ["query"] },
   },
   {
     name: "list_students",
     description: "اعرض طلاب الفصل الحالي مع أعمدة الدرجات ودرجاتهم ومجموع غيابهم.",
-    input_schema: { type: "object", properties: {} },
   },
   {
     name: "add_students",
     description: "أضف طالباً أو أكثر للفصل الحالي (يظهر لكل المعلمين).",
-    input_schema: { type: "object", properties: { names: { type: "array", items: { type: "string" } } }, required: ["names"] },
+    parametersJsonSchema: { type: "object", properties: { names: { type: "array", items: { type: "string" } } }, required: ["names"] },
   },
   {
     name: "delete_student",
     description: "احذف طالباً من الفصل الحالي (يُحذف لكل المعلمين). استخدمها فقط عندما يطلب المعلم الحذف صراحة.",
-    input_schema: { type: "object", properties: { name: { type: "string" } }, required: ["name"] },
+    parametersJsonSchema: { type: "object", properties: { name: { type: "string" } }, required: ["name"] },
   },
   {
     name: "add_grade_column",
     description: "أضف عمود درجات جديد لهذا الفصل، مثل: المشاركة من 20.",
-    input_schema: {
+    parametersJsonSchema: {
       type: "object",
       properties: { name: { type: "string" }, max_score: { type: "number" } },
       required: ["name", "max_score"],
@@ -104,7 +127,7 @@ export const TEACHER_TOOLS: BetaToolUnion[] = [
   {
     name: "set_grades",
     description: "ضع درجات في عمود. استخدم all_score لإعطاء نفس الدرجة لكل الطلاب، أو grades لطلاب محددين.",
-    input_schema: {
+    parametersJsonSchema: {
       type: "object",
       properties: {
         column: { type: "string", description: "اسم العمود" },
@@ -120,7 +143,7 @@ export const TEACHER_TOOLS: BetaToolUnion[] = [
   {
     name: "mark_attendance",
     description: "سجّل الحضور لتاريخ (افتراضياً اليوم). الطلاب غير المذكورين في absent/late يُسجلون حاضرين.",
-    input_schema: {
+    parametersJsonSchema: {
       type: "object",
       properties: {
         date: { type: "string", description: "YYYY-MM-DD" },
@@ -132,7 +155,7 @@ export const TEACHER_TOOLS: BetaToolUnion[] = [
   {
     name: "set_plan",
     description: "حدد اسم الدرس لتاريخ معين في خطة هذا الفصل.",
-    input_schema: {
+    parametersJsonSchema: {
       type: "object",
       properties: { date: { type: "string", description: "YYYY-MM-DD" }, title: { type: "string" }, notes: { type: "string" } },
       required: ["date", "title"],
@@ -141,11 +164,11 @@ export const TEACHER_TOOLS: BetaToolUnion[] = [
   {
     name: "save_note",
     description: "احفظ ملاحظة دائمة في ملاحظات المعلم للمساعد (قسم الخطة).",
-    input_schema: { type: "object", properties: { note: { type: "string" } }, required: ["note"] },
+    parametersJsonSchema: { type: "object", properties: { note: { type: "string" } }, required: ["note"] },
   },
 ];
 
-export const CLASSROOM_TOOLS = TEACHER_TOOLS.filter((t) => "name" in t && t.name === "search_book");
+export const CLASSROOM_TOOLS = TEACHER_TOOLS.filter((t) => t.name === "search_book");
 
 function findStudent<T extends { name: string }>(list: T[], name: string): T | undefined {
   const n = normalizeArabic(name).replace(/\s+/g, " ").trim();
@@ -261,25 +284,27 @@ export async function runTool(
   return { result: "أداة غير معروفة", changed: false };
 }
 
-export type { BetaMessageParam, BetaContentBlockParam };
-
 /** One structured-output call: returns parsed JSON that matches `schema`. */
 export async function generateJSON<T>(opts: {
   system: string;
   prompt: string;
   schema: Record<string, unknown>;
-  effort?: "low" | "medium" | "high";
+  effort?: Effort;
 }): Promise<T> {
-  const s = client().beta.messages.stream({
-    ...baseParams(opts.effort || "medium"),
-    max_tokens: 32000,
-    system: opts.system,
-    output_config: { effort: opts.effort || "medium", format: { type: "json_schema", schema: opts.schema } },
-    messages: [{ role: "user", content: opts.prompt }],
-  });
-  const msg = await s.finalMessage();
-  if (msg.stop_reason === "refusal") throw new Error("رفض النموذج هذا الطلب");
-  if (msg.stop_reason === "max_tokens") throw new Error("الطلب أطول من المسموح، قلل عدد العناصر");
-  const text = msg.content.map((b) => (b.type === "text" ? b.text : "")).join("");
+  const { value: r } = await onAnyModel((model) => gemini().models.generateContent({
+    model,
+    contents: opts.prompt,
+    config: {
+      ...baseConfig(model, opts.effort || "medium"),
+      systemInstruction: opts.system,
+      responseMimeType: "application/json",
+      responseJsonSchema: opts.schema,
+    },
+  }));
+  const finish = r.candidates?.[0]?.finishReason;
+  if (r.promptFeedback?.blockReason || (finish && BLOCKED.has(finish))) throw new Error("رفض النموذج هذا الطلب");
+  if (finish === "MAX_TOKENS") throw new Error("الطلب أطول من المسموح، قلل عدد العناصر");
+  const text = r.text;
+  if (!text) throw new Error("لم يرجع النموذج إجابة، حاول مرة أخرى");
   return JSON.parse(text) as T;
 }

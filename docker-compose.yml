@@ -18,6 +18,6 @@ services:
       DATABASE_URL: postgresql://school:school@db:5432/school
       SESSION_SECRET: ${SESSION_SECRET:-}
       SITE_PASSWORD: ${SITE_PASSWORD:-123323}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
 volumes:
   pgdata:

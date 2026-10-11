@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { requireTeacher } from "@/lib/auth";
 import { bad, classParam } from "@/lib/api";
-import { aiConfigured, generateJSON, teacherContext } from "@/lib/ai";
+import { aiConfigured, generateJSON, NOT_CONFIGURED, teacherContext } from "@/lib/ai";
 import { formatContext, retrieve } from "@/lib/rag";
 import { classLabel } from "@/lib/classes";
 
@@ -41,7 +41,7 @@ const schema = {
 export async function POST(req: Request) {
   const { teacher, error } = await requireTeacher();
   if (error) return error;
-  if (!aiConfigured()) return bad("لم يتم إعداد مفتاح Claude API بعد (ANTHROPIC_API_KEY).", 503);
+  if (!aiConfigured()) return bad(NOT_CONFIGURED, 503);
   const b = await req.json().catch(() => ({}));
   const classId = classParam(b.cls);
   if (!classId) return bad("فصل غير صحيح");

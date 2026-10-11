@@ -11,7 +11,7 @@ services:
         generateValue: true
       - key: SITE_PASSWORD
         value: "123323"
-      - key: ANTHROPIC_API_KEY
+      - key: GEMINI_API_KEY
         sync: false
 databases:
   - name: mawhoob-db
