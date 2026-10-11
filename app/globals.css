@@ -119,7 +119,8 @@ label.field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; 
 .auth-side h1 { font-size: 26px; line-height: 1.5; }
 .auth-side p { margin: 0; color: #b9cbbf; line-height: 1.8; font-size: 14px; }
 .auth-form { padding: 34px; }
-.mark { width: 42px; height: 42px; display: grid; place-items: center; background: var(--white); color: var(--green); font-weight: 800; font-size: 19px; font-family: var(--font-display); }
+.mark { width: 52px; height: 52px; display: grid; place-items: center; background: var(--white); color: var(--green); flex-shrink: 0; }
+.mark svg { width: 76%; height: auto; display: block; }
 .tabs { display: flex; border-bottom: 1px solid var(--line); margin-bottom: 20px; gap: 18px; }
 .tabs button { border: 0; background: transparent; padding: 10px 2px; cursor: pointer; font-weight: 600; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -1px; }
 .tabs button.on { color: var(--ink); border-bottom-color: var(--green); }
@@ -138,7 +139,7 @@ label.field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; 
 .m-actions { display: none; align-items: center; gap: 6px; }
 .lbl-short { display: none; }
 .brand { display: flex; align-items: center; gap: 10px; padding: 2px 4px 14px; }
-.brand .mark { width: 34px; height: 34px; font-size: 16px; background: var(--green); color: var(--white); }
+.brand .mark { width: 36px; height: 36px; background: var(--green); color: var(--white); }
 .brand b { font-family: var(--font-display); font-size: 13px; line-height: 1.4; }
 .brand small { display: block; color: var(--green-ink); font-size: 11px; font-weight: 600; }
 

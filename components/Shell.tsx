@@ -8,6 +8,7 @@ import Icon from "./Icon";
 import WallpaperPicker from "./WallpaperPicker";
 import { api } from "@/lib/client";
 import { wallpaperStyle } from "@/lib/wallpapers";
+import TuwaiqMark from "@/components/TuwaiqMark";
 
 export const SECTIONS = [
   { href: "plan", label: "الخطة", ic: "plan" },
@@ -62,7 +63,7 @@ export default function Shell({
         <aside className="side">
           <div className="side-top">
             <Link href={`/c/${cls}`} className="brand">
-              <div className="mark">م</div>
+              <div className="mark"><TuwaiqMark /></div>
               <div><b>ثانوية الموهوبين التقنية</b><small>المنصة الذكية</small></div>
             </Link>
             <div className="m-actions">

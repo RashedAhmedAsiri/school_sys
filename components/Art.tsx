@@ -1,4 +1,5 @@
 // Custom flat illustrations for the site. Solid fills from the school palette only: no gradients, no emoji.
+import { TUWAIQ_PATH, TUWAIQ_VIEWBOX } from "@/lib/brand";
 
 const C = {
   ink: "#0c1f15",
@@ -21,8 +22,8 @@ export function SchoolArt() {
       <rect x="161" y="6" width="20" height="12" fill={C.greenBright} />
       {/* roof */}
       <path d="M58 82 160 34l102 48z" fill={C.greenPale} />
-      <rect x="149" y="53" width="22" height="22" fill={C.green} />
-      <text x="160" y="69" textAnchor="middle" fontSize="13" fontWeight="700" fill={C.white} fontFamily="sans-serif">م</text>
+      <rect x="147" y="52" width="26" height="24" fill={C.green} />
+      <svg x="150" y="57.5" width="20" height="14.2" viewBox={TUWAIQ_VIEWBOX}><path fill={C.white} fillRule="evenodd" d={TUWAIQ_PATH} /></svg>
       {/* body */}
       <rect x="70" y="82" width="180" height="94" fill={C.white} />
       {[88, 112, 190, 214].map((x) => (

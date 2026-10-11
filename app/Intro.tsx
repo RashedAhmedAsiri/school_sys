@@ -4,6 +4,7 @@ import Hello from "@/components/Hello";
 import { SchoolArt } from "@/components/Art";
 import { api } from "@/lib/client";
 import { DEFAULT_WALLPAPER, wallpaperStyle } from "@/lib/wallpapers";
+import TuwaiqMark from "@/components/TuwaiqMark";
 
 export default function Intro() {
   const [stage, setStage] = useState<"hello" | "out" | "auth">("hello");
@@ -52,7 +53,7 @@ export default function Intro() {
     <main className="intro" style={wallpaperStyle(DEFAULT_WALLPAPER)}>
       <div className="auth rise">
         <aside className="auth-side">
-          <div className="mark">م</div>
+          <div className="mark"><TuwaiqMark /></div>
           <div>
             <h1>ثانوية الموهوبين التقنية</h1>
             <p>منصة المعلم: الخطة، التحضير، المنهج، الطلاب، ومساعد ذكي يعرف كتابك وفصولك التسعة.</p>

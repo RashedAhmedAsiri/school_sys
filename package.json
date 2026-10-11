@@ -8,7 +8,7 @@
     "start": "next start",
     "db:push": "prisma db push",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && (test -z \"$DATABASE_URL\" || prisma db push --skip-generate) && next build"
+    "vercel-build": "prisma generate && (test -z \"$DATABASE_URL\" || DATABASE_URL=\"${DATABASE_URL_UNPOOLED:-$DATABASE_URL}\" prisma db push --skip-generate) && next build"
   },
   "author": "",
   "license": "ISC",
