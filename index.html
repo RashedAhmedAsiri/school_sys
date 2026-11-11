@@ -1,0 +1,1048 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>إحياء القراءة</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Reem+Kufi:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
+<style>
+:root{
+--ink:#3E0703; --wine:#660B05; --red:#8C1007; --paper:#FFF0C4;
+--night:#1E0301;            --paper-2:#F5E0A6; --paper-3:#E6C985;
+--muted:#8A4A38; --on-dark:#E8CFA0;
+--kufi:"Reem Kufi","Segoe UI",Tahoma,sans-serif;
+--ruqaa:"Aref Ruqaa","Traditional Arabic",serif;
+--body:"IBM Plex Sans Arabic","Segoe UI",Tahoma,system-ui,sans-serif;
+color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--night)}
+body{margin:0;min-height:100%;font-family:var(--body);font-size:16px;line-height:1.7;color:var(--paper);background:var(--night);overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.07;mix-blend-mode:overlay;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E")}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--paper);outline-offset:3px;border-radius:4px}
+.paper :focus-visible{outline-color:var(--red)}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:700}
+p{margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:0 72px}
+.view{animation:viewin .45s cubic-bezier(.2,.7,.2,1) both}
+@keyframes viewin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px;margin-bottom:8px;background:linear-gradient(var(--night) 60%,transparent)}
+.brand{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;cursor:pointer;color:var(--paper)}
+.brand .mk{width:34px;height:34px;flex:0 0 auto}
+.brand b{font-family:var(--kufi);font-size:22px;font-weight:700;line-height:1}
+.brand small{display:block;font-size:11px;color:var(--on-dark);font-family:var(--body);font-weight:500;margin-top:3px}
+.me{display:flex;align-items:center;gap:10px;min-width:0}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--red);display:grid;place-items:center;font-family:var(--kufi);font-weight:700;font-size:16px;flex:0 0 auto;box-shadow:0 0 0 2px var(--night),0 0 0 3.5px var(--red)}
+.me .nm{font-size:14px;line-height:1.3;min-width:0}
+.me .nm b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:16ch}
+.me .nm span{font-size:12px;color:var(--on-dark)}
+.out{background:none;border:1px solid rgba(255,240,196,.3);color:var(--paper);border-radius:99px;padding:5px 14px;font-size:13px;cursor:pointer}
+.out:hover{border-color:var(--paper)}
+@media (max-width:520px){.me .nm{display:none}}
+
+.paper{background:var(--paper);color:var(--ink);border-radius:6px;color-scheme:light;box-shadow:0 30px 60px -30px rgba(0,0,0,.8)}
+.kicker{font-family:var(--body);font-size:13px;font-weight:600;letter-spacing:.01em;color:var(--on-dark)}
+.paper .kicker{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:99px;padding:13px 26px;font-weight:700;font-size:16px;cursor:pointer;background:var(--red);color:var(--paper);transition:transform .15s, background .15s, box-shadow .15s;box-shadow:0 10px 24px -10px rgba(140,16,7,.9)}
+.btn:hover{background:#A3150B;transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.btn.cream{background:var(--paper);color:var(--ink);box-shadow:0 10px 24px -12px rgba(0,0,0,.8)}
+.btn.cream:hover{background:#fff7dc}
+.btn.ghost{background:transparent;box-shadow:inset 0 0 0 1.5px currentColor;color:inherit}
+.btn.ghost:hover{background:rgba(255,240,196,.08)}
+.paper .btn.ghost:hover{background:var(--paper-2)}
+.btn.sm{padding:8px 16px;font-size:14px}
+.btn.wide{width:100%}
+.btn svg{width:20px;height:20px}
+.inp{width:100%;background:#FFF8E2;border:1.5px solid var(--paper-3);border-radius:10px;padding:11px 14px;font-size:16px;color:var(--ink);transition:border-color .15s, box-shadow .15s}
+.inp:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 4px rgba(140,16,7,.12)}
+textarea.inp{resize:vertical;min-height:100px;line-height:1.7}
+label.f{display:grid;gap:6px;font-size:14px;font-weight:600;color:var(--muted)}
+.note{font-size:14px;padding:12px 16px;border-radius:10px;background:rgba(255,240,196,.06);border:1px solid rgba(255,240,196,.16);color:var(--on-dark)}
+.paper .note{background:var(--paper-2);border-color:var(--paper-3);color:var(--muted)}
+.toast{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--paper);color:var(--ink);padding:11px 20px;border-radius:99px;font-weight:600;box-shadow:0 14px 40px rgba(0,0,0,.6);z-index:200;max-width:calc(100% - 32px);text-align:center}
+
+.cov{position:relative;width:100%;height:100%;container-type:size;overflow:hidden;border-radius:2px 5px 5px 2px;background:var(--cv-bg);color:var(--cv-fg)}
+.cov .cin{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:7cqw 9cqw 6cqw 8cqw}
+.cov::before{content:"";position:absolute;inset:0;pointer-events:none;
+background:linear-gradient(100deg,rgba(255,255,255,.10) 0%,transparent 22%,transparent 70%,rgba(0,0,0,.18) 100%),
+url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
+.cov::after{content:"";position:absolute;top:0;bottom:0;right:0;width:6cqw;pointer-events:none;
+background:linear-gradient(to left,rgba(0,0,0,.35),rgba(255,255,255,.12) 45%,rgba(0,0,0,.12) 70%,transparent)}
+.cov .ser{font-family:var(--body);font-weight:600;font-size:4.4cqw;letter-spacing:.08em;opacity:.85;display:flex;align-items:center;gap:3cqw;width:100%}
+.cov .ser::before,.cov .ser::after{content:"";flex:1;height:1px;background:currentColor;opacity:.5}
+.cov .win{width:68cqw;aspect-ratio:200/230;margin-top:4cqw;filter:drop-shadow(0 1.5cqw 2cqw rgba(0,0,0,.35))}
+.cov .win svg{width:100%;height:100%;display:block}
+.cov .tt{font-family:var(--ruqaa);font-weight:700;font-size:11cqw;line-height:1.22;margin-top:3cqw;text-wrap:balance;text-shadow:0 .4cqw 0 rgba(0,0,0,.18)}
+.cov .au{font-size:4.8cqw;opacity:.85;margin-top:1.5cqw;font-weight:500}
+.cov .ft{margin-top:auto;display:flex;justify-content:space-between;align-items:center;width:100%;font-family:var(--body);font-weight:600;font-size:4.2cqw}
+.cov .dw{background:var(--paper);color:var(--ink);padding:.6cqw 2.6cqw;border-radius:1cqw;font-weight:700;font-family:var(--body)}
+.cov.img{padding:0}
+.cov.img img{width:100%;height:100%;object-fit:cover;display:block}
+.t-red  {--cv-bg:#8C1007;--cv-fg:#FFF0C4;--sky:#660B05;--fg:#FFF0C4;--acc:#3E0703;--mid:#B8321F}
+.t-wine {--cv-bg:#660B05;--cv-fg:#FFF0C4;--sky:#3E0703;--fg:#FFF0C4;--acc:#8C1007;--mid:#8C1007}
+.t-ink  {--cv-bg:#3E0703;--cv-fg:#FFF0C4;--sky:#660B05;--fg:#FFF0C4;--acc:#8C1007;--mid:#2A0402}
+.t-paper{--cv-bg:#FFF0C4;--cv-fg:#3E0703;--sky:#8C1007;--fg:#FFF0C4;--acc:#3E0703;--mid:#660B05}
+
+.b3{--W:240px;--H:calc(var(--W)*1.5);--D:calc(var(--W)*.13);position:relative;width:var(--W);height:var(--H);transform-style:preserve-3d}
+.b3 .fc{position:absolute;inset:0;backface-visibility:hidden}
+.b3 .leaf{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:100% 50%;transform:translateZ(calc(var(--D)/2));transition:transform .9s cubic-bezier(.3,.7,.2,1)}
+.b3 .leaf .inside{transform:rotateY(180deg);background:#F2DFAA;border-radius:5px 2px 2px 5px;box-shadow:inset -12px 0 18px -10px rgba(0,0,0,.35)}
+.b3.open .leaf{transform:translateZ(calc(var(--D)/2)) rotateY(-155deg)}
+.b3 .pg1{position:absolute;inset:3px 4px 3px 0;transform:translateZ(calc(var(--D)/2 - 1px));background:var(--paper);color:var(--ink);border-radius:2px 4px 4px 2px;
+display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12%;gap:6%;container-type:inline-size;
+box-shadow:inset 14px 0 20px -14px rgba(0,0,0,.4)}
+.pg1 .orn{width:30cqw;opacity:.8}
+.pg1 h4{margin:0;font-family:var(--ruqaa);font-size:11cqw;line-height:1.25}
+.pg1 p{font-size:5.4cqw;line-height:1.75;color:var(--muted)}
+.pg1 .go{font-family:var(--kufi);font-size:5cqw;color:var(--red);font-weight:600}
+.b3 .back{transform:rotateY(180deg) translateZ(calc(var(--D)/2));background:var(--cv-bg);border-radius:5px 2px 2px 5px}
+.b3 .spine{position:absolute;top:0;left:calc(50% - var(--D)/2);width:var(--D);height:100%;transform:rotateY(90deg) translateZ(calc(var(--W)/2));
+background:var(--cv-bg);color:var(--cv-fg);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0;
+background-image:linear-gradient(to right,rgba(0,0,0,.35),rgba(255,255,255,.08) 40%,rgba(0,0,0,.25))}
+.spine i{display:block;width:70%;height:2px;background:currentColor;opacity:.6;box-shadow:0 5px 0 currentColor}
+.spine span{writing-mode:vertical-rl;font-family:var(--ruqaa);font-size:calc(var(--D)*.5);white-space:nowrap;overflow:hidden;max-height:70%}
+.b3 .pages{position:absolute;top:3px;bottom:3px;left:calc(50% - var(--D)/2 + 2px);width:calc(var(--D) - 4px);transform:rotateY(-90deg) translateZ(calc(var(--W)/2 - 4px));
+background:repeating-linear-gradient(to right,#F3E2B4 0 1px,#E2C98E 1px 2px);box-shadow:inset 0 0 8px rgba(0,0,0,.25)}
+.b3 .top{position:absolute;left:4px;right:0;top:calc(50% - var(--D)/2);height:var(--D);transform:rotateX(90deg) translateZ(calc(var(--H)/2 - 3px));
+background:repeating-linear-gradient(to bottom,#F3E2B4 0 1px,#E2C98E 1px 2px)}
+
+.stage{position:relative;height:calc(var(--BW)*1.5 + 70px);margin:6px calc(-1 * max(18px,env(safe-area-inset-left,0px))) 0;perspective:1300px;perspective-origin:50% 40%;
+touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;overflow:hidden;--BW:clamp(132px,34vw,210px)}
+.stage.drag{cursor:grabbing}
+.stage::before{content:"";position:absolute;left:50%;top:-30%;width:150%;height:130%;transform:translateX(-50%);pointer-events:none;
+background:radial-gradient(closest-side,rgba(255,226,160,.20),rgba(140,16,7,.10) 55%,transparent 75%)}
+.stage .floor{position:absolute;left:0;right:0;bottom:0;height:56px;background:linear-gradient(to bottom,rgba(102,11,5,.0),rgba(102,11,5,.35));border-top:1px solid rgba(255,240,196,.07)}
+.stage .floor::before{content:"";position:absolute;left:50%;top:-14px;width:calc(var(--BW)*1.4);height:40px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(0,0,0,.65),transparent);filter:blur(4px)}
+.slot{position:absolute;left:50%;top:22px;width:var(--BW);margin-left:calc(var(--BW) / -2);transform-style:preserve-3d;will-change:transform}
+.slot .b3{--W:var(--BW)}
+.slot .float{transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.slot.center .float{animation:bob 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.slot .shade{position:absolute;inset:0;background:#000;pointer-events:none;border-radius:4px;transform:translateZ(calc(var(--BW)*.065 + 1px))}
+.flowbar{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:-34px;position:relative;z-index:3}
+.arrow{width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,240,196,.25);background:rgba(30,3,1,.6);color:var(--paper);cursor:pointer;display:grid;place-items:center;backdrop-filter:blur(6px);transition:background .15s,border-color .15s}
+.arrow:hover{background:var(--wine);border-color:var(--paper)}
+.arrow[disabled]{opacity:.3;cursor:default}
+.arrow svg{width:22px;height:22px}
+.counter{font-family:var(--body);font-size:15px;color:var(--on-dark);min-width:72px;text-align:center}
+.counter b{color:var(--paper);font-size:22px}
+.arrow.side{position:absolute;top:calc(22px + var(--BW)*.75 - 24px);z-index:200}
+.arrow.side.next{left:max(14px,env(safe-area-inset-left,0px))}
+.arrow.side.prev{right:max(14px,env(safe-area-inset-right,0px))}
+@media (max-width:640px){.arrow.side{width:40px;height:40px;top:auto;bottom:8px}}
+.dots{display:flex;justify-content:center;gap:8px;margin-top:12px}
+.dots button{width:8px;height:8px;border-radius:99px;border:0;padding:0;background:rgba(255,240,196,.3);cursor:pointer;transition:width .25s, background .25s}
+.dots button.on{width:26px;background:var(--paper)}
+#bookinfo{display:grid;gap:18px;max-width:600px;margin:22px auto 0}
+.plate{position:relative;padding:26px 28px 24px;border-radius:18px;text-align:center;animation:plate .35s cubic-bezier(.2,.7,.2,1) both}
+.plate::before{content:"";position:absolute;top:-11px;left:50%;width:22px;height:22px;background:var(--paper);transform:translateX(-50%) rotate(45deg);border-radius:4px 0 0 0}
+@keyframes plate{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.plate h2{font-family:var(--ruqaa);font-size:clamp(28px,6vw,40px);line-height:1.2}
+.plate .by{color:var(--muted);font-size:15px;margin-top:2px}
+.plate .chips{justify-content:center;margin-top:12px}
+.plate .sum{font-size:17px;line-height:1.95;margin:14px auto 18px;max-width:52ch}
+.plate .mybest{margin-bottom:12px;text-align:right}
+.plate .btn.go{font-size:18px;padding:15px 26px}
+.plate .terms2{font-size:13px;color:var(--muted);margin-top:10px}
+.lbcard{padding:18px 20px;border-radius:18px;display:grid;gap:10px}
+@media (max-width:560px){.plate{padding:22px 18px 20px}.plate .sum{font-size:16px}}
+.swipe-hint{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:var(--on-dark);margin-top:12px}
+.swipe-hint svg{width:34px;height:16px}
+.swipe-hint .hand{animation:swipe 2.4s ease-in-out infinite}
+@keyframes swipe{0%,100%{transform:translateX(10px)}50%{transform:translateX(-10px)}}
+
+.gate{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;min-height:calc(100vh - 100px);padding-block:10px 30px}
+@media (max-width:900px){.gate{grid-template-columns:1fr;gap:10px;min-height:0}}
+.gate h1{font-family:var(--kufi);font-size:clamp(46px,7.4vw,92px);line-height:1.08;letter-spacing:-.01em}
+.gate h1 em{font-style:normal;font-family:var(--ruqaa);color:#FFB49E;font-weight:700}
+.gate .lead{font-size:clamp(16px,1.8vw,19px);color:var(--on-dark);max-width:46ch;margin-top:18px}
+.stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:26px}
+.stats div{font-size:13px;color:var(--on-dark)}
+.stats b{display:block;font-family:var(--body);font-size:34px;line-height:1.1;color:var(--paper)}
+.fan{position:relative;height:clamp(300px,46vw,520px);perspective:1200px}
+.fan .slot{top:50%;margin-top:calc(var(--BW)*-0.75);--BW:clamp(140px,19vw,230px)}
+@media (max-width:900px){.fan{height:330px;order:-1}.fan .slot{--BW:150px}}
+.roles{display:grid;gap:14px;margin-top:28px;max-width:520px}
+.role-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:rgba(255,240,196,.06);border:1px solid rgba(255,240,196,.14);border-radius:16px;padding:6px}
+.role-tabs button{border:0;border-radius:11px;padding:12px;background:transparent;cursor:pointer;color:var(--on-dark);font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px}
+.role-tabs button svg{width:20px;height:20px}
+.role-tabs button.on{background:var(--paper);color:var(--ink);box-shadow:0 8px 20px -10px rgba(0,0,0,.8)}
+.gform{padding:22px;display:grid;gap:14px;border-radius:16px}
+.gform .row{display:grid;grid-template-columns:1.3fr 1fr;gap:12px}
+@media (max-width:480px){.gform .row{grid-template-columns:1fr}}
+.gform .err{color:var(--red);font-weight:600;font-size:14px}
+
+.ph{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;padding-block:18px 26px}
+.ph h1{font-family:var(--kufi);font-size:clamp(34px,5.5vw,58px);line-height:1.1}
+.ph p{color:var(--on-dark);margin-top:6px;max-width:60ch}
+.sess{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:24px}
+.scard{position:relative;display:grid;grid-template-rows:200px auto;border:0;padding:0;text-align:right;cursor:pointer;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,var(--wine),var(--ink) 70%);color:var(--paper);
+box-shadow:0 30px 50px -30px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,240,196,.1);transition:transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s}
+.scard:hover{transform:translateY(-4px);box-shadow:0 40px 60px -30px rgba(0,0,0,.95), inset 0 0 0 1px rgba(255,240,196,.25)}
+.scard .art{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 120%,rgba(255,220,150,.22),transparent 60%)}
+.scard .mini{position:absolute;bottom:-22px;width:96px;height:144px;left:50%;transition:transform .45s cubic-bezier(.2,.7,.2,1);box-shadow:0 14px 24px -8px rgba(0,0,0,.8);border-radius:2px 5px 5px 2px}
+.scard .mini:nth-child(1){transform:translateX(-50%) rotate(0deg);z-index:3}
+.scard .mini:nth-child(2){transform:translateX(-118%) rotate(8deg) translateY(10px);z-index:2}
+.scard .mini:nth-child(3){transform:translateX(18%) rotate(-8deg) translateY(10px);z-index:1}
+.scard:hover .mini:nth-child(1){transform:translateX(-50%) translateY(-10px)}
+.scard:hover .mini:nth-child(2){transform:translateX(-135%) rotate(12deg) translateY(4px)}
+.scard:hover .mini:nth-child(3){transform:translateX(35%) rotate(-12deg) translateY(4px)}
+.scard .tag{position:absolute;top:14px;right:14px;font-size:12px;font-weight:700;padding:3px 12px;border-radius:99px;background:rgba(30,3,1,.6);border:1px solid rgba(255,240,196,.3);backdrop-filter:blur(4px)}
+.scard .tag.today{background:var(--paper);color:var(--ink)}
+.scard .no{position:absolute;top:10px;left:16px;font-family:var(--body);font-size:46px;font-weight:700;opacity:.18;line-height:1}
+.scard .info{padding:18px 20px 20px;display:grid;gap:6px;background:rgba(30,3,1,.35);border-top:1px solid rgba(255,240,196,.1)}
+.scard h3{font-family:var(--kufi);font-size:24px;line-height:1.3}
+.scard .meta{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13.5px;color:var(--on-dark)}
+.scard .meta span{display:inline-flex;align-items:center;gap:6px}
+.scard .meta svg{width:15px;height:15px;opacity:.8}
+.scard .cta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-weight:700;font-size:14px}
+.scard .cta i{width:34px;height:34px;border-radius:50%;background:var(--red);display:grid;place-items:center;transition:transform .2s}
+.scard:hover .cta i{transform:translateX(-4px)}
+.scard .cta svg{width:18px;height:18px}
+.emptybox{padding:40px 28px;text-align:center;border:1.5px dashed rgba(255,240,196,.25);border-radius:18px;color:var(--on-dark)}
+.emptybox h3{font-family:var(--kufi);font-size:24px;color:var(--paper);margin-bottom:6px}
+
+.crumb{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--on-dark);flex-wrap:wrap;padding-top:6px}
+.crumb button{background:none;border:0;padding:0;color:var(--paper);cursor:pointer;text-decoration:underline;text-underline-offset:5px}
+.shead{text-align:center;padding-block:8px 0}
+.shead h1{font-family:var(--kufi);font-size:clamp(30px,5vw,52px);line-height:1.15}
+.shead p{color:var(--on-dark);margin-top:4px;font-size:15px}
+.bookinfo{display:grid;grid-template-columns:1.2fr 1fr;gap:22px;margin-top:34px;align-items:start}
+@media (max-width:860px){.bookinfo{grid-template-columns:1fr}}
+.bookinfo>*{animation:viewin .4s cubic-bezier(.2,.7,.2,1) both}
+.bookinfo>*:nth-child(2){animation-delay:.06s}
+.about{padding:28px 30px}
+.about h2{font-family:var(--ruqaa);font-size:clamp(32px,4vw,44px);line-height:1.2;margin-top:6px}
+.about .by{color:var(--muted);font-size:15px;margin-top:2px}
+.about .sum{font-size:17.5px;line-height:1.95;margin-top:16px;max-width:62ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;padding:5px 12px;border-radius:99px;background:var(--paper-2);color:var(--ink)}
+.chip svg{width:15px;height:15px;color:var(--red)}
+.chal{border-radius:18px;overflow:hidden;background:linear-gradient(165deg,var(--red),var(--wine) 55%,var(--ink));box-shadow:0 30px 60px -30px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,240,196,.12)}
+.chal .hd{padding:24px 24px 18px;position:relative}
+.chal .hd h3{font-family:var(--kufi);font-size:28px;line-height:1.25;margin-top:4px}
+.chal .terms{display:flex;gap:10px;margin-top:16px}
+.chal .terms div{flex:1;background:rgba(30,3,1,.35);border:1px solid rgba(255,240,196,.14);border-radius:12px;padding:10px 12px}
+.chal .terms b{display:block;font-family:var(--body);font-size:30px;line-height:1.1}
+.chal .terms span{font-size:12.5px;color:var(--on-dark)}
+.chal .bd{background:var(--paper);color:var(--ink);padding:20px 22px 22px;display:grid;gap:14px;color-scheme:light}
+.mybest{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:12px;background:var(--paper-2);font-size:14.5px}
+.mybest b{font-family:var(--body);font-size:18px}
+.lb{display:grid;gap:4px}
+.lb .lr{display:grid;grid-template-columns:34px 1fr auto auto;gap:10px;align-items:center;padding:8px 10px;border-radius:10px;font-size:15px;font-variant-numeric:tabular-nums}
+.lb .lr:nth-child(odd){background:rgba(230,201,133,.25)}
+.lb .lr.me{background:#FFD9C9;box-shadow:inset 0 0 0 1.5px var(--red)}
+.lb .rk{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-family:var(--body);font-weight:700;font-size:14px;background:var(--paper-3);color:var(--ink)}
+.lb .lr:nth-child(1) .rk{background:var(--red);color:var(--paper)}
+.lb .lr:nth-child(2) .rk{background:var(--wine);color:var(--paper)}
+.lb .lr:nth-child(3) .rk{background:var(--ink);color:var(--paper)}
+.lb .who{min-width:0}
+.lb .who b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb .who span{font-size:12px;color:var(--muted)}
+.lb .sc{font-family:var(--body);font-weight:700;font-size:17px}
+.lb .tm{font-size:13px;color:var(--muted);min-width:42px;text-align:left}
+.lbh{display:flex;justify-content:space-between;align-items:baseline}
+.lbh .kicker{color:var(--muted)}
+.muted{color:var(--muted);font-size:14.5px}
+
+.quiz{max-width:820px;margin:0 auto;padding-top:6px}
+.qhead{display:flex;align-items:center;gap:18px;margin-bottom:20px}
+.qhead .mini{width:54px;height:81px;flex:0 0 auto;box-shadow:0 10px 20px -8px rgba(0,0,0,.8);border-radius:2px 4px 4px 2px}
+.qhead .bt{flex:1;min-width:0}
+.qhead .bt h2{font-family:var(--ruqaa);font-size:clamp(22px,3.4vw,30px);line-height:1.25}
+.qhead .bt .kicker{display:block}
+.ring{position:relative;width:86px;height:86px;flex:0 0 auto}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:7}
+.ring .tr{stroke:rgba(255,240,196,.12)}
+.ring .pr{stroke:var(--paper);stroke-linecap:round;transition:stroke-dashoffset .25s linear, stroke .3s}
+.ring.low .pr{stroke:#FF8E73}
+.ring .tx{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--body);font-weight:700;font-size:20px;font-variant-numeric:tabular-nums}
+.ring.low .tx{color:#FFB49E;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.5}}
+.qprog{display:flex;gap:5px;margin-bottom:16px}
+.qprog button{flex:1;height:8px;border-radius:99px;border:0;padding:0;background:rgba(255,240,196,.14);cursor:pointer;transition:background .2s}
+.qprog button.done{background:rgba(255,240,196,.55)}
+.qprog button.cur{background:var(--paper);box-shadow:0 0 0 2px var(--red)}
+.qcard{padding:30px 32px 26px;border-radius:18px}
+@media (max-width:560px){.qcard{padding:22px 18px}}
+.qcard .qn{font-family:var(--kufi);color:var(--red);font-size:16px;font-weight:600}
+.qcard h2{font-size:clamp(21px,3.2vw,28px);line-height:1.55;margin:8px 0 22px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.opts{grid-template-columns:1fr}}
+.opt{display:flex;gap:14px;align-items:center;text-align:right;padding:15px 16px;border-radius:14px;border:1.5px solid var(--paper-3);background:#FFF8E2;cursor:pointer;font-size:17px;line-height:1.5;color:var(--ink);transition:transform .12s, border-color .12s, background .12s}
+.opt:hover{border-color:var(--ink);transform:translateY(-1px)}
+.opt .l{flex:0 0 36px;height:36px;border-radius:10px;display:grid;place-items:center;font-family:var(--body);font-weight:700;font-size:17px;background:var(--paper-2);color:var(--ink)}
+.opt.sel{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.opt.sel .l{background:var(--red);color:var(--paper)}
+.qfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:22px;flex-wrap:wrap}
+.qfoot .navs{display:flex;gap:8px}
+
+.res{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;padding-top:10px}
+@media (max-width:880px){.res{grid-template-columns:1fr}}
+.scorecard{position:relative;padding:30px 30px 26px;border-radius:18px;overflow:hidden}
+.scorecard .big{font-family:var(--body);font-weight:700;font-size:clamp(90px,15vw,140px);line-height:1;margin-top:10px;font-variant-numeric:tabular-nums}
+.scorecard .big small{font-size:.36em;color:var(--muted);font-weight:500}
+.scorecard h2{font-family:var(--ruqaa);font-size:30px;line-height:1.25}
+.scorecard .verdict{display:inline-block;margin-top:10px;font-family:var(--kufi);font-weight:600;padding:5px 14px;border-radius:99px;background:var(--ink);color:var(--paper);font-size:15px}
+.scorecard .kv{display:flex;gap:22px;margin-top:14px;color:var(--muted);font-size:15px}
+.scorecard .kv b{color:var(--ink);font-family:var(--body)}
+.stamp{position:absolute;top:26px;left:24px;transform:rotate(-12deg);width:128px;height:128px;border-radius:50%;border:4px double var(--red);color:var(--red);display:grid;place-content:center;text-align:center;
+-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -2.4 1.9'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -2.4 1.9'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+animation:stampin .55s .25s cubic-bezier(.3,1.6,.5,1) both}
+.stamp small{font-family:var(--kufi);font-size:13px;font-weight:600;line-height:1.2}
+.stamp b{font-family:var(--body);font-size:46px;line-height:1}
+@keyframes stampin{from{transform:rotate(-12deg) scale(2.2);opacity:0}to{transform:rotate(-12deg) scale(1);opacity:.95}}
+@media (max-width:480px){.stamp{width:100px;height:100px;top:18px;left:14px}.stamp b{font-size:36px}}
+.review{margin-top:22px;display:grid;gap:2px}
+.review details{border-top:1px solid var(--paper-3)}
+.review summary{cursor:pointer;padding:12px 0;font-family:var(--kufi);font-weight:600;color:var(--red)}
+.rv{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--paper-3);font-size:14.5px}
+.rv i{font-style:normal;font-weight:700;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;flex:0 0 auto;margin-top:2px}
+.rv.y i{background:#2F5D2A;color:#fff}
+.rv.n i{background:var(--red);color:var(--paper)}
+.rv .ans{display:block;color:var(--muted);font-size:13.5px}
+.podium{display:grid;grid-template-columns:1fr 1.1fr 1fr;align-items:end;gap:10px;padding:26px 18px 0;min-height:250px}
+.pod{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;min-width:0}
+.pod .pa{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-family:var(--kufi);font-weight:700;font-size:22px;background:var(--paper);color:var(--ink);box-shadow:0 0 0 3px var(--night),0 0 0 5px var(--paper-3)}
+.pod.p1 .pa{width:66px;height:66px;font-size:26px;box-shadow:0 0 0 3px var(--night),0 0 0 5px #FFB49E}
+.pod .pn{font-weight:600;font-size:14px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pod .ps{font-family:var(--body);font-size:13px;color:var(--on-dark)}
+.pod .blk{width:100%;border-radius:12px 12px 0 0;display:grid;place-items:start center;padding-top:10px;font-family:var(--body);font-weight:700;font-size:30px;color:var(--paper);
+background:linear-gradient(to bottom,var(--red),var(--wine));box-shadow:inset 0 1px 0 rgba(255,240,196,.3)}
+.pod.p1 .blk{height:120px;background:linear-gradient(to bottom,#B3200F,var(--red))}
+.pod.p2 .blk{height:86px}
+.pod.p3 .blk{height:62px;background:linear-gradient(to bottom,var(--wine),var(--ink))}
+.pod.me .pn{color:#FFB49E}
+.pod.empty{opacity:.35}
+.boardcard{border-radius:18px;overflow:hidden;background:linear-gradient(170deg,rgba(102,11,5,.6),rgba(30,3,1,.6));box-shadow:inset 0 0 0 1px rgba(255,240,196,.12)}
+.boardcard .bh{padding:20px 22px 0}
+.boardcard .bh h3{font-family:var(--kufi);font-size:24px}
+.boardcard .bb{background:var(--paper);color:var(--ink);padding:16px 18px 20px;display:grid;gap:14px;color-scheme:light}
+
+.adm{display:grid;gap:16px}
+.arow{display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:16px;flex-wrap:wrap}
+.arow .mini{width:52px;height:78px;flex:0 0 auto;border-radius:2px 4px 4px 2px;box-shadow:0 8px 16px -8px rgba(0,0,0,.6)}
+.arow .g{flex:1 1 220px;min-width:0}
+.arow h3{font-family:var(--kufi);font-size:21px;line-height:1.35}
+.arow p{color:var(--muted);font-size:14px;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+.arow .acts{display:flex;gap:8px;flex-wrap:wrap}
+.badge{font-size:12.5px;font-weight:700;padding:2px 10px;border-radius:99px;background:var(--paper-2);color:var(--ink)}
+.badge.warn{background:var(--red);color:var(--paper)}
+.aform{padding:24px;border-radius:18px;display:grid;gap:16px}
+.aform h3{font-family:var(--kufi);font-size:24px}
+.aform .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.aform .two{grid-template-columns:1fr}}
+.aform .acts{display:flex;gap:10px;flex-wrap:wrap}
+.bookform{display:grid;grid-template-columns:230px 1fr;gap:26px;align-items:start}
+@media (max-width:760px){.bookform{grid-template-columns:1fr}.bookform .prev{max-width:200px;margin:0 auto}}
+.bookform .prev{position:sticky;top:90px;display:grid;gap:10px;justify-items:center}
+.bookform .prev .pc{width:100%;aspect-ratio:2/3;box-shadow:0 24px 40px -18px rgba(0,0,0,.7);border-radius:2px 5px 5px 2px}
+.picker{display:flex;flex-wrap:wrap;gap:8px}
+.picker label{cursor:pointer}
+.picker input{position:absolute;opacity:0;pointer-events:none}
+.picker .sw{display:block;width:52px;height:60px;border-radius:10px;border:2px solid transparent;padding:4px;background:var(--paper-2);transition:border-color .15s}
+.picker .sw svg{width:100%;height:100%}
+.picker input:checked + .sw{border-color:var(--red)}
+.picker input:focus-visible + .sw{outline:3px solid var(--red);outline-offset:2px}
+.picker .tone{width:44px;height:44px;border-radius:50%;padding:0;border:3px solid var(--paper);box-shadow:0 0 0 1.5px var(--paper-3)}
+.picker input:checked + .tone{box-shadow:0 0 0 3px var(--red)}
+.upl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.upl input[type=file]{font-size:13px;max-width:100%}
+.qlist{display:grid}
+.qi{display:flex;gap:12px;align-items:start;padding:12px 0;border-bottom:1px solid var(--paper-3)}
+.qi .n{flex:0 0 28px;height:28px;border-radius:50%;background:var(--paper-2);display:grid;place-items:center;font-family:var(--body);font-weight:700;font-size:13px}
+.qi .tx{flex:1;min-width:0}
+.qi .tx b{display:block;font-weight:600}
+.qi .tx span{font-size:13.5px;color:var(--muted)}
+.qi .tx em{font-style:normal;color:#2F5D2A;font-weight:700}
+.qi .a{display:flex;gap:6px;flex-wrap:wrap}
+.lnk{background:none;border:0;padding:4px 6px;color:var(--red);font-weight:600;cursor:pointer;font-size:14px;border-radius:6px}
+.lnk:hover{background:var(--paper-2)}
+.lnk.dang{color:#fff;background:var(--red)}
+.optedit{display:grid;gap:8px}
+.optedit label{display:flex;gap:10px;align-items:center}
+.optedit input[type=radio]{accent-color:var(--red);width:22px;height:22px;flex:0 0 auto}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<div id="app" dir="rtl" lang="ar"></div>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+document.documentElement.dir="rtl"; document.documentElement.lang="ar";
+const SEED = {"sessions": [{"id": "s1", "title": "عربة القراءة: الجلسة الأولى", "date": "2026-11-15", "place": "عربة القراءة، الفناء الداخلي", "grades": "الرابع إلى السادس", "note": "خمسة كتب من التراث العربي. اقرأ كتابك مع طالب من المرحلة المتوسطة، ثم اختبر نفسك.", "order": 1}], "books": [{"id": "b1", "sessionId": "s1", "order": 1, "title": "علي بابا والأربعون لصًّا", "author": "من حكايات ألف ليلة وليلة", "dewey": "398.2", "level": "سهل", "age": "٨ إلى ١٠ سنوات", "tone": "wine", "summary": "حطّاب فقير يكتشف مغارة يخبّئ فيها أربعون لصًّا كنوزهم، وتُفتح بكلمة سرّ. يطمع أخوه الغني قاسم فيقع في الفخ، ويحاول اللصوص الانتقام من علي بابا، لكن ذكاء الجارية مرجانة يفسد خططهم مرة بعد مرة.", "questions": [{"q": "ما مهنة علي بابا في بداية الحكاية؟", "options": ["حطّاب", "تاجر", "صيّاد", "خبّاز"], "answer": 0}, {"q": "ما العبارة التي تفتح باب المغارة؟", "options": ["افتح يا سمسم", "افتح يا باب", "افتح يا قمح", "افتح يا شعير"], "answer": 0}, {"q": "كم كان عدد اللصوص؟", "options": ["أربعون", "ثلاثون", "عشرة", "مئة"], "answer": 0}, {"q": "ما اسم أخي علي بابا الغني؟", "options": ["قاسم", "حسن", "سالم", "مرجان"], "answer": 0}, {"q": "لماذا بقي قاسم محبوسًا داخل المغارة؟", "options": ["نسي كلمة السر", "أضاع المفتاح", "نام في المغارة", "أغلق اللصوص الباب عليه"], "answer": 0}, {"q": "كيف عرفت زوجة قاسم أن علي بابا يكيل مالًا كثيرًا؟", "options": ["علقت قطعة ذهب في قاع المكيال", "رأته في السوق", "أخبرها اللصوص", "سمعته يتكلم"], "answer": 0}, {"q": "ما اسم الجارية الذكية في الحكاية؟", "options": ["مرجانة", "ياسمينة", "شهرزاد", "لؤلؤة"], "answer": 0}, {"q": "ماذا فعلت مرجانة حين وجدت علامة اللص على باب البيت؟", "options": ["رسمت العلامة نفسها على أبواب الحي كلها", "مسحت الباب بالماء", "أخبرت الحارس", "أغلقت البيت ورحلت"], "answer": 0}, {"q": "أين اختبأ اللصوص عندما دخلوا بيت علي بابا؟", "options": ["في جرار الزيت", "تحت السرير", "في البئر", "خلف الستائر"], "answer": 0}, {"q": "على أي شيء حمل علي بابا الذهب إلى بيته؟", "options": ["حميره", "جمل كبير", "عربة خيول", "سفينة"], "answer": 0}], "emblem": "cave"}, {"id": "b2", "sessionId": "s1", "order": 2, "title": "رحلات السندباد البحري", "author": "من حكايات ألف ليلة وليلة", "dewey": "398.2", "level": "متوسط", "age": "٩ إلى ١١ سنة", "tone": "ink", "summary": "تاجر من بغداد يحب المغامرة، يركب البحر سبع مرات فيرى جزيرة تتحرك، وطائرًا عملاقًا اسمه الرخ، ووادٍ مفروش بالماس. يجلس في آخر عمره ويحكي رحلاته لحمّال فقير يحمل الاسم نفسه.", "questions": [{"q": "من أي مدينة كان السندباد البحري؟", "options": ["بغداد", "دمشق", "القاهرة", "البصرة"], "answer": 0}, {"q": "كم رحلة قام بها السندباد في الحكاية؟", "options": ["سبع رحلات", "ثلاث رحلات", "خمس رحلات", "عشر رحلات"], "answer": 0}, {"q": "لمن كان السندباد البحري يحكي قصص رحلاته؟", "options": ["السندباد الحمّال", "الخليفة", "ابنه", "قبطان السفينة"], "answer": 0}, {"q": "في الرحلة الأولى نزل البحّارة على جزيرة، فماذا كانت في الحقيقة؟", "options": ["حوتًا ضخمًا", "سفينة غارقة", "جبلًا من الملح", "صخرة عائمة"], "answer": 0}, {"q": "ما اسم الطائر العملاق الذي قابله السندباد؟", "options": ["الرخّ", "العنقاء", "الهدهد", "الصقر"], "answer": 0}, {"q": "بماذا ظنّ السندباد بيضة الرخّ أول ما رآها؟", "options": ["قبّة بيضاء كبيرة", "صخرة ملساء", "خيمة", "سحابة"], "answer": 0}, {"q": "ماذا كان يملأ الوادي الذي سقط فيه السندباد؟", "options": ["الماس", "الذهب", "اللؤلؤ", "الفضة"], "answer": 0}, {"q": "ما الخطر الذي كان يسكن وادي الماس؟", "options": ["ثعابين ضخمة", "أسود جائعة", "لصوص", "عواصف رملية"], "answer": 0}, {"q": "كيف خرج السندباد من وادي الماس؟", "options": ["ربط نفسه بقطعة لحم حملها طائر كبير", "تسلّق الجبل", "حفر نفقًا", "ركب قاربًا في النهر"], "answer": 0}, {"q": "ما مهنة السندباد البحري؟", "options": ["تاجر", "صيّاد سمك", "جندي", "نجّار سفن"], "answer": 0}], "emblem": "ship"}, {"id": "b3", "sessionId": "s1", "order": 3, "title": "الحمامة المطوّقة", "author": "ابن المقفّع، من كليلة ودمنة", "dewey": "398.2", "level": "سهل", "age": "٨ إلى ١٠ سنوات", "tone": "paper", "summary": "سرب من الحمام يقع في شبكة صيّاد، فتقترح قائدته المطوّقة أن يطير الجميع معًا بالشبكة. يتبعهم غراب فضولي ويشهد كيف يقطع الجرذ زيرك الحبال، وكيف تؤثر المطوّقة صاحباتها على نفسها.", "questions": [{"q": "من نقل كتاب كليلة ودمنة إلى العربية؟", "options": ["ابن المقفّع", "الجاحظ", "المتنبي", "ابن بطوطة"], "answer": 0}, {"q": "لماذا سُمّيت الحمامة بالمطوّقة؟", "options": ["لأن في عنقها طوقًا", "لأنها تطير في دوائر", "لأنها تسكن في طوق شجرة", "لأنها أكبر الحمام"], "answer": 0}, {"q": "ما الذي أوقع الحمام في الفخ؟", "options": ["حَبّ نثره الصيّاد فوق شبكة", "عاصفة قوية", "ماء في بئر", "قفص مفتوح"], "answer": 0}, {"q": "ماذا اقترحت المطوّقة على صاحباتها بعد وقوعهن في الشبكة؟", "options": ["أن يطرن جميعًا معًا بالشبكة", "أن تنجو كل حمامة بنفسها", "أن ينتظرن الصيّاد", "أن يصرخن طلبًا للنجدة"], "answer": 0}, {"q": "أي طائر تبع الحمام ليعرف ما سيحدث؟", "options": ["الغراب", "النسر", "البومة", "العصفور"], "answer": 0}, {"q": "إلى من ذهبت المطوّقة ليقطع الشبكة؟", "options": ["صديقها الجرذ", "الصيّاد نفسه", "السلحفاة", "الأرنب"], "answer": 0}, {"q": "ما اسم الجرذ في الحكاية؟", "options": ["زيرك", "دمنة", "كليلة", "شتربة"], "answer": 0}, {"q": "بماذا طلبت المطوّقة أن يبدأ الجرذ؟", "options": ["بقطع حبال صاحباتها قبل حبالها", "بقطع حبالها أولًا", "بالأكل قبل العمل", "بالهرب من الصيّاد"], "answer": 0}, {"q": "لماذا طلبت ذلك؟", "options": ["خشيت أن يتعب فيترك بعضهن في الشبكة", "لأنها كانت خائفة", "لأنها لا تحب صاحباتها", "لأن الصيّاد طلب ذلك"], "answer": 0}, {"q": "ما أهم درس في الحكاية؟", "options": ["التعاون والإيثار ينجّيان الجماعة", "القوة أهم من الذكاء", "السرعة تغلب كل شيء", "لا تثق بأحد"], "answer": 0}], "emblem": "dove"}, {"id": "b4", "sessionId": "s1", "order": 4, "title": "حيّ بن يقظان", "author": "ابن طفيل", "dewey": "892.7", "level": "متقدم", "age": "١٠ إلى ١٢ سنة", "tone": "red", "summary": "طفل ينشأ وحيدًا في جزيرة لا بشر فيها، ترضعه ظبية وتربّيه. يتعلم كل شيء بالملاحظة والتجربة: يكتشف النار، ويصنع ثيابه وأدواته، ويتأمل الكون حتى يصل إليه رجل اسمه أبسال فيعلّمه الكلام.", "questions": [{"q": "من مؤلف قصة حيّ بن يقظان؟", "options": ["ابن طفيل", "ابن سينا", "ابن خلدون", "ابن رشد"], "answer": 0}, {"q": "أين نشأ حيّ بن يقظان؟", "options": ["في جزيرة لا بشر فيها", "في قصر ملك", "في صحراء واسعة", "في مدينة كبيرة"], "answer": 0}, {"q": "من أرضع حيًّا وربّاه في صغره؟", "options": ["ظبية", "ذئبة", "لبؤة", "عنزة"], "answer": 0}, {"q": "ماذا فعل حيّ عندما ماتت الظبية؟", "options": ["بحث في جسدها عن سبب موتها", "ترك الجزيرة", "نام بجانبها أيامًا", "بنى لها بيتًا"], "answer": 0}, {"q": "بماذا ستر حيّ جسده أول الأمر؟", "options": ["أوراق الشجر", "قماش من سفينة", "ريش الطيور الملوّن", "الطين"], "answer": 0}, {"q": "ما الاكتشاف الذي منحه الدفء والطعام المطهو؟", "options": ["النار", "الكهف", "الملح", "الشمس"], "answer": 0}, {"q": "كيف تعلّم حيّ ما حوله؟", "options": ["بالملاحظة والتفكير والتجربة", "من كتاب وجده", "من معلم في الجزيرة", "من الحيوانات المتكلمة"], "answer": 0}, {"q": "ما اسم الرجل الذي وصل إلى الجزيرة والتقى حيًّا؟", "options": ["أبسال", "سلامان", "يقظان", "حاتم"], "answer": 0}, {"q": "ماذا علّم أبسالُ حيًّا؟", "options": ["الكلام", "الصيد", "السباحة", "بناء السفن"], "answer": 0}, {"q": "ما الفكرة الكبرى في القصة؟", "options": ["العقل يصل إلى المعرفة بالتأمل والتجربة", "الإنسان لا يتعلم وحده أبدًا", "الجزر خطيرة على الأطفال", "الحيوانات أذكى من البشر"], "answer": 0}], "emblem": "island"}, {"id": "b5", "sessionId": "s1", "order": 5, "title": "جحا وابنه والحمار", "author": "من نوادر جحا", "dewey": "398.2", "level": "سهل", "age": "٧ إلى ٩ سنوات", "tone": "paper", "emblem": "tree", "summary": "يخرج جحا وابنه إلى السوق ومعهما حمار. كلما جرّبا طريقة في الركوب انتقدهما الناس: مرة يركب الأب، ومرة الابن، ومرة يركبان معًا، ومرة يمشيان. فيتعلم الابن أن إرضاء جميع الناس غاية لا تُدرك.", "questions": [{"q": "إلى أين كان جحا وابنه ذاهبين؟", "options": ["إلى السوق", "إلى المدرسة", "إلى البحر", "إلى بيت الجد"], "answer": 0}, {"q": "ما الحيوان الذي كان معهما؟", "options": ["حمار", "حصان", "جمل", "بغل"], "answer": 0}, {"q": "من ركب الحمار أول مرة؟", "options": ["جحا", "الابن", "ركبا معًا", "لم يركب أحد"], "answer": 0}, {"q": "ماذا قال الناس حين ركب جحا ومشى ابنه؟", "options": ["أب قاسٍ لا يرحم ابنه الصغير", "ما أذكى هذا الأب", "الحمار متعب", "الطريق طويل"], "answer": 0}, {"q": "ماذا قال الناس حين ركب الابن ومشى أبوه؟", "options": ["ولد لا يحترم أباه الكبير", "ولد شجاع", "ولد سريع", "ولد مريض"], "answer": 0}, {"q": "لماذا لامهما الناس حين ركبا الحمار معًا؟", "options": ["لأنهما أثقلا على الحمار المسكين", "لأن الحمار صغير السن", "لأنهما تأخرا", "لأنهما لم يدفعا المال"], "answer": 0}, {"q": "ماذا قال الناس حين مشيا بجانب الحمار؟", "options": ["ضحكوا لأن الحمار يمشي بلا راكب", "مدحوهما", "ساعدوهما", "سألوهما عن الطريق"], "answer": 0}, {"q": "ماذا فعل جحا وابنه في آخر الحكاية؟", "options": ["حملا الحمار على أكتافهما", "باعا الحمار", "رجعا إلى البيت", "اشتريا حمارًا آخر"], "answer": 0}, {"q": "كيف تغيّر رأي الناس في كل مرة؟", "options": ["وجدوا عيبًا في كل طريقة", "أعجبتهم كل الطرق", "لم يقولوا شيئًا", "اتفقوا على رأي واحد"], "answer": 0}, {"q": "ما الدرس الذي تعلّمه الابن؟", "options": ["رضا الناس غاية لا تُدرك", "الحمير لا تُركب", "السوق بعيد", "لا تخرج من البيت"], "answer": 0}]}]};
+const ADMIN_CODE = "2030";
+const QUIZ_SECONDS = 300, QUIZ_COUNT = 10;
+const LETTERS = ["أ","ب","ج","د"];
+const GRADES = ["الأول الابتدائي","الثاني الابتدائي","الثالث الابتدائي","الرابع الابتدائي","الخامس الابتدائي","السادس الابتدائي"];
+const TONES = [["wine","عنابي"],["red","قرمزي"],["ink","داكن"],["paper","كريمي"]];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const AD = s => String(s).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]).replace(/\./g,"٫");
+const mmss = ms => { const t = Math.max(0, Math.ceil(ms/1000)); return AD(Math.floor(t/60) + ":" + String(t%60).padStart(2,"0")); };
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+const norm = s => String(s||"").trim().replace(/\s+/g," ");
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const todayISO = () => { const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
+function fmtDate(iso){ if(!iso) return "بلا موعد"; try{ return new Date(iso+"T12:00:00").toLocaleDateString("ar-SA-u-ca-gregory-nu-arab",{weekday:"long",day:"numeric",month:"long"}); }catch{ return AD(iso); } }
+function status(iso){ if(!iso) return ["","بلا موعد"]; const t=todayISO(); if(iso===t) return ["today","اليوم"]; return iso>t?["","قادمة"]:["","انتهت"]; }
+const plural = (n, one, two, few, many) => n===1?one:n===2?two:(n>=3&&n<=10)?few:many;
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true,3000); }
+const LS = { get(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch{ return d; } }, set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch{} } };
+
+const IC = {
+prev:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>`,
+next:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>`,
+cal:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>`,
+pin:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-12a7 7 0 0114 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>`,
+users:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5M16 4.5a3.5 3.5 0 010 7M18 14.8c1.8.7 3 2.5 3.5 5.2"/></svg>`,
+reader:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6.5C10 5 7 4.5 3 5v13c4-.5 7 0 9 1.5 2-1.5 5-2 9-1.5V5c-4-.5-7 0-9 1.5zM12 6.5v13"/></svg>`,
+key:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="14" r="4"/><path d="M11 11l9-9M16 6l3 3M14 8l2 2"/></svg>`,
+level:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V14M10 20V9M16 20V4"/></svg>`,
+age:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="3.5"/><path d="M5 21c1-4.5 3.8-7 7-7s6 2.5 7 7"/></svg>`,
+tag:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>`,
+play:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 5v14L6 12z"/></svg>`
+};
+const LOGO = `<svg class="mk" viewBox="0 0 40 40"><path d="M20 9C16 6 10 5.5 4 6.5v24c6-1 12-.5 16 2.5 4-3 10-3.5 16-2.5v-24C30 5.5 24 6 20 9z" fill="#8C1007"/><path d="M20 9v24" stroke="#FFF0C4" stroke-width="1.6"/><path d="M20 4.5c2.2 2.4 2.2 4.3 0 6.2-2.2-1.9-2.2-3.8 0-6.2z" fill="#FFF0C4"/></svg>`;
+
+const ARCH = "M8 230V104C8 52 58 22 100 6c42 16 92 46 92 98v126z";
+const SCENES = {
+cave: { name:"المغارة", svg:`
+<rect width="200" height="230" fill="var(--sky)"/>
+<g fill="var(--fg)"><circle cx="40" cy="44" r="1.6"/><circle cx="62" cy="70" r="1.2"/><circle cx="132" cy="38" r="1.3"/><circle cx="90" cy="34" r="1"/><circle cx="168" cy="92" r="1.2"/></g>
+<circle cx="146" cy="66" r="17" fill="var(--fg)"/><circle cx="154" cy="59" r="15" fill="var(--sky)"/>
+<path d="M-10 230V158C20 128 52 96 100 86c48 10 80 42 110 72v72z" fill="var(--acc)"/>
+<path d="M30 230c8-40 30-70 70-82 40 12 62 42 70 82z" fill="var(--mid)" opacity=".55"/>
+<path d="M70 230v-58c0-24 13-38 30-44 17 6 30 20 30 44v58z" fill="var(--fg)"/>
+<path d="M78 230v-56c0-18 10-30 22-35 12 5 22 17 22 35v56z" fill="var(--acc)" opacity=".18"/>
+<path d="M100 140v90" stroke="var(--acc)" stroke-width="2"/>
+<g fill="var(--acc)"><circle cx="91" cy="190" r="2.2"/><circle cx="109" cy="190" r="2.2"/><circle cx="91" cy="170" r="2"/><circle cx="109" cy="170" r="2"/></g>
+<g fill="var(--fg)"><path d="M22 230c-10-14-9-30 3-38v-6h14v6c12 8 13 24 3 38z"/><path d="M160 230c-10-14-9-30 3-38v-6h14v6c12 8 13 24 3 38z"/></g>
+<g fill="var(--acc)" opacity=".5"><rect x="22" y="196" width="20" height="3"/><rect x="160" y="196" width="20" height="3"/></g>
+<g fill="var(--fg)"><ellipse cx="60" cy="226" rx="5" ry="2.2"/><ellipse cx="140" cy="224" rx="5" ry="2.2"/><ellipse cx="146" cy="228" rx="5" ry="2.2"/></g>` },
+ship: { name:"السفينة", svg:`
+<rect width="200" height="230" fill="var(--sky)"/>
+<circle cx="100" cy="118" r="44" fill="var(--fg)" opacity=".16"/>
+<circle cx="100" cy="118" r="30" fill="var(--fg)" opacity=".16"/>
+<path d="M34 56q22-16 44-4 10-10 22-4 12-6 22 4 22-12 44 4-22-2-40 8-12-3-26 6-14-9-26-6-18-10-40-8z" fill="var(--acc)"/>
+<path d="M104 174V86" stroke="var(--fg)" stroke-width="3"/>
+<path d="M102 82c36 22 52 54 54 92h-54z" fill="var(--fg)"/>
+<path d="M102 82c-14 30-22 60-22 92h22z" fill="var(--fg)" opacity=".7"/>
+<path d="M104 86l16-6-16-4z" fill="var(--mid)"/>
+<path d="M40 176h124c-6 18-20 26-38 26H76c-18 0-30-8-36-26z" fill="var(--acc)"/>
+<path d="M48 182h108" stroke="var(--fg)" stroke-width="1.5" opacity=".6"/>
+<path d="M0 196q12-9 25 0t25 0 25 0 25 0 25 0 25 0 25 0 25 0v34H0z" fill="var(--mid)"/>
+<path d="M0 212q12-9 25 0t25 0 25 0 25 0 25 0 25 0 25 0 25 0v18H0z" fill="var(--acc)"/>` },
+dove: { name:"الحمامة", svg:`
+<rect width="200" height="230" fill="var(--sky)"/>
+<g stroke="var(--fg)" stroke-width="1.2" opacity=".35">
+<path d="M0 172l200-30M0 190l200-30M0 208l200-30M0 226l200-30M20 230l40-100M60 230l40-100M100 230l40-100M140 230l40-100M180 230l40-100"/></g>
+<circle cx="100" cy="112" r="62" fill="none" stroke="var(--fg)" stroke-width="5"/>
+<circle cx="100" cy="112" r="54" fill="none" stroke="var(--fg)" stroke-width="1.2" stroke-dasharray="3 5"/>
+<path d="M58 122c6-18 26-28 48-24 10 2 18 6 24 4l14-6c-2 10-8 16-16 20-6 14-22 22-42 22-14 0-24-6-28-16z" fill="var(--fg)"/>
+<path d="M136 92c6-4 14-2 16 4l10 2-9 4c-2 6-8 8-14 6z" fill="var(--fg)"/>
+<circle cx="146" cy="96" r="1.8" fill="var(--acc)"/>
+<path d="M132 100c4 6 10 8 16 6" stroke="var(--mid)" stroke-width="3" fill="none"/>
+<path d="M86 108c4-30 22-52 52-62-8 22-16 44-30 62z" fill="var(--fg)" stroke="var(--sky)" stroke-width="1.5"/>
+<path d="M96 106c6-18 18-34 34-44" stroke="var(--sky)" stroke-width="1.2" fill="none" opacity=".6"/>
+<path d="M60 124l-28-10 8 16-6 10 30-6z" fill="var(--fg)"/>
+<g fill="var(--fg)" opacity=".7"><path d="M34 52l8 4 8-4-8 8z"/><path d="M160 156l7 3 7-3-7 7z"/><path d="M150 40l6 3 6-3-6 6z"/></g>` },
+island: { name:"الجزيرة", svg:`
+<rect width="200" height="230" fill="var(--sky)"/>
+<g stroke="var(--fg)" stroke-width="2" opacity=".5"><path d="M56 48v-14M56 106v14M28 77h-14M98 77h14M36 57l-10-10M76 97l10 10M76 57l10-10M36 97l-10 10"/></g>
+<circle cx="56" cy="77" r="20" fill="var(--fg)"/>
+<path d="M0 186q14-8 28 0t28 0 28 0 28 0 28 0 28 0 28 0 28 0v44H0z" fill="var(--acc)"/>
+<path d="M24 194c20-30 56-40 92-36 26 3 46 14 60 34z" fill="var(--mid)"/>
+<path d="M120 172c6-28 4-54-10-80" stroke="var(--fg)" stroke-width="6" fill="none" stroke-linecap="round"/>
+<g fill="var(--fg)">
+<path d="M110 92c-18-10-40-8-52 6 16-4 32-4 52-6z"/><path d="M110 92c-6-18-24-30-42-30 14 8 26 18 42 30z"/>
+<path d="M110 92c10-18 30-26 48-20-16 2-32 10-48 20z"/><path d="M110 92c20-6 40 2 50 18-16-8-32-12-50-18z"/>
+<path d="M110 92c2-16 12-28 26-34-10 10-18 22-26 34z"/></g>
+<g fill="var(--acc)"><circle cx="106" cy="96" r="4"/><circle cx="113" cy="98" r="4"/></g>
+<path d="M64 180c-8-6-10-16-2-24 0 8 6 8 6 2 6 6 8 16-4 22z" fill="var(--fg)"/>
+<path d="M150 184c-2-6 2-10 6-12l2-8 3 8c4 2 6 6 4 12z" fill="var(--fg)" opacity=".85"/>
+<path d="M0 212q14-8 28 0t28 0 28 0 28 0 28 0 28 0 28 0 28 0v18H0z" fill="var(--sky)" opacity=".5"/>` },
+lamp: { name:"المصباح", svg:`
+<rect width="200" height="230" fill="var(--sky)"/>
+<circle cx="100" cy="92" r="60" fill="var(--fg)" opacity=".1"/><circle cx="100" cy="92" r="36" fill="var(--fg)" opacity=".12"/>
+<path d="M100 58c12 14 14 26 0 40-14-14-12-26 0-40z" fill="var(--fg)"/>
+<path d="M100 74c5 6 6 12 0 18-6-6-5-12 0-18z" fill="var(--mid)"/>
+<path d="M40 150c10-24 36-34 64-30h34c10 0 22-6 30-14-2 20-16 34-32 40-14 16-40 22-62 18-18-3-30-8-34-14z" fill="var(--fg)"/>
+<path d="M100 120c-6-8-6-14 0-18" stroke="var(--fg)" stroke-width="3" fill="none"/>
+<path d="M76 168h60l-8 18H84z" fill="var(--acc)"/>
+<path d="M60 192h92" stroke="var(--fg)" stroke-width="4" stroke-linecap="round"/>
+<g fill="var(--fg)" opacity=".6"><circle cx="40" cy="60" r="1.5"/><circle cx="160" cy="54" r="1.5"/><circle cx="150" cy="28" r="1"/></g>` },
+star: { name:"النجمة", svg:`
+<rect width="200" height="230" fill="var(--sky)"/>
+<g transform="translate(100 118)">
+<rect x="-58" y="-58" width="116" height="116" fill="var(--fg)"/><rect x="-58" y="-58" width="116" height="116" fill="var(--fg)" transform="rotate(45)"/>
+<rect x="-40" y="-40" width="80" height="80" fill="var(--acc)"/><rect x="-40" y="-40" width="80" height="80" fill="var(--acc)" transform="rotate(45)"/>
+<circle r="26" fill="var(--fg)"/><circle r="15" fill="var(--mid)"/></g>
+<g fill="var(--fg)" opacity=".4"><circle cx="30" cy="40" r="3"/><circle cx="170" cy="40" r="3"/><circle cx="30" cy="200" r="3"/><circle cx="170" cy="200" r="3"/></g>` },
+tree: { name:"الشجرة", svg:`
+<rect width="200" height="230" fill="var(--sky)"/>
+<path d="M0 200h200v30H0z" fill="var(--acc)"/>
+<path d="M96 200c2-30 0-58-4-80h16c-4 22-6 50-4 80z" fill="var(--fg)"/>
+<circle cx="100" cy="92" r="46" fill="var(--fg)"/><circle cx="64" cy="112" r="28" fill="var(--fg)"/><circle cx="136" cy="112" r="28" fill="var(--fg)"/>
+<g fill="var(--mid)"><circle cx="86" cy="86" r="5"/><circle cx="116" cy="100" r="5"/><circle cx="72" cy="116" r="5"/><circle cx="130" cy="74" r="5"/><circle cx="104" cy="118" r="5"/><circle cx="146" cy="116" r="5"/></g>
+<path d="M100 200c-10-8-24-8-34 0M100 200c10-8 24-8 34 0" stroke="var(--fg)" stroke-width="3" fill="none"/>` },
+book: { name:"الكتاب", svg:`
+<rect width="200" height="230" fill="var(--sky)"/>
+<g stroke="var(--fg)" stroke-width="2" opacity=".45"><path d="M100 96V26M100 96L52 40M100 96l48-56M100 96L30 76M100 96l70-20"/></g>
+<path d="M100 118c-20-12-44-14-72-10v76c28-4 52-2 72 10 20-12 44-14 72-10v-76c-28-4-52-2-72 10z" fill="var(--fg)"/>
+<path d="M100 118v76" stroke="var(--acc)" stroke-width="2"/>
+<g stroke="var(--acc)" stroke-width="1.5" opacity=".5"><path d="M42 126c18-2 32 0 46 6M42 140c18-2 32 0 46 6M42 154c18-2 32 0 46 6M112 132c14-6 28-8 46-6M112 146c14-6 28-8 46-6M112 160c14-6 28-8 46-6"/></g>
+<path d="M0 210h200v20H0z" fill="var(--acc)"/>` }
+};
+const sceneSVG = (key, uidp) => {
+const s = SCENES[key] || SCENES.book; const id = "a" + (uidp || Math.random().toString(36).slice(2,8));
+return `<svg viewBox="0 0 200 230" aria-hidden="true"><defs><clipPath id="${id}"><path d="${ARCH}"/></clipPath></defs>
+<g clip-path="url(#${id})">${s.svg}</g><path d="${ARCH}" fill="none" stroke="var(--fg)" stroke-width="3" opacity=".9"/><path d="M14 230V105C14 58 60 30 100 15c40 15 86 43 86 90v125" fill="none" stroke="var(--fg)" stroke-width="1" opacity=".5"/></svg>`;
+};
+function coverFace(b){
+const t = "t-" + (b.tone || "wine");
+if (b.coverImg) return `<div class="cov img ${t}"><img src="${esc(b.coverImg)}" alt="" draggable="false"></div>`;
+return `<div class="cov ${t}">
+<div class="cin"><div class="ser">إحياء القراءة</div>
+<div class="win">${sceneSVG(b.emblem || "book", (b.id||"x") + Math.random().toString(36).slice(2,6))}</div>
+<div class="tt">${esc(b.title || "عنوان الكتاب")}</div>
+<div class="au">${esc(b.author || "")}</div>
+<div class="ft"><span>${esc(b.level || "")}</span><span class="dw">${AD(b.dewey || "000")}</span></div>
+</div></div>`;
+}
+function book3D(b, extra=""){
+const t = "t-" + (b.tone || "wine");
+return `<div class="b3 ${t} ${extra}">
+<div class="back fc"></div>
+<div class="pages"></div><div class="top"></div>
+<div class="spine"><i></i><span>${esc(b.title||"")}</span><i></i></div>
+<div class="pg1"><svg class="orn" viewBox="0 0 60 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 10h18M40 10h18M30 3l7 7-7 7-7-7z"/></svg>
+<h4>${esc(b.title||"")}</h4><p>${esc((b.summary||"").split("،")[0])}</p><span class="go">اقرأ الكتاب، ثم تحدَّ زملاءك</span></div>
+<div class="leaf"><div class="fc front">${coverFace(b)}</div><div class="fc inside"></div></div>
+</div>`;
+}
+
+const COLS = ["sessions","books","results"];
+const Store = {
+mode:"loading", data:{sessions:[],books:[],results:[]}, db:null, isEditor:false, ready:{}, subs:[],
+on(fn){ this.subs.push(fn); }, emit(col){ this.subs.forEach(f=>f(col)); },
+async init(){
+let db = null;
+try { if (window.claude && window.claude.use) db = await window.claude.use("db"); } catch {}
+if (db) {
+this.mode = "db"; this.db = db;
+try { const u = await window.claude.use("user"); if (u) this.isEditor = !!(await u.canEdit()); } catch {}
+await new Promise(res => {
+let left = COLS.length; const done = c => { if(!this.ready[c]){ this.ready[c]=true; if(--left===0){ clearTimeout(timer); res(); } } };
+const timer = setTimeout(()=>{ this.stale = true; res(); }, 10000);
+COLS.forEach(c => db.collection(c).onSnapshot(snap => {
+this.data[c] = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+if (!snap.metadata.fromCache) done(c);
+this.emit(c);
+}, err => { done(c); if(err.code==="revoked") toast("توقف الوصول إلى البيانات المشتركة"); }));
+});
+} else {
+this.mode = "local";
+this.data = LS.get("ihya.local.v3", null) || { sessions: SEED.sessions.map(x=>({...x})), books: SEED.books.map(x=>({...x})), results: [] };
+}
+},
+persist(){ if (this.mode==="local") LS.set("ihya.local.v3", this.data); },
+async put(col, id, obj){
+const body = { ...obj }; delete body.id;
+if (this.mode === "db") {
+try { await this.db.collection(col).doc(id).set(body); return true; }
+catch(e){ toast(e && e.code==="invalid_argument" ? "لا تملك صلاحية الحفظ هنا. اطلب من صاحب الموقع صلاحية أعلى." : e && e.code==="quota_exceeded" ? "امتلأت مساحة التخزين" : "تعذّر الحفظ، حاول مرة أخرى"); return false; }
+}
+const arr = this.data[col]; const i = arr.findIndex(x=>x.id===id);
+if (i>=0) arr[i] = { id, ...body }; else arr.push({ id, ...body });
+this.persist(); this.emit(col); return true;
+},
+async del(col, id){
+if (this.mode === "db") { try { await this.db.collection(col).doc(id).delete(); return true; } catch { toast("تعذّر الحذف"); return false; } }
+this.data[col] = this.data[col].filter(x=>x.id!==id); this.persist(); this.emit(col); return true;
+},
+sessions(){ return this.data.sessions.slice().sort((a,b)=>(a.order??0)-(b.order??0) || String(a.date).localeCompare(String(b.date))); },
+books(sid){ return this.data.books.filter(b=>b.sessionId===sid).sort((a,b)=>(a.order??0)-(b.order??0)); },
+book(id){ return this.data.books.find(b=>b.id===id); },
+session(id){ return this.data.sessions.find(s=>s.id===id); }
+};
+
+function board(bookId, extra){
+const best = new Map(), all = Store.data.results.filter(r=>r.bookId===bookId);
+if (extra && !all.some(r=>r.id===extra.id)) all.push(extra);
+for (const r of all){ const k = norm(r.name)+"|"+(r.grade||""); const b = best.get(k);
+if (!b || r.score>b.score || (r.score===b.score && r.ms<b.ms)) best.set(k, r); }
+return [...best.values()].sort((a,b)=> b.score-a.score || a.ms-b.ms || String(a.at).localeCompare(String(b.at)));
+}
+const isMe = r => S.role==="student" && norm(r.name)+"|"+(r.grade||"") === norm(S.name)+"|"+(S.grade||"");
+const initial = n => (norm(n)[0] || "؟");
+
+const S = Object.assign({ role:null, name:"", grade:"", view:"gate", sid:null, bi:0, quiz:null, last:null, gateErr:"", gateTab:"student", edit:null, editQ:null, openBook:null, confirm:null, draft:null }, LS.get("ihya.me", {}));
+if (S.role) S.view = S.role==="admin" ? "admin" : "sessions";
+const saveMe = () => LS.set("ihya.me", { role:S.role, name:S.name, grade:S.grade });
+function go(view, patch={}){ Object.assign(S, patch, { view }); render(); window.scrollTo({top:0}); }
+
+function topbar(){
+let me = "";
+if (S.role==="student") me = `<div class="me"><div class="nm"><b>${esc(S.name)}</b><span>${esc(S.grade)}</span></div><div class="avatar">${esc(initial(S.name))}</div><button class="out" data-act="logout">خروج</button></div>`;
+if (S.role==="admin") me = `<div class="me"><div class="nm"><b>أمين المكتبة</b><span>لوحة الإدارة</span></div><div class="avatar">${IC.key.replace('<svg','<svg width="18" height="18"')}</div><button class="out" data-act="logout">خروج</button></div>`;
+return `<header class="bar"><button class="brand" data-act="home" aria-label="الرئيسية">${LOGO}<span><b>إحياء القراءة</b><small>فولاثون رشيد</small></span></button>${me}</header>`;
+}
+
+function vGate(){
+const nb = Store.data.books.length, nq = Store.data.books.reduce((a,b)=>a+(b.questions||[]).length,0);
+const st = S.gateTab==="student";
+return `${topbar()}
+<section class="gate view">
+<div>
+<span class="kicker">مبادرة طلابية · المدارس الابتدائية بجدة</span>
+<h1 style="margin-top:10px">اقرأ الكتاب،<br>ثم <em>تحدَّ</em> زملاءك.</h1>
+<p class="lead">يحمل طلاب المراحل العليا عربة الكتب إلى الصفوف الأولى. يختار كل طالب كتابًا ويقرؤه، ثم يعود إلى هنا ليجيب عن عشرة أسئلة في خمس دقائق ويرى مركزه بين القرّاء.</p>
+<div class="stats"><div><b>${AD(Store.data.sessions.length)}</b>جلسات قراءة</div><div><b>${AD(nb)}</b>كتب على العربة</div><div><b>${AD(nq)}</b>سؤالًا للتحدي</div></div>
+<div class="roles">
+<div class="role-tabs" role="tablist">
+<button role="tab" aria-selected="${st}" class="${st?"on":""}" data-act="gtab" data-v="student">${IC.reader} أنا طالب</button>
+<button role="tab" aria-selected="${!st}" class="${!st?"on":""}" data-act="gtab" data-v="admin">${IC.key} أنا مسؤول</button>
+</div>
+${st ? `<form class="paper gform" data-form="student" autocomplete="off">
+<div class="row">
+<label class="f">اسمك<input class="inp" id="g-name" name="name" required maxlength="40" value="${esc(S.name)}" placeholder="مثال: سارة محمد"></label>
+<label class="f">صفّك<select class="inp" id="g-grade" name="grade" required><option value="">اختر</option>${GRADES.map(g=>`<option ${g===S.grade?"selected":""}>${g}</option>`).join("")}</select></label>
+</div>
+<button class="btn wide" type="submit">ادخل المكتبة ${IC.next}</button>
+</form>` : `<form class="paper gform" data-form="admin" autocomplete="off">
+<label class="f">رمز المسؤول<input class="inp" id="g-code" name="code" type="password" inputmode="numeric" required placeholder="••••"></label>
+${S.gateErr?`<p class="err">${esc(S.gateErr)}</p>`:""}
+<button class="btn wide" type="submit">دخول لوحة الإدارة</button>
+</form>`}
+${Store.mode==="local"?`<p class="note">هذه النسخة تحفظ الجلسات والنتائج على هذا الجهاز فقط.</p>`:""}
+</div>
+</div>
+<div class="fan" id="fan" aria-hidden="true">${Store.data.books.slice(0,5).map((b,i)=>`<div class="slot" data-i="${i}"><div class="float">${book3D(b)}</div></div>`).join("")}</div>
+</section>`;
+}
+
+function minis(sid, n=3){
+const bs = Store.books(sid).slice(0,n);
+return bs.map(b=>`<div class="mini">${coverFace(b)}</div>`).join("");
+}
+function vSessions(){
+const list = Store.sessions();
+return `${topbar()}<div class="view">
+<div class="ph"><div><span class="kicker">جلسات القراءة</span><h1>اختر جلستك</h1><p>لكل جلسة عربة كتب مختلفة. افتح جلستك، ثم قلّب الكتب واختر الكتاب الذي قرأته.</p></div></div>
+${list.length ? `<div class="sess">${list.map((s,i)=>{ const [c,l]=status(s.date); const n=Store.books(s.id).length; return `
+<button class="scard" data-act="open-session" data-id="${esc(s.id)}">
+<div class="art"><span class="no">${AD(String(i+1).padStart(2,"0"))}</span><span class="tag ${c}">${l}</span>${minis(s.id)}</div>
+<div class="info"><h3>${esc(s.title)}</h3>
+<div class="meta"><span>${IC.cal}${esc(fmtDate(s.date))}</span>${s.place?`<span>${IC.pin}${esc(s.place)}</span>`:""}${s.grades?`<span>${IC.users}${esc(s.grades)}</span>`:""}</div>
+<div class="cta"><span>${AD(n)} ${plural(n,"كتاب","كتابان","كتب","كتابًا")} في هذه الجلسة</span><i>${IC.next}</i></div></div>
+</button>`;}).join("")}</div>` : `<div class="emptybox"><h3>لا توجد جلسات بعد</h3><p>تظهر هنا جلسات القراءة عندما يضيفها المسؤول.</p></div>`}
+</div>`;
+}
+
+function vSession(){
+const s = Store.session(S.sid); if (!s) return vSessions();
+const books = Store.books(s.id);
+S.bi = Math.max(0, Math.min(S.bi, books.length-1));
+return `${topbar()}<div class="view">
+<div class="crumb"><button data-act="home">الجلسات</button><span>‹</span><span>${esc(s.title)}</span></div>
+<div class="shead"><h1>${esc(s.title)}</h1><p>${esc(fmtDate(s.date))}${s.place?" · "+esc(s.place):""}</p></div>
+${books.length ? `
+<div class="stage" id="stage" tabindex="0" aria-label="رف الكتب، اسحب أو استخدم الأسهم للتنقل">
+${books.map((b,i)=>`<div class="slot" data-i="${i}"><div class="float">${book3D(b)}</div><div class="shade"></div></div>`).join("")}
+<div class="floor"></div>
+<button class="arrow side next" data-act="flow" data-d="1" aria-label="الكتاب التالي">${IC.next}</button>
+<button class="arrow side prev" data-act="flow" data-d="-1" aria-label="الكتاب السابق">${IC.prev}</button>
+</div>
+<div class="dots" id="dots">${books.map((b,i)=>`<button data-act="flowto" data-i="${i}" aria-label="${esc(b.title)}"></button>`).join("")}</div>
+<p class="swipe-hint">اسحب الكتب من اليمين إلى اليسار، والكتاب الذي في المنتصف تظهر نبذته واختباره تحته</p>
+<div id="bookinfo"></div>` : `<div class="emptybox" style="margin-top:30px"><h3>العربة فارغة</h3><p>لم تُضف كتب لهذه الجلسة بعد.</p></div>`}
+</div>`;
+}
+
+function lbRows(rows, max){
+const myIdx = rows.findIndex(isMe);
+const top = rows.slice(0, max);
+const row = (r,i) => `<div class="lr ${isMe(r)?"me":""}"><span class="rk">${AD(i+1)}</span><span class="who"><b>${esc(r.name)}</b><span>${esc(r.grade||"")}</span></span><span class="sc">${AD(r.score)}/${AD(r.total||QUIZ_COUNT)}</span><span class="tm">${mmss(r.ms)}</span></div>`;
+return `<div class="lb">${top.map(row).join("")}${myIdx>=max?row(rows[myIdx],myIdx):""}</div>`;
+}
+function bookInfo(b){
+if (!b) return "";
+const qn = (b.questions||[]).length, rows = board(b.id), myIdx = rows.findIndex(isMe);
+return `<article class="plate paper" aria-live="polite">
+<h2>${esc(b.title)}</h2>
+<p class="by">${esc(b.author||"")}</p>
+<div class="chips">
+${b.level?`<span class="chip">${IC.level}${esc(b.level)}</span>`:""}
+${b.age?`<span class="chip">${IC.age}${esc(b.age)}</span>`:""}
+${b.dewey?`<span class="chip">${IC.tag}ديوي ${AD(b.dewey)}</span>`:""}
+</div>
+<p class="sum">${esc(b.summary||"لا توجد نبذة بعد.")}</p>
+${myIdx>=0?`<div class="mybest"><span>أفضل نتيجة لك</span><b>${AD(rows[myIdx].score)}/${AD(rows[myIdx].total||QUIZ_COUNT)} · المركز ${AD(myIdx+1)}</b></div>`:""}
+${qn ? (S.role==="student" ? `<button class="btn wide go" data-act="start" data-id="${esc(b.id)}">${IC.play} ${myIdx>=0?"اختبر نفسك مرة أخرى":"اختبر نفسك"}</button>` : `<p class="muted">يبدأ الاختبار من حساب الطالب.</p>`) : `<p class="muted">لم تُضف أسئلة لهذا الكتاب بعد.</p>`}
+<p class="terms2">${AD(Math.min(QUIZ_COUNT,qn))} أسئلة · ${AD(QUIZ_SECONDS/60)} دقائق · ترتيبك بين القرّاء</p>
+</article>
+<section class="lbcard paper">
+<div class="lbh"><span class="kicker">لوحة الترتيب لهذا الكتاب</span><span class="muted">${AD(rows.length)} ${plural(rows.length,"قارئ","قارئان","قرّاء","قارئًا")}</span></div>
+${rows.length ? lbRows(rows, 5) : `<p class="muted">لم يختبر أحد نفسه في هذا الكتاب بعد. كن الأول.</p>`}
+</section>`;
+}
+
+function vQuiz(){
+const q = S.quiz, cur = q.qs[q.i], b = Store.book(q.bookId) || { title:q.title };
+const left = q.deadline - Date.now(), C = 2*Math.PI*38;
+return `${topbar()}<div class="quiz view">
+<div class="qhead">
+<div class="mini">${coverFace(b)}</div>
+<div class="bt"><span class="kicker">تحدّي الكتاب</span><h2>${esc(b.title)}</h2></div>
+<div class="ring ${left<60000?"low":""}" id="ring"><svg viewBox="0 0 86 86"><circle class="tr" cx="43" cy="43" r="38"/><circle class="pr" id="ringp" cx="43" cy="43" r="38" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-Math.max(0,left)/(QUIZ_SECONDS*1000))}"/></svg><span class="tx" id="ringt">${mmss(left)}</span></div>
+</div>
+<div class="qprog">${q.qs.map((_,k)=>`<button class="${k===q.i?"cur":""} ${q.answers[k]!==null?"done":""}" data-act="jump" data-k="${k}" aria-label="السؤال ${k+1}"></button>`).join("")}</div>
+<div class="paper qcard">
+<span class="qn">السؤال ${AD(q.i+1)} من ${AD(q.qs.length)}</span>
+<h2>${esc(cur.q)}</h2>
+<div class="opts">${cur.opts.map((o,j)=>`<button class="opt ${q.answers[q.i]===j?"sel":""}" data-act="answer" data-j="${j}"><span class="l">${LETTERS[j]}</span><span>${esc(o.t)}</span></button>`).join("")}</div>
+<div class="qfoot">
+<div class="navs">
+<button class="btn ghost sm" data-act="jump" data-k="${q.i-1}" ${q.i===0?"disabled":""}>${IC.prev} السابق</button>
+<button class="btn ghost sm" data-act="jump" data-k="${q.i+1}" ${q.i===q.qs.length-1?"disabled":""}>التالي ${IC.next}</button>
+</div>
+<button class="btn sm" data-act="finish">سلّم الإجابات (${AD(q.answers.filter(a=>a!==null).length)}/${AD(q.qs.length)})</button>
+</div>
+</div>
+</div>`;
+}
+
+function vResult(){
+const L = S.last, rows = board(L.bookId, L), rank = rows.findIndex(isMe), my = rows[rank] || L;
+const b = Store.book(L.bookId) || { title:L.title };
+const verdict = L.score>=9?"قارئ متمكّن":L.score>=7?"قراءة جيدة":L.score>=5?"على الطريق":"عُد إلى الكتاب";
+const p = [rows[1], rows[0], rows[2]];
+const pod = (r,cls,n) => r ? `<div class="pod ${cls} ${isMe(r)?"me":""}"><div class="pa">${esc(initial(r.name))}</div><div class="pn">${esc(r.name)}</div><div class="ps"><bdi>${AD(r.score)}/${AD(r.total||QUIZ_COUNT)}</bdi> · <bdi>${mmss(r.ms)}</bdi></div><div class="blk">${AD(n)}</div></div>`
+: `<div class="pod ${cls} empty"><div class="pa">؟</div><div class="pn">بانتظار قارئ</div><div class="ps">—</div><div class="blk">${AD(n)}</div></div>`;
+return `${topbar()}<div class="view">
+<div class="crumb"><button data-act="back-session">العودة إلى الكتب</button></div>
+<div class="res">
+<section class="paper scorecard">
+<div class="stamp"><small>المركز</small><b>${AD(rank+1)}</b><small>من ${AD(rows.length)}</small></div>
+<span class="kicker">نتيجتك في</span>
+<h2>${esc(b.title)}</h2>
+<div class="big">${AD(L.score)}<small>/${AD(L.total)}</small></div>
+<span class="verdict">${verdict}</span>
+<div class="kv"><span>الوقت <b>${mmss(L.ms)}</b></span><span>الصحيحة <b>${AD(L.score)}</b></span><span>الخاطئة <b>${AD(L.total-L.score)}</b></span></div>
+${my.id!==L.id?`<p class="note" style="margin-top:16px">مركزك محسوب بأفضل محاولة لك: ${AD(my.score)}/${AD(my.total||QUIZ_COUNT)} في ${mmss(my.ms)}.</p>`:""}
+${L.timeout?`<p class="note" style="margin-top:12px">انتهى الوقت، فسُلّمت إجاباتك تلقائيًا.</p>`:""}
+<div class="review"><details><summary>راجع إجاباتك</summary>${L.review.map(r=>`<div class="rv ${r.ok?"y":"n"}"><i>${r.ok?"✓":"✗"}</i><span>${esc(r.q)}${r.ok?"":`<span class="ans">الإجابة الصحيحة: ${esc(r.right)}</span>`}</span></div>`).join("")}</details></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px"><button class="btn" data-act="start" data-id="${esc(L.bookId)}">حاول مرة أخرى</button><button class="btn ghost" data-act="back-session">اختر كتابًا آخر</button></div>
+</section>
+<section class="boardcard">
+<div class="bh"><span class="kicker">منصة القرّاء</span><h3>${esc(b.title)}</h3></div>
+<div class="podium">${pod(p[0],"p2",2)}${pod(p[1],"p1",1)}${pod(p[2],"p3",3)}</div>
+<div class="bb"><div class="lbh"><span class="kicker">الترتيب الكامل</span><span class="muted">${AD(rows.length)} ${plural(rows.length,"قارئ","قارئان","قرّاء","قارئًا")}</span></div>${lbRows(rows, 12)}</div>
+</section>
+</div></div>`;
+}
+
+function cbtn(key, label, act, id, cls="lnk"){
+const on = S.confirm===key;
+return `<button class="${cls} ${on?"dang":""}" data-act="${on?act:"ask"}" data-key="${esc(key)}" data-id="${esc(id)}">${on?"تأكيد "+label:label}</button>`;
+}
+function vAdmin(){
+const editing = S.edit && S.edit.kind==="session", e = editing && S.edit.id ? (Store.session(S.edit.id)||{}) : {};
+return `${topbar()}<div class="view">
+<div class="ph"><div><span class="kicker">لوحة أمين المكتبة</span><h1>الجلسات</h1><p>أنشئ جلسة، ثم افتحها لتضيف كتبها وأغلفتها وأسئلة كل كتاب.</p></div>
+${!editing?`<button class="btn cream" data-act="new-session">+ جلسة جديدة</button>`:""}</div>
+${Store.mode==="db" && !Store.isEditor ? `<p class="note" style="margin-bottom:16px">حسابك لا يملك صلاحية تعديل الجلسات والكتب. اطلب من صاحب الموقع صلاحية محرّر (Editor).</p>`:""}
+<div class="adm">
+${editing?`<form class="paper aform" data-form="session">
+<h3>${S.edit.id?"تعديل الجلسة":"جلسة جديدة"}</h3>
+<label class="f">عنوان الجلسة<input class="inp" id="s-title" name="title" required value="${esc(e.title)}" placeholder="مثال: حكايات من ألف ليلة"></label>
+<div class="two"><label class="f">التاريخ<input class="inp" id="s-date" name="date" type="date" value="${esc(e.date)}"></label><label class="f">المكان<input class="inp" id="s-place" name="place" value="${esc(e.place)}" placeholder="مكتبة المدرسة"></label></div>
+<label class="f">الصفوف المشاركة<input class="inp" id="s-grades" name="grades" value="${esc(e.grades)}" placeholder="الرابع إلى السادس"></label>
+<label class="f">وصف قصير يظهر للطلاب<textarea class="inp" id="s-note" name="note">${esc(e.note)}</textarea></label>
+<div class="acts"><button class="btn" type="submit">احفظ الجلسة</button><button class="btn ghost" type="button" data-act="cancel">إلغاء</button></div>
+</form>`:""}
+${Store.sessions().map(s=>{ const bs=Store.books(s.id), rn=Store.data.results.filter(r=>r.sessionId===s.id).length; return `
+<div class="paper arow">
+${bs[0]?`<div class="mini">${coverFace(bs[0])}</div>`:""}
+<div class="g"><h3>${esc(s.title)}</h3><p><span>${esc(fmtDate(s.date))}</span><span class="badge">${AD(bs.length)} كتب</span><span>${AD(rn)} محاولة</span></p></div>
+<div class="acts"><button class="btn sm" data-act="admin-session" data-id="${esc(s.id)}">الكتب والأسئلة</button><button class="btn ghost sm" data-act="edit-session" data-id="${esc(s.id)}">تعديل</button>${cbtn("ds-"+s.id,"حذف","del-session",s.id,"btn ghost sm")}</div>
+</div>`;}).join("") || (!editing?`<div class="emptybox"><h3>لا توجد جلسات بعد</h3><p>ابدأ بزر «جلسة جديدة».</p></div>`:"")}
+</div></div>`;
+}
+function vAdminSession(){
+const s = Store.session(S.sid); if(!s) return vAdmin();
+const books = Store.books(s.id), editing = S.edit && S.edit.kind==="book";
+return `${topbar()}<div class="view">
+<div class="crumb"><button data-act="home">الجلسات</button><span>‹</span><span>${esc(s.title)}</span></div>
+<div class="ph"><div><span class="kicker">كتب الجلسة</span><h1>${esc(s.title)}</h1><p>يأخذ الطالب ${AD(QUIZ_COUNT)} أسئلة عشوائية من أسئلة الكتاب، وله ${AD(QUIZ_SECONDS/60)} دقائق.</p></div>
+${!editing?`<button class="btn cream" data-act="new-book">+ أضف كتابًا</button>`:""}</div>
+<div class="adm">
+${editing?bookForm():""}
+${books.map(b=>{ const qn=(b.questions||[]).length, rn=Store.data.results.filter(r=>r.bookId===b.id).length, open=S.openBook===b.id; return `
+<div class="paper arow">
+<div class="mini">${coverFace(b)}</div>
+<div class="g"><h3>${esc(b.title)}</h3><p><span>${esc(b.author||"")}</span><span class="badge ${qn<QUIZ_COUNT?"warn":""}">${AD(qn)} / ${AD(QUIZ_COUNT)} أسئلة</span><span>${AD(rn)} محاولة</span></p></div>
+<div class="acts"><button class="btn sm ${open?"":"ghost"}" data-act="open-book" data-id="${esc(b.id)}">${open?"إغلاق الاختبار":"الاختبار والأسئلة"}</button><button class="btn ghost sm" data-act="edit-book" data-id="${esc(b.id)}">تعديل الكتاب والغلاف</button>${cbtn("db-"+b.id,"حذف","del-book",b.id,"btn ghost sm")}</div>
+</div>${open?quizEditor(b):""}`;}).join("") || (!editing?`<div class="emptybox"><h3>لا كتب بعد</h3><p>أضف أول كتاب لهذه الجلسة.</p></div>`:"")}
+</div></div>`;
+}
+function bookForm(){
+const d = S.draft;
+return `<form class="paper aform" data-form="book" id="bookform">
+<h3>${S.edit.id?"تعديل الكتاب":"كتاب جديد"}</h3>
+<div class="bookform">
+<div class="prev"><div class="pc" id="pc">${coverFace(d)}</div><span class="muted">معاينة الغلاف</span></div>
+<div style="display:grid;gap:14px;min-width:0">
+<div class="two"><label class="f">عنوان الكتاب<input class="inp" id="b-title" name="title" required value="${esc(d.title)}" data-live></label><label class="f">المؤلف<input class="inp" id="b-author" name="author" value="${esc(d.author)}" data-live></label></div>
+<label class="f">نبذة تظهر تحت الكتاب<textarea class="inp" id="b-summary" name="summary">${esc(d.summary)}</textarea></label>
+<div class="two">
+<label class="f">المستوى<select class="inp" id="b-level" name="level">${["سهل","متوسط","متقدم"].map(l=>`<option ${l===d.level?"selected":""}>${l}</option>`).join("")}</select></label>
+<label class="f">العمر المناسب<input class="inp" id="b-age" name="age" value="${esc(d.age)}" placeholder="٨ إلى ١٠ سنوات" data-live></label>
+</div>
+<label class="f">رقم التصنيف (ديوي)<input class="inp" id="b-dewey" name="dewey" value="${esc(d.dewey)}" placeholder="398.2" data-live></label>
+<div class="f" style="display:grid;gap:8px;font-size:14px;font-weight:600;color:var(--muted)">رسمة الغلاف
+<div class="picker">${Object.entries(SCENES).map(([k,s])=>`<label title="${s.name}"><input type="radio" name="emblem" value="${k}" ${k===(d.emblem||"book")?"checked":""} data-live><span class="sw t-${esc(d.tone||"wine")}">${sceneSVG(k,"p"+k)}</span></label>`).join("")}</div></div>
+<div class="f" style="display:grid;gap:8px;font-size:14px;font-weight:600;color:var(--muted)">لون الغلاف
+<div class="picker">${TONES.map(([v,l])=>`<label title="${l}"><input type="radio" name="tone" value="${v}" ${v===(d.tone||"wine")?"checked":""} data-live><span class="sw tone t-${v}" style="background:var(--cv-bg)"></span></label>`).join("")}</div></div>
+<div class="f" style="display:grid;gap:8px;font-size:14px;font-weight:600;color:var(--muted)">أو ارفع صورة الغلاف الحقيقي
+<div class="upl"><label class="btn ghost sm" style="cursor:pointer">اختر صورة من جهازك<input type="file" id="b-img" accept="image/*" hidden></label>${d.coverImg?`<button type="button" class="lnk" data-act="rm-img">إزالة الصورة والعودة للرسمة</button>`:""}</div></div>
+<div class="acts"><button class="btn" type="submit">احفظ الكتاب</button><button class="btn ghost" type="button" data-act="cancel">إلغاء</button></div>
+</div>
+</div>
+</form>`;
+}
+function quizEditor(b){
+const qs = b.questions || [];
+const eq = S.editQ===null ? null : (S.editQ==="new" ? {q:"",options:["","","",""],answer:0} : qs[S.editQ]);
+return `<div class="split">
+<div class="paper aform">
+<h3>أسئلة «${esc(b.title)}»</h3>
+<p class="note">${qs.length<QUIZ_COUNT?`يحتاج الاختبار ${AD(QUIZ_COUNT)} أسئلة. الناقص: ${AD(QUIZ_COUNT-qs.length)}.`:qs.length>QUIZ_COUNT?`يختار الموقع ${AD(QUIZ_COUNT)} من ${AD(qs.length)} سؤالًا عشوائيًا لكل طالب.`:"الاختبار مكتمل."} ترتيب الخيارات يتغيّر عند كل طالب.</p>
+<div class="qlist">${qs.map((q,i)=>`<div class="qi"><span class="n">${AD(i+1)}</span><div class="tx"><b>${esc(q.q)}</b><span>${q.options.map((o,j)=>j===q.answer?`<em>${esc(o)}</em>`:esc(o)).join(" · ")}</span></div><div class="a"><button class="lnk" data-act="edit-q" data-i="${i}">تعديل</button>${cbtn("dq-"+b.id+"-"+i,"حذف","del-q",i)}</div></div>`).join("") || `<p class="muted">لا أسئلة بعد.</p>`}</div>
+${eq===null?`<div class="acts"><button class="btn sm" data-act="new-q">+ أضف سؤالًا</button></div>`:""}
+</div>
+${eq?`<form class="paper aform" data-form="question">
+<h3>${S.editQ==="new"?"سؤال جديد":"تعديل السؤال "+AD(S.editQ+1)}</h3>
+<label class="f">نص السؤال<textarea class="inp" id="q-text" name="q" required style="min-height:74px">${esc(eq.q)}</textarea></label>
+<div class="optedit"><span class="kicker">الخيارات · اختر الدائرة بجانب الإجابة الصحيحة</span>
+${[0,1,2,3].map(j=>`<label><input type="radio" name="answer" value="${j}" ${eq.answer===j?"checked":""} aria-label="الإجابة الصحيحة ${LETTERS[j]}"><input class="inp" id="q-o${j}" name="o${j}" required value="${esc(eq.options[j])}" placeholder="الخيار ${LETTERS[j]}"></label>`).join("")}</div>
+<div class="acts"><button class="btn" type="submit">احفظ السؤال</button><button class="btn ghost" type="button" data-act="cancel-q">إلغاء</button></div>
+</form>`:`<div class="paper aform"><h3>نتائج الكتاب</h3>${board(b.id).length?lbRows(board(b.id),50)+`<div class="acts">${cbtn("dr-"+b.id,"مسح النتائج","del-results",b.id,"btn ghost sm")}</div>`:`<p class="muted">لم يتحدَّ أحد هذا الكتاب بعد.</p>`}</div>`}
+</div>`;
+}
+
+const Flow = {
+pos:0, target:0, anim:0, slots:[], el:null, n:0,
+wrap(o){ const n=this.n; o = ((o % n) + n) % n; if (o > n/2) o -= n; return o; },
+idx(p){ const n=this.n; return ((Math.round(p) % n) + n) % n; },
+mount(stage, start){
+this.el = stage; this.slots = [...stage.querySelectorAll(".slot")]; this.n = this.slots.length;
+this.target = start; this.pos = start - 2; this.lastActive = -1; this.layout(); this.animate();   let sx=0, sy=0, sp=0, moved=false, lastX=0, lastT=0, vel=0, down=false, downSlot=null, horiz=null;
+const step = () => (stage.querySelector(".slot").offsetWidth) * (window.innerWidth<640 ? .62 : .8);
+stage.onpointerdown = e => { if (e.button!==0 || e.target.closest(".arrow")) return; down=true; moved=false; horiz=null; sx=lastX=e.clientX; sy=e.clientY; lastT=performance.now(); sp=this.pos; vel=0; cancelAnimationFrame(this.anim); downSlot=e.target.closest(".slot"); };
+stage.onpointermove = e => { if(!down) return; const dx=e.clientX-sx, dy=e.clientY-sy;
+if (horiz===null && (Math.abs(dx)>6 || Math.abs(dy)>6)) horiz = Math.abs(dx) > Math.abs(dy);
+if (!horiz) return;
+if (!moved){ moved=true; stage.classList.add("drag"); try{stage.setPointerCapture(e.pointerId);}catch{} this.close(); }
+const now=performance.now(); vel=(e.clientX-lastX)/Math.max(1,now-lastT); lastX=e.clientX; lastT=now;
+this.pos = sp - dx/step(); this.layout(); };   const up = () => { if(!down) return; down=false; stage.classList.remove("drag");
+if (!moved){ if (downSlot){ const i=+downSlot.dataset.i; if (i===this.idx(this.pos)) this.toggle(i); else this.go(i); } else this.go(this.idx(this.pos)); return; }
+let t = Math.round(this.pos - vel*160/step()); t = Math.max(Math.round(sp)-2, Math.min(Math.round(sp)+2, t));
+this.target = t; this.animate(); };
+stage.onpointerup = up; stage.onpointercancel = up;
+stage.onkeydown = e => { if(e.key==="ArrowLeft"){ this.step(1); e.preventDefault(); } if(e.key==="ArrowRight"){ this.step(-1); e.preventDefault(); } if(e.key==="Enter"||e.key===" "){ this.toggle(this.idx(this.target)); e.preventDefault(); } };
+let wacc=0, wt=0; stage.addEventListener("wheel", e => { if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return; e.preventDefault(); wacc += e.deltaX; clearTimeout(wt);
+if (Math.abs(wacc)>60){ this.step(wacc>0?1:-1); wacc=0; } wt=setTimeout(()=>wacc=0,200); }, {passive:false});
+},
+step(d){ this.close(); this.target = Math.round(this.target) + d; this.animate(); },
+go(i){ this.close(); this.target = Math.round(this.pos) + this.wrap(i - Math.round(this.pos)); this.animate(); },
+toggle(i){ const b3 = this.slots[i]?.querySelector(".b3"); if(!b3) return; const on = !b3.classList.contains("open"); this.close(); if(on) b3.classList.add("open"); },
+close(){ this.slots.forEach(s=>s.querySelector(".b3")?.classList.remove("open")); },
+animate(){ cancelAnimationFrame(this.anim);
+const tick = () => { const d = this.target - this.pos; if (Math.abs(d) < .001){ this.pos = this.target; this.layout(); return; }
+this.pos += d * .15; this.layout(); this.anim = requestAnimationFrame(tick); };
+this.anim = requestAnimationFrame(tick); },
+layout(){
+const W = this.slots[0]?.offsetWidth || 200, narrow = window.innerWidth < 640, n = this.n;
+const lim = Math.min(2.5, n/2);             this.slots.forEach((s,i)=>{
+const o = n>1 ? this.wrap(i - this.pos) : 0, a = Math.abs(o), sg = Math.sign(o);
+const sc = 1 - Math.min(a,1)*.24 - Math.max(a-1,0)*.2;
+const x = sg * (Math.min(a,1) * W * (narrow?.66:.84) + Math.max(a-1,0) * W * (narrow?.5:.66));   const ry = -sg * Math.min(a,1) * 18 + (a<1 ? (1-a)*-10 : 0);
+const y = (1-sc) * W * .75;                     s.style.transform = `translateX(${x}px) translateY(${y}px) scale(${sc}) rotateY(${ry}deg)`;
+s.style.zIndex = String(100 - Math.round(a*10));
+s.style.opacity = n<5 && a>lim-.01 ? "0" : String(Math.max(0, Math.min(1, (lim + .05 - a) / .35)));
+s.style.pointerEvents = a > 2.2 ? "none" : "";
+const sh = s.querySelector(".shade"); if (sh) sh.style.opacity = String(Math.min(.5, a*.2));
+s.classList.toggle("center", a < .5);
+});
+const act = this.idx(this.pos);
+if (act !== this.lastActive){ this.lastActive = act; onActive(act); }
+}
+};
+function onActive(i){
+if (S.view!=="session") return;
+S.bi = i; const books = Store.books(S.sid);
+document.querySelectorAll("#dots button").forEach((d,k)=>d.classList.toggle("on", k===i));
+const bi = $("#bookinfo"); if (bi){ bi.innerHTML = bookInfo(books[i]); }
+}
+
+let fanTimer = 0;
+function mountFan(){
+const fan = $("#fan"); if(!fan) return; const slots=[...fan.querySelectorAll(".slot")]; if(!slots.length) return;
+let k = 0;
+const place = () => slots.forEach((s,i)=>{ const n=slots.length; let o=((i-k)%n+n)%n; if(o>n/2) o-=n; const a=Math.abs(o), sg=Math.sign(o), W=s.offsetWidth;
+s.style.transition="transform 1.1s cubic-bezier(.3,.7,.2,1), opacity 1.1s";
+s.style.transform=`translateX(${-sg*(Math.min(a,1)*W*.62+Math.max(a-1,0)*W*.28)}px) translateZ(${-a*W*.55}px) rotateY(${sg*Math.min(a,1)*52 + (a<.5?-18:0)}deg)`;
+s.style.zIndex=String(100-a*10); s.style.opacity = a>2.1?"0":"1"; s.classList.toggle("center",a<.5); });
+place(); clearInterval(fanTimer); fanTimer = setInterval(()=>{ if(!document.body.contains(fan)){ clearInterval(fanTimer); return; } k=(k+1)%slots.length; place(); }, 3200);
+}
+
+function render(){
+const v = S.view;
+$("#app").innerHTML = `<div class="wrap">${ v==="gate"?vGate(): v==="sessions"?vSessions(): v==="session"?vSession(): v==="quiz"?vQuiz(): v==="result"?vResult(): v==="admin"?vAdmin(): v==="admin-session"?vAdminSession(): vGate() }</div>`;
+if (v==="session"){ const st=$("#stage"); if(st) Flow.mount(st, S.bi); }
+if (v==="gate") mountFan();
+}
+
+let tick = 0;
+function startQuiz(bookId){
+const b = Store.book(bookId); if(!b || !(b.questions||[]).length) return;
+const picked = shuffle(b.questions).slice(0, QUIZ_COUNT).map(q => ({ q:q.q, opts: shuffle(q.options.map((t,j)=>({t, ok:j===q.answer}))) }));
+S.quiz = { bookId, sessionId:b.sessionId, title:b.title, qs:picked, answers:picked.map(()=>null), i:0, start:Date.now(), deadline:Date.now()+QUIZ_SECONDS*1000 };
+go("quiz");
+clearInterval(tick);
+tick = setInterval(() => {
+const q = S.quiz; if(!q || S.view!=="quiz"){ clearInterval(tick); return; }
+const left = q.deadline - Date.now(), C = 2*Math.PI*38;
+const t=$("#ringt"), p=$("#ringp"), r=$("#ring");
+if (t) t.textContent = mmss(left);
+if (p) p.setAttribute("stroke-dashoffset", C*(1-Math.max(0,left)/(QUIZ_SECONDS*1000)));
+if (r) r.classList.toggle("low", left<60000);
+if (left <= 0) finishQuiz(true);
+}, 250);
+}
+async function finishQuiz(timeout){
+const q = S.quiz; if(!q || q.done) return; q.done = true; clearInterval(tick);
+const ms = Math.min(Date.now()-q.start, QUIZ_SECONDS*1000);
+const review = q.qs.map((x,k)=>({ q:x.q, ok: q.answers[k]!==null && x.opts[q.answers[k]].ok, right: x.opts.find(o=>o.ok).t }));
+const score = review.filter(r=>r.ok).length;
+const rec = { id:uid(), bookId:q.bookId, sessionId:q.sessionId, name:norm(S.name), grade:S.grade, score, total:q.qs.length, ms, at:new Date().toISOString() };
+S.last = { ...rec, title:q.title, review, timeout:!!timeout }; S.quiz = null;
+go("result");
+await Store.put("results", rec.id, rec);
+}
+
+function readCover(file){
+return new Promise((res, rej) => {
+const img = new Image(), url = URL.createObjectURL(file);
+img.onload = () => { const W=480, H=720, c=document.createElement("canvas"); c.width=W; c.height=H; const x=c.getContext("2d");
+const s = Math.max(W/img.width, H/img.height), w=img.width*s, h=img.height*s; x.drawImage(img,(W-w)/2,(H-h)/2,w,h);
+URL.revokeObjectURL(url); res(c.toDataURL("image/jpeg",.8)); };
+img.onerror = () => { URL.revokeObjectURL(url); rej(); };
+img.src = url;
+});
+}
+function draftFromForm(){
+const f = $("#bookform"); if(!f) return; const fd = new FormData(f);
+Object.assign(S.draft, { title:fd.get("title"), author:fd.get("author"), summary:fd.get("summary"), level:fd.get("level"), age:fd.get("age"), dewey:fd.get("dewey"), emblem:fd.get("emblem"), tone:fd.get("tone") });
+}
+function refreshPreview(){ draftFromForm(); const pc=$("#pc"); if(pc) pc.innerHTML = coverFace(S.draft);
+document.querySelectorAll(".picker .sw:not(.tone)").forEach(sw=>{ sw.className = "sw t-" + (S.draft.tone||"wine"); }); }
+
+document.addEventListener("input", e => { if (e.target.matches("[data-live]")) refreshPreview(); });
+document.addEventListener("change", async e => {
+if (e.target.matches("[data-live]")) refreshPreview();
+if (e.target.id==="b-img" && e.target.files[0]){ try{ draftFromForm(); S.draft.coverImg = await readCover(e.target.files[0]); render(); }catch{ toast("تعذّرت قراءة الصورة، جرّب صورة أخرى"); } }
+});
+document.addEventListener("click", async ev => {
+const el = ev.target.closest("[data-act]"); if(!el) return;
+const a = el.dataset.act, id = el.dataset.id;
+if (a!=="ask" && S.confirm) S.confirm = null;
+switch(a){
+case "home": if (S.view==="quiz") return; go(S.role==="admin"?"admin":S.role?"sessions":"gate", {edit:null, openBook:null, editQ:null}); break;
+case "logout": clearInterval(tick); S.role=null; S.quiz=null; saveMe(); go("gate"); break;
+case "gtab": S.gateTab = el.dataset.v; S.gateErr=""; render(); break;
+case "open-session": go("session", { sid:id, bi:0 }); break;
+case "back-session": go("session"); break;
+case "flow": Flow.step(+el.dataset.d); break;
+case "flowto": Flow.go(+el.dataset.i); break;
+case "start": startQuiz(id); break;
+case "answer": { const q=S.quiz, was=q.i; q.answers[q.i]=+el.dataset.j; render();
+if (was < q.qs.length-1) setTimeout(()=>{ if(S.quiz===q && q.i===was){ q.i++; render(); } }, 340); break; }
+case "jump": { const k=+el.dataset.k; if(k>=0 && k<S.quiz.qs.length){ S.quiz.i=k; render(); } break; }
+case "finish": { const q=S.quiz, miss=q.answers.filter(x=>x===null).length;
+if (miss && !q.warned){ q.warned=true; toast(`بقي ${AD(miss)} ${plural(miss,"سؤال","سؤالان","أسئلة","سؤالًا")} بلا إجابة. اضغط «سلّم» مرة أخرى للتسليم.`); return; }
+finishQuiz(false); break; }
+case "ask": S.confirm = el.dataset.key; render(); break;
+case "new-session": S.edit={kind:"session",id:null}; render(); break;
+case "edit-session": S.edit={kind:"session",id}; render(); window.scrollTo({top:0,behavior:"smooth"}); break;
+case "cancel": S.edit=null; S.draft=null; render(); break;
+case "del-session": for (const b of Store.books(id)) await Store.del("books", b.id); await Store.del("sessions", id); toast("حُذفت الجلسة وكتبها"); render(); break;
+case "admin-session": go("admin-session", { sid:id, edit:null, openBook:null, editQ:null }); break;
+case "new-book": S.edit={kind:"book",id:null}; S.draft={ tone:TONES[Store.books(S.sid).length%4][0], emblem:"book", level:"سهل" }; render(); break;
+case "edit-book": S.edit={kind:"book",id}; S.draft={...Store.book(id)}; render(); window.scrollTo({top:0,behavior:"smooth"}); break;
+case "rm-img": draftFromForm(); delete S.draft.coverImg; render(); break;
+case "del-book": await Store.del("books", id); toast("حُذف الكتاب"); render(); break;
+case "open-book": S.openBook = S.openBook===id?null:id; S.editQ=null; render(); break;
+case "new-q": S.editQ="new"; render(); break;
+case "edit-q": S.editQ=+el.dataset.i; render(); break;
+case "cancel-q": S.editQ=null; render(); break;
+case "del-q": { const b={...Store.book(S.openBook)}; b.questions=(b.questions||[]).filter((_,i)=>i!==+id); await Store.put("books", b.id, b); S.editQ=null; render(); break; }
+case "del-results": for (const r of Store.data.results.filter(r=>r.bookId===id)) await Store.del("results", r.id); toast("مُسحت النتائج"); render(); break;
+}
+});
+document.addEventListener("submit", async ev => {
+const f = ev.target.closest("[data-form]"); if(!f) return; ev.preventDefault();
+const fd = Object.fromEntries(new FormData(f).entries());
+switch(f.dataset.form){
+case "student": { const name=norm(fd.name); if(!name||!fd.grade) return; Object.assign(S,{role:"student",name,grade:fd.grade,gateErr:""}); saveMe(); go("sessions"); break; }
+case "admin": if (String(fd.code).trim()===ADMIN_CODE){ Object.assign(S,{role:"admin",name:"",gateErr:""}); saveMe(); go("admin"); } else { S.gateErr="الرمز غير صحيح، تأكد منه وحاول مرة أخرى."; render(); } break;
+case "session": {
+const old = S.edit.id ? Store.session(S.edit.id) : null, sid = old ? old.id : "s"+uid();
+if (await Store.put("sessions", sid, { title:norm(fd.title), date:fd.date||"", place:norm(fd.place), grades:norm(fd.grades), note:(fd.note||"").trim(), order: old ? (old.order??0) : Store.data.sessions.reduce((m,s)=>Math.max(m,s.order??0),0)+1 })){ S.edit=null; toast("حُفظت الجلسة"); render(); }
+break; }
+case "book": {
+draftFromForm();
+const old = S.edit.id ? Store.book(S.edit.id) : null, bid = old ? old.id : "b"+uid(), d = S.draft;
+const body = { sessionId:S.sid, title:norm(d.title), author:norm(d.author), summary:(d.summary||"").trim(), level:d.level, age:norm(d.age), dewey:norm(d.dewey), emblem:d.emblem||"book", tone:d.tone||"wine",
+questions: old ? (old.questions||[]) : [], order: old ? (old.order??0) : Store.books(S.sid).reduce((m,b)=>Math.max(m,b.order??0),0)+1 };
+if (d.coverImg) body.coverImg = d.coverImg;
+if (await Store.put("books", bid, body)){ S.edit=null; S.draft=null; if(!old){ S.openBook=bid; S.editQ="new"; } toast(old?"حُفظ الكتاب":"أُضيف الكتاب. أضف أسئلته الآن."); render(); }
+break; }
+case "question": {
+const b = { ...Store.book(S.openBook) }, qs = (b.questions||[]).slice();
+const item = { q:fd.q.trim(), options:[fd.o0,fd.o1,fd.o2,fd.o3].map(norm), answer:+(fd.answer ?? 0) };
+if (S.editQ==="new") qs.push(item); else qs[S.editQ]=item; b.questions = qs;
+if (await Store.put("books", b.id, b)){ S.editQ = qs.length<QUIZ_COUNT ? "new" : null; toast(`حُفظ السؤال (${AD(qs.length)} من ${AD(QUIZ_COUNT)})`); render(); $("#q-text")?.focus(); }
+break; }
+}
+});
+window.addEventListener("resize", () => { if (S.view==="session" && Flow.el && document.body.contains(Flow.el)) Flow.layout(); });
+
+Store.on(col => {
+if (Store.mode!=="db") return; const v = S.view;
+if (v==="quiz") return;
+if (v==="session"){
+const st=$("#stage");
+if (col==="results" || (col==="books" && st && st.querySelectorAll(".slot").length===Store.books(S.sid).length)){ const bi=$("#bookinfo"); if(bi) bi.innerHTML = bookInfo(Store.books(S.sid)[S.bi]); return; }
+render(); return;
+}
+if (v==="result" && col==="results"){ render(); return; }
+if ((v==="admin"||v==="admin-session") && (S.edit || S.editQ!==null)) return;
+if (document.activeElement && document.activeElement.matches("input,textarea,select")) return;
+render();
+});
+
+$("#app").innerHTML = `<div class="wrap"><div style="display:grid;place-items:center;min-height:60vh;font-family:var(--kufi);font-size:22px;color:var(--on-dark)">تُفتح المكتبة…</div></div>`;
+Store.init().then(() => { render(); if (Store.stale) toast("تعذّر الوصول إلى البيانات المشتركة الآن، قد تكون غير محدّثة"); });
+</script>
+</body></html>
