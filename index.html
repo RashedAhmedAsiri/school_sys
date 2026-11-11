@@ -549,14 +549,43 @@ if (!snap.metadata.fromCache) done(c);
 this.emit(c);
 }, err => { done(c); if(err.code==="revoked") toast("توقف الوصول إلى البيانات المشتركة"); }));
 });
+} else if (await this.tryApi()) {
+this.mode = "api";
 } else {
 this.mode = "local";
 this.data = LS.get("ihya.local.v3", null) || { sessions: SEED.sessions.map(x=>({...x})), books: SEED.books.map(x=>({...x})), results: [] };
 }
 },
+async tryApi(){
+try { const r = await fetch("/api/data", { cache:"no-store" }); if (!r.ok) return false; this.applyApi(await r.json(), true);
+setInterval(() => this.pollApi(), 8000); return true; } catch { return false; }
+},
+applyApi(d, first){
+const next = { sessions:d.sessions||[], books:d.books||[], results:d.results||[] };
+this.seedPending = !next.sessions.length && !next.books.length;
+if (this.seedPending){ next.sessions = SEED.sessions.map(x=>({...x})); next.books = SEED.books.map(x=>({...x})); }
+const changed = COLS.filter(c => JSON.stringify(next[c]) !== JSON.stringify(this.data[c]));
+this.data = next; if (!first) changed.forEach(c => this.emit(c));
+},
+async pollApi(){ if (document.hidden || this.busy) return; try { const r = await fetch("/api/data", { cache:"no-store" }); if (r.ok) this.applyApi(await r.json(), false); } catch {} },
+async api(method, col, id, body){
+const r = await fetch(`/api/data?col=${encodeURIComponent(col)}&id=${encodeURIComponent(id)}`, { method, headers:{ "content-type":"application/json", "x-admin-code": S.adminCode || "" }, body: body ? JSON.stringify(body) : undefined });
+if (r.status===403) throw { code:"invalid_argument" };
+if (!r.ok) throw { code:"unavailable" };
+},
+async seedApi(){
+if (this.mode!=="api" || !this.seedPending) return;
+try { for (const s of SEED.sessions) await this.api("PUT","sessions",s.id,s); for (const b of SEED.books) await this.api("PUT","books",b.id,b); this.seedPending=false; toast("حُفظت الجلسة والكتب الخمسة في قاعدة البيانات"); } catch { toast("تعذّر حفظ الكتب الجاهزة، تأكد من رمز المسؤول"); }
+},
 persist(){ if (this.mode==="local") LS.set("ihya.local.v3", this.data); },
 async put(col, id, obj){
 const body = { ...obj }; delete body.id;
+if (this.mode === "api") {
+this.busy = true;
+try { await this.api("PUT", col, id, body); } catch(e){ this.busy=false; toast(e && e.code==="invalid_argument" ? "لا تملك صلاحية الحفظ هنا. سجّل دخول المسؤول من جديد." : "تعذّر الحفظ، تأكد من الاتصال وحاول مرة أخرى"); return false; }
+this.busy = false;
+const arr = this.data[col], i = arr.findIndex(x=>x.id===id); if (i>=0) arr[i] = { id, ...body }; else arr.push({ id, ...body }); this.emit(col); return true;
+}
 if (this.mode === "db") {
 try { await this.db.collection(col).doc(id).set(body); return true; }
 catch(e){ toast(e && e.code==="invalid_argument" ? "لا تملك صلاحية الحفظ هنا. اطلب من صاحب الموقع صلاحية أعلى." : e && e.code==="quota_exceeded" ? "امتلأت مساحة التخزين" : "تعذّر الحفظ، حاول مرة أخرى"); return false; }
@@ -567,6 +596,7 @@ this.persist(); this.emit(col); return true;
 },
 async del(col, id){
 if (this.mode === "db") { try { await this.db.collection(col).doc(id).delete(); return true; } catch { toast("تعذّر الحذف"); return false; } }
+if (this.mode === "api") { try { await this.api("DELETE", col, id); } catch { toast("تعذّر الحذف"); return false; } this.data[col] = this.data[col].filter(x=>x.id!==id); this.emit(col); return true; }
 this.data[col] = this.data[col].filter(x=>x.id!==id); this.persist(); this.emit(col); return true;
 },
 sessions(){ return this.data.sessions.slice().sort((a,b)=>(a.order??0)-(b.order??0) || String(a.date).localeCompare(String(b.date))); },
@@ -587,7 +617,7 @@ const initial = n => (norm(n)[0] || "؟");
 
 const S = Object.assign({ role:null, name:"", grade:"", view:"gate", sid:null, bi:0, quiz:null, last:null, gateErr:"", gateTab:"student", edit:null, editQ:null, openBook:null, confirm:null, draft:null }, LS.get("ihya.me", {}));
 if (S.role) S.view = S.role==="admin" ? "admin" : "sessions";
-const saveMe = () => LS.set("ihya.me", { role:S.role, name:S.name, grade:S.grade });
+const saveMe = () => LS.set("ihya.me", { role:S.role, name:S.name, grade:S.grade, adminCode:S.role==="admin"?S.adminCode:"" });
 function go(view, patch={}){ Object.assign(S, patch, { view }); render(); window.scrollTo({top:0}); }
 
 function topbar(){
@@ -1005,7 +1035,7 @@ const f = ev.target.closest("[data-form]"); if(!f) return; ev.preventDefault();
 const fd = Object.fromEntries(new FormData(f).entries());
 switch(f.dataset.form){
 case "student": { const name=norm(fd.name); if(!name||!fd.grade) return; Object.assign(S,{role:"student",name,grade:fd.grade,gateErr:""}); saveMe(); go("sessions"); break; }
-case "admin": if (String(fd.code).trim()===ADMIN_CODE){ Object.assign(S,{role:"admin",name:"",gateErr:""}); saveMe(); go("admin"); } else { S.gateErr="الرمز غير صحيح، تأكد منه وحاول مرة أخرى."; render(); } break;
+case "admin": if (String(fd.code).trim()===ADMIN_CODE){ Object.assign(S,{role:"admin",name:"",gateErr:"",adminCode:String(fd.code).trim()}); saveMe(); go("admin"); Store.seedApi(); } else { S.gateErr="الرمز غير صحيح، تأكد منه وحاول مرة أخرى."; render(); } break;
 case "session": {
 const old = S.edit.id ? Store.session(S.edit.id) : null, sid = old ? old.id : "s"+uid();
 if (await Store.put("sessions", sid, { title:norm(fd.title), date:fd.date||"", place:norm(fd.place), grades:norm(fd.grades), note:(fd.note||"").trim(), order: old ? (old.order??0) : Store.data.sessions.reduce((m,s)=>Math.max(m,s.order??0),0)+1 })){ S.edit=null; toast("حُفظت الجلسة"); render(); }
@@ -1029,7 +1059,7 @@ break; }
 window.addEventListener("resize", () => { if (S.view==="session" && Flow.el && document.body.contains(Flow.el)) Flow.layout(); });
 
 Store.on(col => {
-if (Store.mode!=="db") return; const v = S.view;
+if (Store.mode!=="db" && Store.mode!=="api") return; const v = S.view;
 if (v==="quiz") return;
 if (v==="session"){
 const st=$("#stage");
